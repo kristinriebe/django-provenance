@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for an Entity{% endblock %}
+
+{% block content %}
+
+<h2>Entity: {{ entity.label }}</h2>
+Details: 
+<ul>
+<li>id: {{ entity.id }}</li>
+<li>label: {{ entity.label }}</li>
+<li>type: {{ entity.type }}</li>
+<li>description: {{ entity.description }}</a></li>
+<li>location: {{ entity.location }}</a></li>
+<li>access: {{ entity.access }}</a></li>
+<li>size: {{ entity.size }}</a></li>
+<li>format: {{ entity.format }}</a></li>
+<li>docuLink: {{ entity.docuLink }}</a></li>
+<li>dataproduct_type: {{ entity.dataproduct_type }}</a></li>
+<li>dataproduct_subtype: {{ entity.dataproduct_subtype }}</a></li>
+<li>level: {{ entity.level }}</a></li>
+</ul>
+
+{% endblock %}

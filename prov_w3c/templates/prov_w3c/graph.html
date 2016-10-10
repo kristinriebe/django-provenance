@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block title %}Provenance graph{% endblock %}
+
+{% block content %}
+
+<h2>Provenance</h2>
+
+<h3>Graphical representations of everything</h3>
+
+
+TODO: get two separate graphs for different simulation projects (MDR1 and MDPL2)
+
+<p>
+Activity id: 
+<div id="activity_id">
+{{ activity }}
+</div>
+</p>
+
+<h4>Sankey chart</h4>
+<p>Based on <a href="https://bost.ocks.org/mike/sankey/">https://bost.ocks.org/mike/sankey/</a>.
+</p>
+
+<p id="chart"></p>
+<aside>Drag to rearrange nodes.</aside>
+
+<br>
+
+<h4>Force directed graph layout</h4>
+<p>See e.g. <a href="http://bl.ocks.org/mbostock/4062045">http://bl.ocks.org/mbostock/4062045</a> for an example.
+
+<p id="force-legend"></p>
+
+<p id="force-graph"></p>
+
+{% load staticfiles %}
+<script src="{% static 'prov_w3c/provgraphs.js' %}" charset="utf-8"></script>
+
+{% endblock %}

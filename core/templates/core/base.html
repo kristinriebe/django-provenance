@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+
+{% load staticfiles %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'dmapp/DroidSans.ttf' %}" /> -->
+<!-- http://fonts.googleapis.com/css?family=Droid+Sans -->
+<!--<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>-->
+<link rel="stylesheet" type="text/css" href="{% static 'core/bootstrap.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}" />
+<!-- use d3 javascript library for nice collapsable tree layout -->
+<!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> -->
+<script src="{% static 'core/d3.v3.min.js' %}" charset="utf-8"></script>
+<!-- <link rel="stylesheet" href="{% static 'provenance/codemirror.css' %}"> -->
+<!-- <script src="{% static 'provenance/codemirror.js' %}"></script> -->
+<script src="{% static 'core/sankey.js' %}"></script>
+
+
+<title>{% block title %}{% endblock %}</title>
+
+<script type="text/javascript">
+{% block javascript %}{% endblock %}
+</script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+{% block content %}{% endblock %}
+</div>
+
+<div style="clear:both"></div>
+<p class="footer">A simple provenance webapp.</p>
+</body>
+</html>

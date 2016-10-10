@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}Provenance W3C - Agents{% endblock %}
+
+{% block content %}
+<h1>Agents</h1>
+
+<p>
+Following agents are recorded. Click on one of them to show the details.
+</p>
+{% if agent_list %}
+    <ul>
+    {% for agent in agent_list %}
+        <li><a href="{% url 'prov_w3c:agent_detail' agent.id %}">{{ agent.label }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No agents are available.</p>
+{% endif %}
+
+{% endblock %}

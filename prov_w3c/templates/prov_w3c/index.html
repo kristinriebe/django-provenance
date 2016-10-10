@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+
+{% block title %}Provenance webapp{% endblock %}
+
+{% block content %}
+<h1>CosmoSim provenance - W3C</h1>
+<p>
+    Pick one of the classes below to show the available records.
+</p>
+<ul>
+    <li><a href="{% url 'prov_w3c:activities' %}">Activity</a></li>
+    <li><a href="{% url 'prov_w3c:entities' %}">Entity</a></li>
+    <li><a href="{% url 'prov_w3c:agents' %}">Agent</a></li>
+</ul>
+
+<p>
+    Choose one of the following links to explore more provenance graphs:
+</p>
+<ul>
+    <li>Overview: <a href="{% url 'prov_w3c:graph' %}">Graph</a> of the main workflow</li>
+    <li>Overview: <a href="{% url 'prov_w3c:provn' %}">Provn</a> representation</li>
+</ul>
+{% endblock %}

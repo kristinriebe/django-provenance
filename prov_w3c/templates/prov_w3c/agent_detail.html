@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for an agent{% endblock %}
+
+{% block content %}
+
+<h2>Agent: {{ agent.label }}</h2>
+<h3>Details</h3>
+<ul>
+<li>id: {{ agent.id }}</li>
+<li>label: {{ agent.label }}</li>
+<li>type: {{ agent.type }}</li>
+<li>affiliation: {{ agent.affiliation }}</li>
+</ul>
+
+{% endblock %}

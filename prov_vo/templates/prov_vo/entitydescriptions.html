@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}Provenance webapp - EntityDescriptions{% endblock %}
+
+{% block content %}
+<h1>EntityDescriptions</h1>
+
+<p>
+Following EntityDescriptions are recorded. Click on one of them to show the details.
+</p>
+{% if entitydescription_list %}
+    <ul>
+    {% for entitydescription in entitydescription_list %}
+        <li><a href="{% url 'prov_vo:entitydescription_detail' entitydescription.id %}">{{ entitydescription.label }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No entity descriptions are available.</p>
+{% endif %}
+
+{% endblock %}

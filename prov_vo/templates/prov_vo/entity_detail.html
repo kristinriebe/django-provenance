@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for an Entity{% endblock %}
+
+{% block content %}
+
+<h2>Entity: {{ entity.label }}</h2>
+Details: 
+<ul>
+<li>id: {{ entity.id }}</li>
+<li>label: {{ entity.label }}</li>
+<li>type: {{ entity.type }}</li>
+<li>description: <a href="{% url 'prov_vo:entitydescriptions_detail' entity.description_id %}">{{ entity.description_id }}</a></li>
+</ul>
+
+{% endblock %}

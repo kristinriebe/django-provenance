@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for an activity{% endblock %}
+
+{% block content %}
+
+<h2>Activity: {{ activity.label }}</h2>
+<h3>Details</h3>
+<ul>
+<li>id: {{ activity.id }}</li>
+<li>label: {{ activity.label }}</li>
+<li>startTime: {{ activity.startTime }}</li>
+<li>endTime: {{ activity.endTime }}</li>
+<li>description: {{ activity.description }}</li>
+<li>type: {{ activity.type }}</li>
+<li>subtype: {{ activity.subtype }}</li>
+<li>code: {{ activity.code }}</li>
+<li>parameter: {{ activity.parameter }}</li>
+<li>docuLink: {{ activity.docuLink }}</li>
+</ul>
+
+{% endblock %}
