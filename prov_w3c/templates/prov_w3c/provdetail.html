@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block title %}Detailed provenance for a given entity_id{% endblock %}
+
+{% block content %}
+
+<h2>Detailed provenance for a given entity_id</h2>
+
+<h3>Entity: {{ entity.label }}</h3>
+Details: 
+<ul>
+<li>id: {{ entity.id }}</li>
+<li>label: {{ entity.label }}</li>
+<li>type: {{ entity.type }}</li>
+<li>description: {{ entity.description }}</li>
+</ul>
+
+
+<h3>Graphs</h3>
+
+<h4>Sankey chart</h4>
+<p>Based on <a href="https://bost.ocks.org/mike/sankey/">https://bost.ocks.org/mike/sankey/</a>.
+</p>
+
+<p id="chart"></p>
+<aside>Drag to rearrange nodes.</aside>
+
+<h4>Force directed graph layout</h4>
+<p>See e.g. <a href="http://bl.ocks.org/mbostock/4062045">http://bl.ocks.org/mbostock/4062045</a> for an example.
+
+<p id="force-legend"></p>
+
+<p id="force-graph"></p>
+
+{% load staticfiles %}
+<script src="{% static 'prov_w3c/provgraphs.js' %}" charset="utf-8"></script>
+
+
+
+{% endblock %}
