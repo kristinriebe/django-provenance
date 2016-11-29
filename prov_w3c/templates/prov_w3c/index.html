@@ -14,10 +14,18 @@
 </ul>
 
 <p>
-    Choose one of the following links to explore more provenance graphs:
+    Click the following link to do go to the Provenance form:
+</p>
+<ul>
+    <li><a href="{% url 'prov_w3c:get_entityId' %}">Form for entities</a></li>
+</ul>
+
+<p>
+    Choose one of the following links to explore graphs and serialisations:
 </p>
 <ul>
     <li>Overview: <a href="{% url 'prov_w3c:graph' %}">Graph</a> of the main workflow</li>
-    <li>Overview: <a href="{% url 'prov_w3c:provn' %}">Provn</a> representation</li>
+    <li>Overview: <a href="{% url 'prov_w3c:provn' %}">Prov-N</a> representation</li>
+    <li>Overview: <a href="{% url 'prov_w3c:provjson' %}">Prov-Json</a> representation</li>
 </ul>
 {% endblock %}

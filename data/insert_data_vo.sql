@@ -8,19 +8,29 @@ DELETE FROM prov_vo_agent;
 DELETE FROM prov_vo_wasassociatedwith;
 DELETE FROM prov_vo_wasattributedto;
 
-INSERT INTO prov_vo_activity (id, label, type, subtype, code, parameter, description, startTime, endTime, docuLink) VALUES 
-  ("mdr1:act_simulation", "MDR1 simulation", "cs:simulation", "", "ART", "{force resolution: , starting redshift: ...}", "The simulation MultiDark Run 1","2012", "2012", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
-  ("mdr1:act_fof", "MDR1 FOF halo finding", "cs:post-processing", "cs:halofinder", "FOF", "{rel. linking length: 0.17}", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("mdr1:act_fofc", "MDR1 FOFc halo finding, c-version", "cs:post-processing", "cs:halofinder", "FOF", "{rel. linking length: 0.2}", "Running the FOF halo finder, basic linking length 0.2", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("mdr1:act_fofmtree", "MDR1 FOFMtree building", "cs:post-processing", "cs:mergertreebuilding", "FOF tree builder", "{}", "Building the merger tree for a FOF halo finder", "-", "-", "-"),
-  ("mdr1:act_rockstar", "MDR1 Rockstar building", "cs:post-processing", "cs:mergertreebuilding", "Rockstar", "{}", "Building the Rockstar catalog + merger tree", "-", "-", "-"),
-  ("mdpl2:act_simulation", "MDPL2 simulation", "cs:simulation", "", "ART", "{}", "The MDPL2 simulation","2014", "2014", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
-  ("mdpl2:act_fof", "MDPL2 FOF halo finding", "cs:post-processing", "cs:halofinder", "FOF", "{}", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("mdpl2:act_rockstar", "MDPL2 Rockstar building", "cs:post-processing", "cs:mergertreebuilding", "Rockstar", "{}", "Building the Rockstar catalog + merger tree", "-", "-", "-"),
-  ("mdpl2:act_galacticus", "Running Galacticus on MDPL2", "cs:post-processing", "cs:galaxybuilding", "Galacticus", "{}", "Building the Galacticus galaxy catalog", "2015-07-01", "2015-09-01", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109")
+INSERT INTO prov_vo_activitydescription (id, label, type, subtype, parametertypes, description, docuLink) VALUES
+  ("voprov:actdesc_cosmosimulation", "Cosmological simulation", "cs:simulation", "", "{'code': {'datatype': 'string'}, 'force resolution': {'datatype': 'string', 'unit': 'h-1.kpc'}, 'starting redshift': {'datatype': 'float', 'ucd':'time.epoch'}}", "A cosmological simulation", ""),
+  ("voprov:actdesc_fof", "FOF halo finding", "cs:post-processing", "cs:halofinder", "{'code': {'dataype': 'string'}, 'rel. linking length': {'datatype': 'float', 'ucd': 'meta.code.qual'}}", "Running the FOF halo finder", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("voprov:actdesc_mergertree", "Merger tree building", "cs:post-processing", "cs:mergertreebuilding", "{'code': {'dataype': 'string'}}", "Building the merger tree", ""),
+  ("voprov:actdesc_sam", "SAM galaxy building", "cs:post-processing", "cs:galaxybuilding", "{{'code': {'dataype': 'string'}}", "Using a semi-analytical model (SAM) for producing galaxy information for dark matter halos", "")
   ;
+
+-- activitydescription: should it contain the code? many activities share the same code, same version?
+-- or rather: same descriptions for those that share the same "type" of code?
+
 -- version?
 -- where should I store the code?
+INSERT INTO prov_vo_activity (id, label, type, activitydescription_id, parametervalues, annotation, startTime, endTime, docuLink) VALUES 
+  ("mdr1:act_simulation", "MDR1 simulation", "cs:simulation", "voprov:actdesc_cosmosimulation", "{'code': 'ART', 'force resolution': '7.0', 'starting redshift': 65.0}", "The simulation MultiDark Run 1","2012", "2012", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
+  ("mdpl2:act_simulation", "MDPL2 simulation", "cs:simulation", "voprov:actdesc_cosmosimulation", "{'code': 'ART', 'force resolution': '5.0 to 13.0', 'starting redshift': 120.0}", "The MDPL2 simulation","2014", "2014", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
+  ("mdr1:act_fof", "MDR1 FOF halo finding", "cs:post-processing", "cs:halofinder", "{'code': 'FOF', 'rel. linking length': 0.17}", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("mdr1:act_fofc", "MDR1 FOFc halo finding, c-version", "cs:post-processing", "cs:halofinder", "{'code': 'FOF', 'rel. linking length': 0.2}", "Running the FOF halo finder, basic linking length 0.2", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("mdr1:act_fofmtree", "MDR1 FOFMtree building", "cs:post-processing", "cs:mergertreebuilding", "{}", "Building the merger tree for a FOF halo finder", "-", "-", "-"),
+  ("mdr1:act_rockstar", "MDR1 Rockstar building", "cs:post-processing", "cs:mergertreebuilding", "{'code': 'Rockstar'}", "Building the Rockstar catalog + merger tree", "-", "-", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
+  ("mdpl2:act_fof", "MDPL2 FOF halo finding", "cs:post-processing", "cs:halofinder", "FOF", "{}", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("mdpl2:act_rockstar", "MDPL2 Rockstar building", "cs:post-processing", "cs:mergertreebuilding", "{'code': 'Rockstar'}", "Building the Rockstar catalog + merger tree", "-", "-", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
+  ("mdpl2:act_galacticus", "Running Galacticus on MDPL2", "cs:post-processing", "cs:galaxybuilding", "{'code': 'Galacticus'}", "Building the Galacticus galaxy catalog", "2015-07-01", "2015-09-01", "Benson et al.")
+  ;
 
 INSERT INTO prov_vo_entity (id, label, type, location, access, size, format, description, docuLink, dataproduct_type, dataproduct_subtype, level) VALUES
   ("mdr1:snapshots", "MDR1 simulation snapshots", "voprov:catalog", "erebos.aip.de", 

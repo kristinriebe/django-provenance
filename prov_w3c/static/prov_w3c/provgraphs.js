@@ -25,10 +25,10 @@ var sankey = d3.sankey()
 var path = sankey.link();
 
 // get activity id from div with id="activity_id":
-var activity_id = d3.select("#activity_id").text();
+//var activity_id = d3.select("#activity_id").text();
 
 // load the data
-var jsonurl = 'graphjson' // append graphjson to the path to get json representation of data
+var jsonurl = 'graphjson';  // append graphjson to the path to get json representation of data
 d3.json(jsonurl, function(prov) {
   sankey
       .nodes(prov.nodes)

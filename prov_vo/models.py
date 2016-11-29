@@ -23,16 +23,21 @@ AGENT_TYPE_CHOICES = (
 @python_2_unicode_compatible
 class Activity(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
-    label = models.CharField(max_length=128, null=True) # should require this, otherwise do not know what to show!
-    startTime = models.DateTimeField(null=True) # should be: null=False, default=timezone.now())
-    endTime = models.DateTimeField(null=True) # should be: null=False, default=timezone.now())
+    label = models.CharField(max_length=128, null=True)  # should require this, otherwise do not know what to show!
+    type = models.CharField(max_length=128, null=True)
+    activitydescription = models.ForeignKey("ActivityDescription", null=True)
+    parametervalues  = models.CharField(max_length=1024, blank=True, null=True)   
     annotation = models.CharField(max_length=1024, blank=True, null=True)
-    description = models.ForeignKey("ActivityDescription", null=True)
+    startTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
+    endTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
+    annotation = models.CharField(max_length=1024, blank=True, null=True)
+    docuLink = models.CharField('documentation link', max_length=1024, blank=True, null=True)
 
     def __str__(self):
         return self.label
         # maybe better use self.id here??
 
+        # TODO: add getjson to each class, use in json-serialisation
     def getjson(self, activity_id):
         activity_dict = {'id': id, 'label': label, 'type': type, 'description': description}
         return JsonResponse(activity_dict)
@@ -44,8 +49,9 @@ class ActivityDescription(models.Model):
     label = models.CharField(max_length=128, null=True) # should require this, otherwise do not know what to show!
     type = models.CharField(max_length=128, null=True, choices=ACTIVITY_TYPE_CHOICES)
     subtype = models.CharField(max_length=128, blank=True, null=True, choices=ACTIVITY_SUBTYPE_CHOICES)
+    parametertypes = models.CharField(max_length=2048, blank=True, null=True)  # should actually be a json-construct
     description = models.CharField(max_length=1024, blank=True, null=True)
-    docuLink = models.CharField('documentation link', max_length=512, blank=True, null=True)
+    docuLink = models.CharField('documentation link', max_length=1024, blank=True, null=True)
 
     def __str__(self):
         return self.label
@@ -94,6 +100,7 @@ class Used(models.Model):
     def __str__(self):
         return "id=%s; activity=%s; entity=%s; desc.id=%s" % (str(self.id), self.activity, self.entity, self.description)
 
+@python_2_unicode_compatible
 class UsedDescription(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     activitydescription = models.ForeignKey(ActivityDescription, null=True) #, on_delete=models.CASCADE) # Should be required!

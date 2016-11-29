@@ -19,12 +19,18 @@ urlpatterns = [
     # agents
     url(r'^agents/$', views.AgentsView.as_view(), name='agents'),
     url(r'^agents/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.AgentDetailView.as_view(), name='agent_detail'),
+    
     # graphs
     url(r'^graph/$', views.graph, name='graph'),
     url(r'^graph/graphjson$', views.fullgraphjson, name='graphjson'),
     
 #    url(r'^graph/mdpl2$', views.graphsingle, name='graph'),
 #    url(r'^graph/(?[0-9a-zA-Z.:_-]+)/graphjson$', views.graphjsonact, name='graphjsonact'),
+
+    # provenance graph for given entity using form
+    url(r'^form/$', views.get_entityId, name='get_entityId'),
+    url(r'^(?P<entity_id>[0-9a-zA-Z.:_-]+)/detail/$', views.provdetail, name='provdetail'),
+    url(r'^(?P<entity_id>[0-9a-zA-Z.:_-]+)/detail/graphjson$', views.provdetailjson, name='provdetail'),
 
     # serialisations
     url(r'^provn/$', views.provn, name='provn'),
