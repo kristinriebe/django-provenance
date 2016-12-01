@@ -1,0 +1,19 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for an ActivityDescription{% endblock %}
+
+{% block content %}
+
+<h2>ActivityDescription: {{ activitydescription.label }}</h2>
+Details: 
+<ul>
+<li>id: {{ activitydescription.id }}</li>
+<li>label: {{ activitydescription.label }}</li>
+<li>description: {{ activitydescription.description }}</li>
+<li>docuLink: {{ entitydescription.docuLink }}</li>
+<li>dataproduct_type: {{ entitydescription.dataproduct_type }}</li>
+<li>dataproduct_subtype: {{ entitydescription.dataproduct_subtype }}</li>
+<li>level: {{ entitydescription.level }}</li>
+</ul>
+
+{% endblock %}

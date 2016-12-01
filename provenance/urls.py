@@ -16,10 +16,11 @@ Including another URLconf
 
 from django.conf.urls import include, url
 from django.contrib import admin
-from prov_vo import views
+from core import views
 from django.views.generic import TemplateView
 
 urlpatterns = [
+    url(r'^$', views.index, name='index'),
     url(r'^core/', include('core.urls')),
     url(r'^vo/', include('prov_vo.urls')),
     url(r'^w3c/', include('prov_w3c.urls')),

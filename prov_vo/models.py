@@ -24,13 +24,11 @@ AGENT_TYPE_CHOICES = (
 class Activity(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     label = models.CharField(max_length=128, null=True)  # should require this, otherwise do not know what to show!
-    type = models.CharField(max_length=128, null=True)
-    activitydescription = models.ForeignKey("ActivityDescription", null=True)
+    description = models.ForeignKey("ActivityDescription", null=True)
     parametervalues  = models.CharField(max_length=1024, blank=True, null=True)   
     annotation = models.CharField(max_length=1024, blank=True, null=True)
     startTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
     endTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
-    annotation = models.CharField(max_length=1024, blank=True, null=True)
     docuLink = models.CharField('documentation link', max_length=1024, blank=True, null=True)
 
     def __str__(self):
@@ -115,6 +113,16 @@ class WasGeneratedBy(models.Model):
     id = models.AutoField(primary_key=True)
     entity = models.ForeignKey(Entity, null=True) #, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, null=True) #, on_delete=models.CASCADE)
+    description = models.ForeignKey("WasGeneratedByDescription", null=True)
+
+    def __str__(self):
+        return "id=%s; entity=%s; activity=%s; desc.id=%s" % (str(self.id), self.entity, self.activity, self.description)
+
+@python_2_unicode_compatible
+class WasGeneratedByDescription(models.Model):
+    id = models.CharField(primary_key=True, max_length=128)
+    entitydescription = models.ForeignKey(EntityDescription, null=True) #, on_delete=models.CASCADE)
+    activitydescription = models.ForeignKey(ActivityDescription, null=True) #, on_delete=models.CASCADE)
     role = models.CharField(max_length=128, blank=True, null=True)
 
     def __str__(self):
@@ -124,9 +132,9 @@ class WasGeneratedBy(models.Model):
 @python_2_unicode_compatible
 class Agent(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
-    label = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname
+    name = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname
     type = models.CharField(max_length=128, null=True, choices=AGENT_TYPE_CHOICES) # types of entities: single entity, dataset
-    description = models.CharField(max_length=1024, null=True)
+    affiliation = models.CharField(max_length=1024, null=True)
 
     def __str__(self):
         return self.label

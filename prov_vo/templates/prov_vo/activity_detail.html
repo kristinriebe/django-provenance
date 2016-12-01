@@ -12,7 +12,7 @@
 <li>startTime: {{ activity.startTime }}</li>
 <li>endTime: {{ activity.endTime }}</li>
 <li>annotation: {{ activity.annotation }}</li>
-<li>description: {{ activity.description_id }}</li>
+<li>description: <a href="{% url 'prov_vo:activitydescription_detail' activity.description_id %}">{{ activity.description_id }}</a></li>
 </ul>
 
 {% endblock %}

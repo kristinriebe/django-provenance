@@ -12,6 +12,7 @@ body {
   background-image: url("/static/core/background.png");
   background-color: #000066;
   background-repeat: repeat;
+  height: 100%;
 }
 
 h1, h2, h3, h4, h5 {
@@ -55,6 +56,10 @@ a:visited {
   background-color: rgba(255, 255, 255, 0.95);
   border-radius: 1em;
   margin-top: 20px;
+  /*margin-left: auto;
+  margin-right: auto;*/
+  /*max-width: 1080px;*/
+  min-height: 500px;
 }
 
 /* forms: */

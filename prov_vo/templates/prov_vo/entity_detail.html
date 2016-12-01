@@ -10,7 +10,7 @@ Details:
 <li>id: {{ entity.id }}</li>
 <li>label: {{ entity.label }}</li>
 <li>type: {{ entity.type }}</li>
-<li>description: <a href="{% url 'prov_vo:entitydescriptions_detail' entity.description_id %}">{{ entity.description_id }}</a></li>
+<li>description: <a href="{% url 'prov_vo:entitydescription_detail' entity.description_id %}">{{ entity.description_id }}</a></li>
 </ul>
 
 {% endblock %}
