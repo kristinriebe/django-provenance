@@ -9,11 +9,10 @@ Details:
 <ul>
 <li>id: {{ activitydescription.id }}</li>
 <li>label: {{ activitydescription.label }}</li>
+<li>type: {{ activitydescription.dataproduct_type }}</li>
+<li>subtype: {{ activitydescription.dataproduct_subtype }}</li>
 <li>description: {{ activitydescription.description }}</li>
-<li>docuLink: {{ entitydescription.docuLink }}</li>
-<li>dataproduct_type: {{ entitydescription.dataproduct_type }}</li>
-<li>dataproduct_subtype: {{ entitydescription.dataproduct_subtype }}</li>
-<li>level: {{ entitydescription.level }}</li>
+<li>docuLink: {{ activitydescription.docuLink }}</li>
 </ul>
 
 {% endblock %}

@@ -42,6 +42,19 @@ class ActivityDetailView(generic.DetailView):
         return context
 
 
+class ActivityDescriptionsView(generic.ListView):
+    template_name = 'prov_vo/activitydescriptions.html'
+    context_object_name = 'activitydescription_list'
+
+    def get_queryset(self):
+        """Return the activitydescriptions (at most 1000, ordered by label)."""
+        return ActivityDescription.objects.order_by('-label')[:1000]
+
+
+class ActivityDescriptionDetailView(generic.DetailView):
+    model = ActivityDescription
+
+
 class EntitiesView(generic.ListView):
     template_name = 'prov_vo/entities.html'
     context_object_name = 'entity_list'

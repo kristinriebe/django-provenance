@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA ProvenanceDM - ActivityDescriptions{% endblock %}
+
+{% block content %}
+<h1>ActivityDescriptions</h1>
+
+<p>
+Following ActivityDescriptions are recorded. Click on one of them to show the details.
+</p>
+{% if activitydescription_list %}
+    <ul>
+    {% for activitydescription in activitydescription_list %}
+        <li><a href="{% url 'prov_vo:activitydescription_detail' activitydescription.id %}">{{ activitydescription.label }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No activity descriptions are available.</p>
+{% endif %}
+
+{% endblock %}
