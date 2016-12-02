@@ -37,7 +37,7 @@ class Activity(models.Model):
 
         # TODO: add getjson to each class, use in json-serialisation
     def getjson(self, activity_id):
-        activity_dict = {'id': id, 'label': label, 'type': type, 'description': description}
+        activity_dict = {'id': id, 'label': label, 'description': description}
         return JsonResponse(activity_dict)
 
 
