@@ -4,5 +4,5 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the prov_w3c index.")
+    return HttpResponse("Hello, world. You're at the prov_simdm index. This part of the webapp is not ready, yet.")
 
