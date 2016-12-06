@@ -24,7 +24,8 @@ SECRET_KEY = 'f&jgof7m4jt-k$*=kzmlahb(w@+9d(7!245ivo5h3o=8loqf!)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Set allowed hosts, important when deploying on another host!
+ALLOWED_HOSTS = [u'127.0.0.1', u'localhost', u'escience.vm']
 
 
 # Application definition
