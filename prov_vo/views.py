@@ -22,6 +22,7 @@ class IndexView(generic.ListView):
         """Return the activities (at most 1000, ordered by startTime)."""
         return Activity.objects.order_by('-startTime')[:1000]
 
+
 class ActivitiesView(generic.ListView):
     template_name = 'prov_vo/activities.html'
     context_object_name = 'activity_list'
@@ -80,6 +81,18 @@ class EntityDescriptionsView(generic.ListView):
 class EntityDescriptionDetailView(generic.DetailView):
     model = EntityDescription
 
+
+class AgentsView(generic.ListView):
+    template_name = 'prov_vo/agents.html'
+    context_object_name = 'agent_list'
+
+    def get_queryset(self):
+        """Return the agents (at most 1000, ordered by name)."""
+        return Agent.objects.order_by('name')[:1000]
+
+
+class AgentDetailView(generic.DetailView):
+    model = Agent
 
 # graphical views
 def graph(request):

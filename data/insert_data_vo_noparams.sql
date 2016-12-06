@@ -1,8 +1,6 @@
--- use:  `cat data/insert_data_vo.sql | sqlite3 db.sqlite3`
+-- use:  `cat data/insert_data_vo_noparams.sql | sqlite3 db.sqlite3`
 DELETE FROM prov_vo_activity;
 DELETE FROM prov_vo_activitydescription;
-DELETE FROM prov_vo_parameter;
-DELETE FROM prov_vo_parameterdescription;
 DELETE FROM prov_vo_entity;
 DELETE FROM prov_vo_entitydescription;
 DELETE FROM prov_vo_used;
@@ -13,11 +11,11 @@ DELETE FROM prov_vo_agent;
 DELETE FROM prov_vo_wasassociatedwith;
 DELETE FROM prov_vo_wasattributedto;
 
-INSERT INTO prov_vo_activitydescription (id, label, type, subtype, description, docuLink) VALUES
-  ("cs:actdesc_cosmosimulation", "Cosmological simulation", "cs:simulation", "", "A cosmological simulation", ""),
-  ("cs:actdesc_fof", "FOF halo finding", "cs:post-processing", "cs:halofinder", "Running the FOF halo finder", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("cs:actdesc_mergertree", "Merger tree building", "cs:post-processing", "cs:mergertreebuilding", "Building the merger tree", ""),
-  ("cs:actdesc_sam", "SAM galaxy building", "cs:post-processing", "cs:galaxybuilding", "Using a semi-analytical model (SAM) for producing galaxy information for dark matter halos", "")
+INSERT INTO prov_vo_activitydescription (id, label, type, subtype, parametertypes, description, docuLink) VALUES
+  ("cs:actdesc_cosmosimulation", "Cosmological simulation", "cs:simulation", "", "{'code': {'datatype': 'string'}, 'force resolution': {'datatype': 'string', 'unit': 'h-1.kpc'}, 'starting redshift': {'datatype': 'float', 'ucd':'time.epoch'}}", "A cosmological simulation", ""),
+  ("cs:actdesc_fof", "FOF halo finding", "cs:post-processing", "cs:halofinder", "{'code': {'dataype': 'string'}, 'rel. linking length': {'datatype': 'float', 'ucd': 'meta.code.qual'}}", "Running the FOF halo finder", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("cs:actdesc_mergertree", "Merger tree building", "cs:post-processing", "cs:mergertreebuilding", "{'code': {'dataype': 'string'}}", "Building the merger tree", ""),
+  ("cs:actdesc_sam", "SAM galaxy building", "cs:post-processing", "cs:galaxybuilding", "{'code': {'dataype': 'string'}}", "Using a semi-analytical model (SAM) for producing galaxy information for dark matter halos", "")
   ;
 
 -- activitydescription: should it contain the code? many activities share the same code, same version?
@@ -25,45 +23,17 @@ INSERT INTO prov_vo_activitydescription (id, label, type, subtype, description, 
 
 -- version?
 -- where should I store the code?
-INSERT INTO prov_vo_activity (id, label, description_id, annotation, startTime, endTime, docuLink) VALUES 
-  ("mdr1:act_simulation", "MDR1 simulation", "cs:actdesc_cosmosimulation", "The simulation MultiDark Run 1","2012", "2012", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
-  ("mdpl2:act_simulation", "MDPL2 simulation", "cs:actdesc_cosmosimulation", "The MDPL2 simulation","2014", "2014", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
-  ("mdr1:act_fof", "MDR1 FOF halo finding", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("mdr1:act_fofc", "MDR1 FOFc halo finding, c-version", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.2", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("mdr1:act_fofmtree", "MDR1 FOFMtree building", "cs:actdesc_mergertree", "Building the merger tree for a FOF halo finder", "-", "-", "-"),
-  ("mdr1:act_rockstar", "MDR1 Rockstar building", "cs:actdesc_mergertree", "Building the Rockstar catalog + merger tree", "-", "-", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
-  ("mdpl2:act_fof", "MDPL2 FOF halo finding", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("mdpl2:act_rockstar", "MDPL2 Rockstar building", "cs:actdesc_mergertree", "Building the Rockstar catalog + merger tree", "-", "-", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
-  ("mdpl2:act_galacticus", "Running Galacticus on MDPL2", "cs:actdesc_sam", "Building the Galacticus galaxy catalog", "2015-07-01", "2015-09-01", "Benson et al.")
+INSERT INTO prov_vo_activity (id, label, description_id, parametervalues, annotation, startTime, endTime, docuLink) VALUES 
+  ("mdr1:act_simulation", "MDR1 simulation", "cs:actdesc_cosmosimulation", "{'code': 'ART', 'force resolution': '7.0', 'starting redshift': 65.0}", "The simulation MultiDark Run 1","2012", "2012", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
+  ("mdpl2:act_simulation", "MDPL2 simulation", "cs:actdesc_cosmosimulation", "{'code': 'ART', 'force resolution': '5.0 to 13.0', 'starting redshift': 120.0}", "The MDPL2 simulation","2014", "2014", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
+  ("mdr1:act_fof", "MDR1 FOF halo finding", "cs:actdesc_fof", "{'code': 'FOF', 'rel. linking length': 0.17}", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("mdr1:act_fofc", "MDR1 FOFc halo finding, c-version", "cs:actdesc_fof", "{'code': 'FOF', 'rel. linking length': 0.2}", "Running the FOF halo finder, basic linking length 0.2", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("mdr1:act_fofmtree", "MDR1 FOFMtree building", "cs:actdesc_mergertree", "{}", "Building the merger tree for a FOF halo finder", "-", "-", "-"),
+  ("mdr1:act_rockstar", "MDR1 Rockstar building", "cs:actdesc_mergertree", "{'code': 'Rockstar'}", "Building the Rockstar catalog + merger tree", "-", "-", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
+  ("mdpl2:act_fof", "MDPL2 FOF halo finding", "cs:actdesc_fof", "{}", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("mdpl2:act_rockstar", "MDPL2 Rockstar building", "cs:actdesc_mergertree", "{'code': 'Rockstar'}", "Building the Rockstar catalog + merger tree", "-", "-", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
+  ("mdpl2:act_galacticus", "Running Galacticus on MDPL2", "cs:actdesc_sam", "{'code': 'Galacticus'}", "Building the Galacticus galaxy catalog", "2015-07-01", "2015-09-01", "Benson et al.")
   ;
-
-
-INSERT INTO prov_vo_parameterdescription (id, label, activitydescription_id, datatype, unit, ucd, utype, arraysize, annotation) VALUES  -- need multiplicity?
-  ("cs:paramdesc_simucode", "simulation code",  "cs:actdesc_cosmosimulation", "string", Null, Null, Null, "1", "Code for a cosmological simulation"),
-  ("cs:paramdesc_forceres", "force resolution", "cs:actdesc_cosmosimulation", "string", "h-1.kpc", Null, Null, "*", "(Average) force resolution of the code"),
-  ("cs:paramdesc_zini",     "z_ini",            "cs:actdesc_cosmosimulation", "float", Null, "time.epoch", Null, "1", "Initial redshift, at which the simulation was started"),
-  ("cs:paramdesc_fofcode" , "FOF code",         "cs:actdesc_fof", "string", Null, Null, Null, "1", "Code/version for Friends-of-Friends halo finding"),
-  ("cs:paramdesc_foflinklen", "linking length", "cs:actdesc_fof", "float", Null, "meta.code.qual", Null, "1", "Relative linking lenth for Friends-of-Friends halo finder"),
-  ("cs:paramdesc_mtreecode" , "Merger tree code",   "cs:actdesc_mergertree", "string", Null, Null, Null, "1", "Code/version for merger tree building"),
-  ("cs:paramdesc_samcode" , "SAM code",   "cs:actdesc_sam", "string", Null, Null, Null, "1", "Code/version for creating semi-analytical galaxy catalogues")
-  ;
-
-INSERT INTO prov_vo_parameter (activity_id, description_id, value) VALUES
-  ("mdr1:act_simulation", "cs:paramdesc_simucode", "ART"),
-  ("mdr1:act_simulation", "cs:paramdesc_forceres", "7.0"),
-  ("mdr1:act_simulation", "cs:paramdesc_zini", "65.0"),
-  ("mdpl2:act_simulation", "cs:paramdesc_simucode", "ART"),
-  ("mdpl2:act_simulation", "cs:paramdesc_forceres", "[5.0,13.0]"),
-  ("mdpl2:act_simulation", "cs:paramdesc_zini", "120.0"),
-  ("mdr1:act_fof", "cs:paramdesc_foflinklen", "0.17"),
-  ("mdr1:act_fofc", "cs:paramdesc_foflinklen", "0.2"),
-  ("mdr1:act_rockstar", "cs:paramdesc_mtreecode", "Rockstar"),
-  ("mdpl2:act_fof", "cs:paramdesc_foflinklen", "0.17"),
-  ("mdpl2:act_rockstar", "cs:paramdesc_mtreecode", "Rockstar"),
-  ("mdpl2:act_galacticus", "cs:paramdesc_samcode", "Galacticus")
-  ;
-
-
 
 INSERT INTO prov_vo_entitydescription (id, label, description, docuLink, dataproduct_type, dataproduct_subtype, level) VALUES
   ("cs:edesc_snapshots", "Simulation snapshots", 

@@ -25,7 +25,7 @@ class Activity(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     label = models.CharField(max_length=128, null=True)  # should require this, otherwise do not know what to show!
     description = models.ForeignKey("ActivityDescription", null=True)
-    parametervalues  = models.CharField(max_length=1024, blank=True, null=True)   
+#    parametervalues  = models.CharField(max_length=1024, blank=True, null=True)   
     annotation = models.CharField(max_length=1024, blank=True, null=True)
     startTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
     endTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
@@ -47,7 +47,7 @@ class ActivityDescription(models.Model):
     label = models.CharField(max_length=128, null=True) # should require this, otherwise do not know what to show!
     type = models.CharField(max_length=128, null=True, choices=ACTIVITY_TYPE_CHOICES)
     subtype = models.CharField(max_length=128, blank=True, null=True, choices=ACTIVITY_SUBTYPE_CHOICES)
-    parametertypes = models.CharField(max_length=2048, blank=True, null=True)  # should actually be a json-construct
+#    parametertypes = models.CharField(max_length=2048, blank=True, null=True)  # should actually be a json-construct
     description = models.CharField(max_length=1024, blank=True, null=True)
     docuLink = models.CharField('documentation link', max_length=1024, blank=True, null=True)
 
@@ -81,6 +81,35 @@ class EntityDescription(models.Model):
     dataproduct_type = models.CharField(max_length=128, null=True)
     dataproduct_subtype = models.CharField(max_length=128, null=True)
     level = models.IntegerField()
+
+    def __str__(self):
+        return self.label
+
+
+# new classes for parameters
+@python_2_unicode_compatible
+class Parameter(models.Model):
+    id = models.AutoField(primary_key=True)
+    description = models.ForeignKey("ParameterDescription", null=True)
+    # = "label" in current working draft (21-11-2016)!!
+    value = models.CharField(max_length=128, null=True)
+    activity = models.ForeignKey("Activity", null=True)
+
+    def __str__(self):
+        return self.value
+
+
+@python_2_unicode_compatible
+class ParameterDescription(models.Model):
+    id = models.CharField(primary_key=True, max_length=128)
+    label = models.CharField(max_length=128, null=True)
+    activitydescription = models.ForeignKey("ActivityDescription", null=True)
+    datatype = models.CharField(max_length=128, null=True)
+    unit = models.CharField(max_length=128, null=True)
+    ucd = models.CharField(max_length=128, null=True)
+    utype = models.CharField(max_length=128, null=True)
+    arraysize = models.CharField(max_length=128, null=True)
+    annotation = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
         return self.label
