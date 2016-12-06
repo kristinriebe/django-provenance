@@ -9,7 +9,7 @@ body {
   color: #333;
   padding-left: 1.5em;
   padding-right: 1.5em;
-  background-image: url("/static/core/background.png");
+  background-image: url('{% static 'core/background.png' %}');
   background-color: #000066;
   background-repeat: repeat;
   height: 100%;
