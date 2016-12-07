@@ -64,7 +64,6 @@ INSERT INTO prov_vo_parameter (activity_id, description_id, value) VALUES
   ;
 
 
-
 INSERT INTO prov_vo_entitydescription (id, label, description, docuLink, dataproduct_type, dataproduct_subtype, level) VALUES
   ("cs:edesc_snapshots", "Simulation snapshots", 
     "snapshots for different times of the simulation, usually containing enough information to restart the simulation, param: snapnums",

@@ -114,6 +114,20 @@ class ParameterDescription(models.Model):
     def __str__(self):
         return self.label
 
+    def get_attributes(self):
+        attributes = [
+            id,
+            label,
+            activitydescription,
+            datatype,
+            unit,
+            ucd,
+            utype,
+            arraysize,
+            annotation
+        ]
+        return attributes
+
 
 # relation classes
 @python_2_unicode_compatible

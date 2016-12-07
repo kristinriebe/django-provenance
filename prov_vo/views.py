@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
@@ -9,6 +9,7 @@ from django.core import serializers
 from rest_framework.renderers import JSONRenderer
 
 from .models import Activity, ActivityDescription, Entity, EntityDescription, Used, UsedDescription, WasGeneratedBy, Agent, WasAssociatedWith, WasAttributedTo
+from .models import Parameter, ParameterDescription
 
 
 #def index(request):
@@ -37,9 +38,10 @@ class ActivityDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ActivityDetailView, self).get_context_data(**kwargs)
-        #context['used_list'] = Used.objects.all()[:]
-        #context['wasGeneratedBy_list'] = WasGeneratedBy.objects.all()[:]
-        #context['wasAssociatedWith_list'] = WasAssociatedWith.objects.all()[:]
+
+        self.id = self.kwargs['pk']
+        parametervalue_list = Parameter.objects.filter(activity_id=self.id)
+        context['parametervalue_list'] = parametervalue_list
         return context
 
 
@@ -49,7 +51,7 @@ class ActivityDescriptionsView(generic.ListView):
 
     def get_queryset(self):
         """Return the activitydescriptions (at most 1000, ordered by label)."""
-        return ActivityDescription.objects.order_by('-label')[:1000]
+        return ActivityDescription.objects.order_by('label')[:1000]
 
 
 class ActivityDescriptionDetailView(generic.DetailView):
@@ -62,7 +64,7 @@ class EntitiesView(generic.ListView):
 
     def get_queryset(self):
         """Return the entities (at most 1000, ordered by label)."""
-        return Entity.objects.order_by('-label')[:1000]
+        return Entity.objects.order_by('label')[:1000]
 
 
 class EntityDetailView(generic.DetailView):
@@ -75,11 +77,51 @@ class EntityDescriptionsView(generic.ListView):
 
     def get_queryset(self):
         """Return the entitydescriptions (at most 1000, ordered by label)."""
-        return EntityDescription.objects.order_by('-label')[:1000]
+        return EntityDescription.objects.order_by('label')[:1000]
 
 
 class EntityDescriptionDetailView(generic.DetailView):
     model = EntityDescription
+
+
+class ParametersView(generic.ListView):
+    template_name = 'prov_vo/parameters.html'
+    context_object_name = 'parameter_list'
+
+    def get_queryset(self):
+        """Return the parameters (at most 1000, ordered by id)."""
+        return Parameter.objects.order_by('id')[:1000]
+
+
+class ParameterDetailView(generic.DetailView):
+    model = Parameter
+
+    #def get_context_data(self, **kwargs):
+    #    self.id = self.kwargs['pk']
+    #    context = get_object_or_404(Parameter, pk=self.id)
+    #    #print "desc: ",p.description, p.id, p.value, p.description.id
+        #print "desc: ",p.description, p.id, p.value, p.description.unit
+        # Call the base implementation first to get a context
+        #context = super(ParameterDetailView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the descriptions
+        #context['parameterdescription_list'] = ParameterDescription.objects.all()
+        # add only the description of this parameter
+        #context['parameterdescription'] = ParameterDescription.objects.get(id=p.description)
+    #    return context
+
+
+class ParameterDescriptionsView(generic.ListView):
+    template_name = 'prov_vo/parameterdescriptions.html'
+    context_object_name = 'parameterdescription_list'
+
+    def get_queryset(self):
+        """Return the parameterdescriptions (at most 1000, ordered by label)."""
+        return ParameterDescription.objects.order_by('label')[:1000]
+
+
+class ParameterDescriptionDetailView(generic.DetailView):
+    model = ParameterDescription
+
 
 
 class AgentsView(generic.ListView):
@@ -93,6 +135,7 @@ class AgentsView(generic.ListView):
 
 class AgentDetailView(generic.DetailView):
     model = Agent
+
 
 # graphical views
 def graph(request):

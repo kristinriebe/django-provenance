@@ -20,9 +20,17 @@ urlpatterns = [
     url(r'^entitydescriptions/$', views.EntityDescriptionsView.as_view(), name='entitydescriptions'),
     url(r'^entitydescriptions/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.EntityDescriptionDetailView.as_view(), name='entitydescription_detail'),
 
+    # parameters
+    url(r'^parameters/$', views.ParametersView.as_view(), name='parameters'),
+    url(r'^parameters/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ParameterDetailView.as_view(), name='parameter_detail'),
+    url(r'^parameterdescriptions/$', views.ParameterDescriptionsView.as_view(), name='parameterdescriptions'),
+    url(r'^parameterdescriptions/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ParameterDescriptionDetailView.as_view(), name='parameterdescription_detail'),
+
+
     # agents
     url(r'^agents/$', views.AgentsView.as_view(), name='agents'),
     url(r'^agents/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.AgentDetailView.as_view(), name='agent_detail'),  
+
 
     # graphs
     url(r'^graph/$', views.graph, name='graph'),

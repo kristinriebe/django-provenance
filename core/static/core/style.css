@@ -94,6 +94,16 @@ form ul li label {
   font-weight: normal;
 }
 
+/* detail list of attributes */
+.key {
+  font-weight: 700;
+}
+
+.value {
+  font-weight: normal;
+}
+
+
 /* d3 tree styles */
 .node {
   cursor: pointer;

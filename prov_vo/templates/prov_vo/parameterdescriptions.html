@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA ProvenanceDM - ParameterDescriptions{% endblock %}
+
+{% block content %}
+<h1>ParameterDescriptions</h1>
+
+<p>
+Following ParameterDescriptions are recorded. Click on one of them to show the details.
+</p>
+{% if parameterdescription_list %}
+    <ul>
+    {% for parameterdescription in parameterdescription_list %}
+        <li><a href="{% url 'prov_vo:parameterdescription_detail' parameterdescription.id %}">{{ parameterdescription.label }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No parameter descriptions are available.</p>
+{% endif %}
+
+{% endblock %}

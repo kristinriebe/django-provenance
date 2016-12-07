@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for a Parameter{% endblock %}
+
+{% block content %}
+
+<h2>Parameter: {{ parameter.id }}</h2>
+<h3>Details</h3> 
+<ul>
+<li>id: {{ parameter.id }}</li>
+<li>value: {{ parameter.value }}</li>
+<li>description_id: <a href="{% url 'prov_vo:parameterdescription_detail' parameter.description_id %}">{{ parameter.description_id }}</a></li>
+<li>activity_id: {{ parameter.activity_id }}</li>
+</ul>
+
+<h3>Details combined with description</h3>
+<ul>
+<li>{{ parameter.description.label }} = {{ parameter.value }}</li>
+<li>unit = {{ parameter.description.unit }}</li>
+<li>ucd = {{ parameter.description.ucd }}</li>
+<li>utype = {{ parameter.description.utype }}</li>
+<li>datatype = {{ parameter.description.datatype }}</li>
+<li>arraysize = {{ parameter.description.arraysize }}</li>
+</ul>
+
+{% endblock %}
