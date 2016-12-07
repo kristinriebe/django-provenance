@@ -116,15 +116,15 @@ class ParameterDescription(models.Model):
 
     def get_attributes(self):
         attributes = [
-            id,
-            label,
-            activitydescription,
-            datatype,
-            unit,
-            ucd,
-            utype,
-            arraysize,
-            annotation
+            'id',
+            'label',
+            'activitydescription',
+            'datatype',
+            'unit',
+            'ucd',
+            'utype',
+            'arraysize',
+            'annotation'
         ]
         return attributes
 

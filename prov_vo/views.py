@@ -12,9 +12,6 @@ from .models import Activity, ActivityDescription, Entity, EntityDescription, Us
 from .models import Parameter, ParameterDescription
 
 
-#def index(request):
-#    return HttpResponse("Hello, world. You're at the prov_vo index.")
-
 class IndexView(generic.ListView):
     template_name = 'prov_vo/index.html'
     context_object_name = 'activity_list'
@@ -96,19 +93,6 @@ class ParametersView(generic.ListView):
 class ParameterDetailView(generic.DetailView):
     model = Parameter
 
-    #def get_context_data(self, **kwargs):
-    #    self.id = self.kwargs['pk']
-    #    context = get_object_or_404(Parameter, pk=self.id)
-    #    #print "desc: ",p.description, p.id, p.value, p.description.id
-        #print "desc: ",p.description, p.id, p.value, p.description.unit
-        # Call the base implementation first to get a context
-        #context = super(ParameterDetailView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the descriptions
-        #context['parameterdescription_list'] = ParameterDescription.objects.all()
-        # add only the description of this parameter
-        #context['parameterdescription'] = ParameterDescription.objects.get(id=p.description)
-    #    return context
-
 
 class ParameterDescriptionsView(generic.ListView):
     template_name = 'prov_vo/parameterdescriptions.html'
@@ -122,6 +106,14 @@ class ParameterDescriptionsView(generic.ListView):
 class ParameterDescriptionDetailView(generic.DetailView):
     model = ParameterDescription
 
+    def get_context_data(self, **kwargs):
+        context = super(ParameterDescriptionDetailView, self).get_context_data(**kwargs)
+        self.id = self.kwargs['pk']
+        print "id: ", self.id
+
+        pdesc = get_object_or_404(ParameterDescription, id=self.id)
+        context['attribute_list'] = pdesc.get_attributes()
+        return context
 
 
 class AgentsView(generic.ListView):

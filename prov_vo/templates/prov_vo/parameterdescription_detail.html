@@ -3,17 +3,14 @@
 {% block title %}Details for a ParameterDescription{% endblock %}
 
 {% block content %}
+{% load extra_filters %}
 
 <h2>ParameterDescription: {{ parameterdescription.label }}</h2>
 <h3>Details</h3> 
 <ul>
-<li>id: {{ parameterdescription.id }}</li>
-<li>label: {{ parameterdescription.label }}</li>
-<li>annotation: {{ parameterdescription.annotation }}</li>
-<li>datatype: {{ parameterdescription.datatype }}</li>
-<li>unit: {{ parameterdescription.unit }}</li>
-<li>ucd: {{ parameterdescription.ucd }}</li>
-<li>utype: {{ parameterdescription.utype }}</li>
+    {% for a in attribute_list %}
+       <li>{{ a }}: {{ parameterdescription|lookup_attribute:a }}</li>
+    {% endfor %}
 </ul>
 
 {% endblock %}
