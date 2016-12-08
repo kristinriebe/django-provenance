@@ -35,10 +35,30 @@ class Activity(models.Model):
         return self.label
         # maybe better use self.id here??
 
-        # TODO: add getjson to each class, use in json-serialisation
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'label',
+            'description',
+            'annotation',
+            'startTime',
+            'endTime',
+            'docuLink'
+        ]
+        return attributes
+
+
+    # TODO: add getjson to each class, use in json-serialisation
     def getjson(self, activity_id):
         activity_dict = {'id': id, 'label': label, 'description': description}
         return JsonResponse(activity_dict)
+
+
+@python_2_unicode_compatible
+class ActivityFlow(Activity):
+
+    def __str__(self):
+        return self.label
 
 
 @python_2_unicode_compatible
@@ -53,6 +73,17 @@ class ActivityDescription(models.Model):
 
     def __str__(self):
         return self.label
+
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'label',
+            'type',
+            'subtype',
+            'description',
+            'docuLink'
+        ]
+        return attributes
 
 
 @python_2_unicode_compatible
@@ -70,6 +101,20 @@ class Entity(models.Model):
     def __str__(self):
         return self.label
 
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'label',
+            'type',
+            'location',
+            'access',
+            'size',
+            'format',
+            'annotation',
+            'description'
+        ]
+        return attributes
+
 
 @python_2_unicode_compatible
 class EntityDescription(models.Model):
@@ -85,6 +130,18 @@ class EntityDescription(models.Model):
     def __str__(self):
         return self.label
 
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'label',
+            'description',
+            'docuLink',
+            'dataproduct_type',
+            'dataproduct_subtype',
+            'level'
+        ]
+        return attributes
+
 
 # new classes for parameters
 @python_2_unicode_compatible
@@ -97,6 +154,15 @@ class Parameter(models.Model):
 
     def __str__(self):
         return self.value
+
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'description',
+            'value',
+            'activity'
+        ]
+        return attributes
 
 
 @python_2_unicode_compatible
@@ -114,7 +180,9 @@ class ParameterDescription(models.Model):
     def __str__(self):
         return self.label
 
-    def get_attributes(self):
+    # define the attributes that shall/may be displayed in the detail view
+    # for this class
+    def get_viewattributes(self):
         attributes = [
             'id',
             'label',
@@ -137,9 +205,9 @@ class Used(models.Model):
     entity = models.ForeignKey(Entity, null=True) #, on_delete=models.CASCADE) # Should be required!
     description = models.ForeignKey("UsedDescription", null=True)
 
-
     def __str__(self):
         return "id=%s; activity=%s; entity=%s; desc.id=%s" % (str(self.id), self.activity, self.entity, self.description)
+
 
 @python_2_unicode_compatible
 class UsedDescription(models.Model):
@@ -160,6 +228,7 @@ class WasGeneratedBy(models.Model):
 
     def __str__(self):
         return "id=%s; entity=%s; activity=%s; desc.id=%s" % (str(self.id), self.entity, self.activity, self.description)
+
 
 @python_2_unicode_compatible
 class WasGeneratedByDescription(models.Model):
@@ -182,6 +251,7 @@ class Agent(models.Model):
     def __str__(self):
         return self.label
 
+
 @python_2_unicode_compatible
 class WasAssociatedWith(models.Model):
     id = models.AutoField(primary_key=True)
@@ -191,6 +261,7 @@ class WasAssociatedWith(models.Model):
 
     def __str__(self):
         return "id=%s; activity=%s; agent=%s; role=%s" % (str(self.id), self.activity, self.agent, self.role)
+
 
 @python_2_unicode_compatible
 class WasAttributedTo(models.Model):
@@ -202,3 +273,22 @@ class WasAttributedTo(models.Model):
     def __str__(self):
         return "id=%s; entity=%s; agent=%s; role=%s" % (str(self.id), self.entity, self.agent, self.role)
 
+
+@python_2_unicode_compatible
+class WasDerivedFrom(models.Model):
+    id = models.AutoField(primary_key=True)
+    entity = models.ForeignKey(Entity, null=True) 
+    progenitor = models.ForeignKey(Entity, null=True, related_name='progenitor')
+
+    def __str__(self):
+        return "id=%s; entity=%s; progenitor=%s" % (str(self.id), self.entity, self.progenitor)
+
+
+@python_2_unicode_compatible
+class HadStep(models.Model):
+    id = models.AutoField(primary_key=True)
+    activityflow = models.ForeignKey(ActivityFlow, null=True, related_name='activityflow') 
+    activity = models.ForeignKey(Activity, null=True)
+
+    def __str__(self):
+        return "id=%s; activityflow=%s; activity=%s;" % (str(self.id), self.activityflow, self.activity)

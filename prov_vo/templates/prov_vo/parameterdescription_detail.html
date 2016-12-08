@@ -9,7 +9,7 @@
 <h3>Details</h3> 
 <ul>
     {% for a in attribute_list %}
-       <li>{{ a }}: {{ parameterdescription|lookup_attribute:a }}</li>
+       <li><b>{{ a }}:</b> {{ parameterdescription|lookup_attribute:a }}</li>
     {% endfor %}
 </ul>
 

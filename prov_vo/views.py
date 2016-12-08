@@ -108,11 +108,8 @@ class ParameterDescriptionDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ParameterDescriptionDetailView, self).get_context_data(**kwargs)
-        self.id = self.kwargs['pk']
-        print "id: ", self.id
-
-        pdesc = get_object_or_404(ParameterDescription, id=self.id)
-        context['attribute_list'] = pdesc.get_attributes()
+        paramdesc = get_object_or_404(ParameterDescription, id=self.kwargs['pk'])
+        context['attribute_list'] = paramdesc.get_viewattributes()
         return context
 
 
