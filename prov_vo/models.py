@@ -197,6 +197,26 @@ class ParameterDescription(models.Model):
         return attributes
 
 
+@python_2_unicode_compatible
+class Agent(models.Model):
+    id = models.CharField(primary_key=True, max_length=128)
+    name = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname
+    type = models.CharField(max_length=128, null=True, choices=AGENT_TYPE_CHOICES) # types of entities: single entity, dataset
+    affiliation = models.CharField(max_length=1024, null=True)
+
+    def __str__(self):
+        return self.label
+
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'name',
+            'type',
+            'affiliation'
+        ]
+        return attributes
+
+
 # relation classes
 @python_2_unicode_compatible
 class Used(models.Model):
@@ -239,17 +259,6 @@ class WasGeneratedByDescription(models.Model):
 
     def __str__(self):
         return "id=%s; entity=%s; activity=%s; role=%s" % (str(self.id), self.entity, self.activity, self.role)
-
-
-@python_2_unicode_compatible
-class Agent(models.Model):
-    id = models.CharField(primary_key=True, max_length=128)
-    name = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname
-    type = models.CharField(max_length=128, null=True, choices=AGENT_TYPE_CHOICES) # types of entities: single entity, dataset
-    affiliation = models.CharField(max_length=1024, null=True)
-
-    def __str__(self):
-        return self.label
 
 
 @python_2_unicode_compatible

@@ -99,6 +99,7 @@ form ul li label {
   font-weight: 700;
   padding: 6px 18px;
   line-height: 1.42857143;
+  min-height: 28px;
 }
 
 .value {
@@ -107,6 +108,7 @@ form ul li label {
   line-height: 1.42857143;
   background-color: #ffffff;
   border: 1px solid #cccccc;border-radius: 4px;
+  min-height: 28px;
 }
 
 ul.nobullet {
