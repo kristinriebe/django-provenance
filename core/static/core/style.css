@@ -59,7 +59,7 @@ a:visited {
   /*margin-left: auto;
   margin-right: auto;*/
   /*max-width: 1080px;*/
-  min-height: 500px;
+  min-height: 700px;
 }
 
 /* forms: */
@@ -97,12 +97,22 @@ form ul li label {
 /* detail list of attributes */
 .key {
   font-weight: 700;
+  padding: 6px 18px;
+  line-height: 1.42857143;
 }
 
 .value {
   font-weight: normal;
+  padding: 6px 12px;
+  line-height: 1.42857143;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;border-radius: 4px;
 }
 
+ul.nobullet {
+  list-style-type: none;
+  padding: 0;
+}
 
 /* d3 tree styles */
 .node {

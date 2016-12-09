@@ -11,6 +11,20 @@ from rest_framework.renderers import JSONRenderer
 from .models import Activity, ActivityDescription, Entity, EntityDescription, Used, UsedDescription, WasGeneratedBy, Agent, WasAssociatedWith, WasAttributedTo
 from .models import Parameter, ParameterDescription
 
+# use a custom details-class that does everything the way I want it;
+# uses one template for all and sets the necessary context-variables
+class CustomDetails(generic.DetailView):
+    model = EntityDescription   # shall be overwritten from inherited classes!
+    template_name = 'core/details.html'  # this is now general enough to be used with every detail class
+
+    def get_context_data(self, **kwargs):
+        context = super(CustomDetails, self).get_context_data(**kwargs)
+        obj = get_object_or_404(self.model, id=self.kwargs['pk'])
+        context['attribute_list'] = obj.get_viewattributes()
+        context['classname'] = self.model.__name__
+        context['classobject'] = obj
+        return context
+
 
 class IndexView(generic.ListView):
     template_name = 'prov_vo/index.html'
@@ -51,7 +65,8 @@ class ActivityDescriptionsView(generic.ListView):
         return ActivityDescription.objects.order_by('label')[:1000]
 
 
-class ActivityDescriptionDetailView(generic.DetailView):
+#class ActivityDescriptionDetailView(generic.DetailView):
+class ActivityDescriptionDetailView(CustomDetails):
     model = ActivityDescription
 
 
@@ -76,9 +91,26 @@ class EntityDescriptionsView(generic.ListView):
         """Return the entitydescriptions (at most 1000, ordered by label)."""
         return EntityDescription.objects.order_by('label')[:1000]
 
+# use decorators for this!?
+#@whatever
+
+#class customview(generic.DetailView):
+#
+#    fdkslfks
+
 
 class EntityDescriptionDetailView(generic.DetailView):
     model = EntityDescription
+    template_name = 'core/details.html'
+
+    def get_context_data(self, **kwargs):
+        #context = super(EntityDescriptionDetailView, self).get_context_data(**kwargs)
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        obj = get_object_or_404(self.model, id=self.kwargs['pk'])
+        context['attribute_list'] = obj.get_viewattributes()
+        context['classname'] = self.model.__name__
+        context['classobject'] = obj
+        return context
 
 
 class ParametersView(generic.ListView):
@@ -92,6 +124,15 @@ class ParametersView(generic.ListView):
 
 class ParameterDetailView(generic.DetailView):
     model = Parameter
+    template_name = 'core/details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        obj = get_object_or_404(self.model, id=self.kwargs['pk'])
+        context['attribute_list'] = obj.get_viewattributes()
+        context['classname'] = self.model.__name__
+        context['classobject'] = obj
+        return context
 
 
 class ParameterDescriptionsView(generic.ListView):
@@ -110,6 +151,8 @@ class ParameterDescriptionDetailView(generic.DetailView):
         context = super(ParameterDescriptionDetailView, self).get_context_data(**kwargs)
         paramdesc = get_object_or_404(ParameterDescription, id=self.kwargs['pk'])
         context['attribute_list'] = paramdesc.get_viewattributes()
+        context['classname'] = "ParameterDescription"
+        context['classobject'] = paramdesc
         return context
 
 
