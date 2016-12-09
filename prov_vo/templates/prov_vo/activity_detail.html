@@ -1,0 +1,51 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for an activity{% endblock %}
+
+{% block content %}
+
+<h2>Activity: {{ activity.label }}</h2>
+<h3>Details</h3>
+
+<ul>
+<li>id: {{ activity.id }}</li>
+<li>label: {{ activity.label }}</li>
+<li>startTime: {{ activity.startTime }}</li>
+<li>endTime: {{ activity.endTime }}</li>
+<li>annotation: {{ activity.annotation }}</li>
+<li>description: {{ activity.description.label }} (<a href="{% url 'prov_vo:activitydescription_detail' activity.description.id %}">{{ activity.description.id }}</a>)</li>
+</ul>
+
+<h3>Parameters</h3>
+<p>
+    Parameters stored for this activity are retrieved from classes <em>Parameter</em> and <em>ParameterDescription</em>.
+</p>
+
+{% if parametervalue_list %}
+    <ul>
+    {% for p in parametervalue_list %}
+        <li>
+            <span class="key">
+                <a href="{% url 'prov_vo:parameterdescription_detail' p.description.id %}">
+                {{ p.description.label }}</a>:
+            </span>
+            <a href="{% url 'prov_vo:parameter_detail' p.id %}">
+                {{ p.value }}</a>
+                {% if p.description.unit %}
+                    {{ p.description.unit }}
+                {% endif %}
+            <br>
+            <em>{{ p.description.annotation }}</em><br>
+            ucd: {{ p.description.ucd }},
+            unit: {{ p.description.unit }},
+            utype: {{ p.description.utype }},
+            datatype: {{ p.description.datatype }},
+            arraysize: {{ p.description.arraysize }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No parameters are available.</p>
+{% endif %}
+
+{% endblock %}

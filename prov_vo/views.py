@@ -47,6 +47,7 @@ class ActivitiesView(generic.ListView):
 
 class ActivityDetailView(generic.DetailView):
     model = Activity
+    template_name = 'prov_vo/activity_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(ActivityDetailView, self).get_context_data(**kwargs)
