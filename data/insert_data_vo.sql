@@ -45,8 +45,15 @@ INSERT INTO prov_vo_activity (id, label, description_id, annotation, startTime, 
 INSERT INTO prov_vo_activitydescription (id, label, type, subtype, description, docuLink) VALUES
   ("cs:actdesc_samflow", "SAM Generation", "voprov:activityflow", "", "An activityflow, shortcut for generating semi-analytical galaxies", "")
   ;
-INSERT INTO prov_vo_activityflow(id, label, description_id, annotation, startTime, endTime, docuLink) VALUES
+
+-- insert activityflow into activity and ...
+INSERT INTO prov_vo_activity(id, label, description_id, annotation, startTime, endTime, docuLink) VALUES
   ("mdpl2:act_samflow", "MDPL2 SAM Generation", "cs:actdesc_samflow", "", "2014", "2016", "")
+  ;
+
+-- ... and make a pointer to this row in activityflow-table; that's django's interpretation of inheritance implementation
+INSERT INTO prov_vo_activityflow(activity_ptr_id) VALUES
+  ("mdpl2:act_samflow")
   ;
   -- start and endtime can be filled in automatically for flows; (sort linked activities (hadStep) by time, take startTime of first and endTime of last)
   -- I would never make queries based on this flow; just use it for showing results with different detail-levels

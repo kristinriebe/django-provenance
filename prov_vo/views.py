@@ -9,7 +9,7 @@ from django.core import serializers
 from rest_framework.renderers import JSONRenderer
 
 from .models import Activity, ActivityDescription, Entity, EntityDescription, Used, UsedDescription, WasGeneratedBy, Agent, WasAssociatedWith, WasAttributedTo
-from .models import Parameter, ParameterDescription
+from .models import Parameter, ParameterDescription, ActivityFlow, HadStep
 
 # use a custom details-class that does everything the way I want it;
 # uses one template for all and sets the necessary context-variables
@@ -45,12 +45,16 @@ class ActivitiesView(generic.ListView):
         return Activity.objects.order_by('-startTime')[:1000]
 
 
-class ActivityDetailView(generic.DetailView):
+class ActivityDetailView(CustomDetailView):
     model = Activity
-    template_name = 'prov_vo/activity_detail.html'
+
+
+class ActivityDetailParamsView(generic.DetailView):
+    model = Activity
+    template_name = 'prov_vo/activity_detailparams.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ActivityDetailView, self).get_context_data(**kwargs)
+        context = super(ActivityDetailParamsView, self).get_context_data(**kwargs)
 
         self.id = self.kwargs['pk']
         parametervalue_list = Parameter.objects.filter(activity_id=self.id)
@@ -134,6 +138,50 @@ class AgentsView(generic.ListView):
 
 class AgentDetailView(CustomDetailView):
     model = Agent
+
+
+class ActivityFlowsView(generic.ListView):
+    template_name = 'prov_vo/activityflows.html'
+    context_object_name = 'activityflow_list'
+
+    def get_queryset(self):
+        """Return the activityflows (at most 1000, ordered by startTime)."""
+        return ActivityFlow.objects.order_by('-startTime')[:1000]
+
+
+class ActivityFlowDetailView(CustomDetailView):
+    model = ActivityFlow
+
+
+class ActivityFlowDetailParamsView(generic.DetailView):
+    model = ActivityFlow
+    template_name = 'prov_vo/activityflow_detailparams.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ActivityFlowDetailParamsView, self).get_context_data(**kwargs)
+
+        self.id = self.kwargs['pk']
+
+        # first get all substeps:
+        hadstep_list = HadStep.objects.filter(activityflow_id=self.id)
+        context['hadstep_list'] = hadstep_list
+
+        # now get all parameters for the flow (probably there will only be 
+        # parameters from the subactivities!)
+        parametervalue_list = Parameter.objects.filter(activity_id=self.id)
+        context['parametervalue_list'] = parametervalue_list
+
+        return context
+
+
+class ActivityDescriptionsView(generic.ListView):
+    template_name = 'prov_vo/activitydescriptions.html'
+    context_object_name = 'activitydescription_list'
+
+    def get_queryset(self):
+        """Return the activitydescriptions (at most 1000, ordered by label)."""
+        return ActivityDescription.objects.order_by('label')[:1000]
+
 
 
 # graphical views

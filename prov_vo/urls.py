@@ -11,6 +11,7 @@ urlpatterns = [
     # activities
     url(r'^activities/$', views.ActivitiesView.as_view(), name='activities'),
     url(r'^activities/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ActivityDetailView.as_view(), name='activity_detail'),
+    url(r'^activities/(?P<pk>[0-9a-zA-Z.:_-]+)/params$', views.ActivityDetailParamsView.as_view(), name='activity_detailparams'),
     url(r'^activitydescriptions/$', views.ActivityDescriptionsView.as_view(), name='activitydescriptions'),
     url(r'^activitydescriptions/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ActivityDescriptionDetailView.as_view(), name='activitydescription_detail'),
     
@@ -26,10 +27,14 @@ urlpatterns = [
     url(r'^parameterdescriptions/$', views.ParameterDescriptionsView.as_view(), name='parameterdescriptions'),
     url(r'^parameterdescriptions/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ParameterDescriptionDetailView.as_view(), name='parameterdescription_detail'),
 
-
     # agents
     url(r'^agents/$', views.AgentsView.as_view(), name='agents'),
     url(r'^agents/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.AgentDetailView.as_view(), name='agent_detail'),  
+
+    # activityflow
+    url(r'^activityflows/$', views.ActivityFlowsView.as_view(), name='activityflows'),
+    url(r'^activityflows/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ActivityFlowDetailView.as_view(), name='activityflow_detail'),
+    url(r'^activityflows/(?P<pk>[0-9a-zA-Z.:_-]+)/params$', views.ActivityFlowDetailParamsView.as_view(), name='activityflow_detailparams'),
 
 
     # graphs

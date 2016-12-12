@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA ProvenanceDM - ActivityFlows{% endblock %}
+
+{% block content %}
+<h1>ActivityFlows</h1>
+
+<p>
+Following activityflows are recorded. Click on one of them to show the details.
+</p>
+{% if activityflow_list %}
+    <ul>
+    {% for activityflow in activityflow_list %}
+        <li><a href="{% url 'prov_vo:activityflow_detail' activityflow.id %}">{{ activityflow.label }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No activityflows are available.</p>
+{% endif %}
+
+{% endblock %}
