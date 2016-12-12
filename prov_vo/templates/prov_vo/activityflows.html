@@ -11,7 +11,7 @@ Following activityflows are recorded. Click on one of them to show the details.
 {% if activityflow_list %}
     <ul>
     {% for activityflow in activityflow_list %}
-        <li><a href="{% url 'prov_vo:activityflow_detail' activityflow.id %}">{{ activityflow.label }}</a></li>
+        <li><a href="{% url 'prov_vo:activityflow_detailmore' activityflow.id %}">{{ activityflow.label }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
@@ -49,12 +50,12 @@ class ActivityDetailView(CustomDetailView):
     model = Activity
 
 
-class ActivityDetailParamsView(generic.DetailView):
+class ActivityDetailMoreView(generic.DetailView):
     model = Activity
-    template_name = 'prov_vo/activity_detailparams.html'
+    template_name = 'prov_vo/activity_detailmore.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ActivityDetailParamsView, self).get_context_data(**kwargs)
+        context = super(ActivityDetailMoreView, self).get_context_data(**kwargs)
 
         self.id = self.kwargs['pk']
         parametervalue_list = Parameter.objects.filter(activity_id=self.id)
@@ -153,12 +154,12 @@ class ActivityFlowDetailView(CustomDetailView):
     model = ActivityFlow
 
 
-class ActivityFlowDetailParamsView(generic.DetailView):
+class ActivityFlowDetailMoreView(generic.DetailView):
     model = ActivityFlow
-    template_name = 'prov_vo/activityflow_detailparams.html'
+    template_name = 'prov_vo/activityflow_detailmore.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ActivityFlowDetailParamsView, self).get_context_data(**kwargs)
+        context = super(ActivityFlowDetailMoreView, self).get_context_data(**kwargs)
 
         self.id = self.kwargs['pk']
 
@@ -194,35 +195,43 @@ def graph(request):
 def provn(request):
     activity_list = Activity.objects.order_by('-startTime')[:]
     entity_list = Entity.objects.order_by('-label')[:]
-    agent_list = Agent.objects.order_by('-label')[:]
+    agent_list = Agent.objects.order_by('name')[:]
     used_list = Used.objects.order_by('-id')[:]
     wasGeneratedBy_list = WasGeneratedBy.objects.order_by('-id')[:]
     wasAssociatedWith_list = WasAssociatedWith.objects.order_by('-id')[:]
     wasAttributedTo_list = WasAttributedTo.objects.order_by('-id')[:]
+    parameter_list = Parameter.objects.order_by('id')[:]
+
     #return JsonResponse(activity_dict)
     #return render(request, 'provapp/activities.html', {'activity_list': activity_list})
 
     provstr = "document\n"
     for a in activity_list:
-        provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:type = '" + a.type + "', prov:label = '" + a.label + "', prov:description = '" + a.description + "']),\n"
-
+        af = ActivityFlow.objects.filter(id=a.id)
+        if (af):
+            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:docuLink = '" + a.docuLink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.docuLink + "',  voprov:activityflow = '1'" + a.description.docuLink + "']),\n" #  voprov:viewLevel = '" + a.viewLevel + "']),\n"
+        else:
+            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:docuLink = '" + a.docuLink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.docuLink + "']),\n"
     for e in entity_list:
-        provstr = provstr + "entity(" + e.id + ", [prov:type = '" + e.type + "', prov:label = '" + e.label + "', prov:description = '" + e.description + "']),\n"
-
+        provstr = provstr + "entity(" + e.id + ", [prov:type = '" + e.type + "', prov:label = '" + e.label + "', voprov:annotation = '" + e.annotation + "', voprov:dataproduct_type = '" + e.description.dataproduct_type + "', voprov:dataproduct_subtype = '" + e.description.dataproduct_subtype + "']),\n"
+ 
     for ag in agent_list:
-        provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + ag.type + "', prov:label = '" + ag.label + "', prov:description = '" + ag.description + "']),\n"
+        provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + ag.type + "', voprov:name = '" + ag.name + "', voprov:affiliation = '" + ag.affiliation + "']),\n"
 
     for u in used_list:
-        provstr = provstr + "used(" + u.activity.id + ", " + u.entity.id + ", [id = '" + str(u.id) + "', prov:role = '" + u.role + "']),\n"
+        provstr = provstr + "used(" + u.activity.id + ", " + u.entity.id + ", [prov:role = '" + u.description.role + "']),\n"
 
     for wg in wasGeneratedBy_list:
-        provstr = provstr + "wasGeneratedBy(" + wg.entity.id + ", " + wg.activity.id + ", [id = '" + str(wg.id) + "', prov:role = '" + wg.role + "']),\n"
+        provstr = provstr + "wasGeneratedBy(" + wg.entity.id + ", " + wg.activity.id + ", [prov:role = '" + wg.description.role + "']),\n"
 
     for wa in wasAssociatedWith_list:
-        provstr = provstr + "wasAssociatedWith(" + wa.activity.id + ", " + wa.agent.id + ", [id = '" + str(wa.id) + "', prov:role = '" + wa.role + "']),\n"
+        provstr = provstr + "wasAssociatedWith(" + wa.activity.id + ", " + wa.agent.id + ", [prov:role = '" + wa.role + "']),\n"
 
     for wa in wasAttributedTo_list:
-        provstr = provstr + "wasAttributedTo(" + wa.entity.id + ", " + wa.agent.id + ", [id = '" + str(wa.id) + "', prov:role = '" + wa.role + "']),\n"
+        provstr = provstr + "wasAttributedTo(" + wa.entity.id + ", " + wa.agent.id + ", [prov:role = '" + wa.role + "']),\n"
+
+    for p in parameter_list:
+        provstr = provstr + "Entity(" + str(p.id) + ", [prov:type = 'parameter', prov:label = '" + p.description.label + "', prov:value = '" + str(p.value) + "', voprov:datatype = '" + str(p.description.datatype) + "', voprov:unit = '" + str(p.description.unit) + "', voprov:ucd = '" + str(p.description.ucd) + "', voprov:utype = '" + str(p.description.utype) + "', voprov:arraysize = '" + str(p.description.arraysize) + "', voprov:annotation = '" + str(p.description.annotation) + "']),\n"
 
     provstr += "endDocument"
 

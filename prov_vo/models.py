@@ -68,7 +68,7 @@ class ActivityDescription(models.Model):
     type = models.CharField(max_length=128, null=True, choices=ACTIVITY_TYPE_CHOICES)
     subtype = models.CharField(max_length=128, blank=True, null=True, choices=ACTIVITY_SUBTYPE_CHOICES)
 #    parametertypes = models.CharField(max_length=2048, blank=True, null=True)  # should actually be a json-construct
-    description = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.CharField(max_length=1024, blank=True, null=True) # should be called annotation!
     docuLink = models.CharField('documentation link', max_length=1024, blank=True, null=True)
 
     def __str__(self):
@@ -201,11 +201,11 @@ class ParameterDescription(models.Model):
 class Agent(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     name = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname
-    type = models.CharField(max_length=128, null=True, choices=AGENT_TYPE_CHOICES) # types of entities: single entity, dataset
+    type = models.CharField(max_length=128, null=True, choices=AGENT_TYPE_CHOICES) # types of agent
     affiliation = models.CharField(max_length=1024, null=True)
 
     def __str__(self):
-        return self.label
+        return self.name
 
     def get_viewattributes(self):
         attributes = [
