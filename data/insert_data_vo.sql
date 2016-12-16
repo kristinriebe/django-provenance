@@ -29,7 +29,7 @@ INSERT INTO prov_vo_activitydescription (id, label, type, subtype, annotation, d
 
 -- version?
 -- where should I store the code?
-INSERT INTO prov_vo_activity (id, label, description_link_id, annotation, startTime, endTime, docu_link) VALUES 
+INSERT INTO prov_vo_activity (id, label, description_link_id, annotation, startTime, endTime, docu_link) VALUES
   ("mdr1:act_simulation", "MDR1 simulation", "cs:actdesc_cosmosimulation", "The simulation MultiDark Run 1","2010", "2010", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
   ("mdpl2:act_simulation", "MDPL2 simulation", "cs:actdesc_cosmosimulation", "The MDPL2 simulation","2014", "2014", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
   ("mdr1:act_fof", "MDR1 FOF halo finding", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.17", "2010-08-22", "2010-11-09", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),

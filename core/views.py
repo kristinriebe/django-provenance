@@ -13,12 +13,6 @@ def last_date_processor(request):
 
 def index(request):
 
-    context = {}
-    #cmd = "git show -s --format=%ci"
-    #process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
-    #output, error = process.communicate()
-    #context['last_revision_date'] = output
-
     context = RequestContext(request, {}, [last_date_processor])
     template_name = 'core/index.html'
     return render(request, template_name, context)
