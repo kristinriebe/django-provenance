@@ -24,6 +24,7 @@ class CustomDetailView(generic.DetailView):
         obj = get_object_or_404(self.model, id=self.kwargs['pk'])
         context['attribute_list'] = obj.get_viewattributes()
         context['classname'] = self.model.__name__
+        context['descriptionpath'] = context['classname'].lower() + "descriptions"
         context['classobject'] = obj
         return context
 

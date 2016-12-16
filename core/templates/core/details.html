@@ -6,15 +6,17 @@
 {% load extra_filters %}
 
 <h2>{{ classname }}: {{ classobject.id }}</h2>
-<h3>Details</h3> 
+<h3>Details</h3>
     {% for a in attribute_list %}
             <div class="row">
-                {% if a == "description" %}
-                    <div class="col-md-2 key">{{ a }}:</div> <div class="col-md-4 value">
-                        {{ classobject | lookup_attribute:a }}
+                {% if a == "description_link" %}
+                    <div class="col-md-2 key">{{ a }}:</div>
+                    <div class="col-md-4 value">
+                        <a href="../../{{ descriptionpath }}/{{ classobject | lookup_attribute:a }}">{{ classobject | lookup_attribute:a }}</a>
                     </div>
                 {% else %}
-                    <div class="col-md-2 key">{{ a }}:</div> <div class="col-md-4 value">{{ classobject | lookup_attribute:a }}</div>
+                    <div class="col-md-2 key">{{ a }}:</div>
+                    <div class="col-md-4 value">{{ classobject | lookup_attribute:a }}</div>
                 {% endif %}
             </div>
     {% endfor %}
