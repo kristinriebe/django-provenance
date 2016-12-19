@@ -135,7 +135,7 @@ class AgentsView(generic.ListView):
 
     def get_queryset(self):
         """Return the agents (at most 1000, ordered by name)."""
-        return Agent.objects.order_by('name')[:1000]
+        return Agent.objects.order_by('label')[:1000]
 
 
 class AgentDetailView(CustomDetailView):
@@ -196,7 +196,7 @@ def graph(request):
 def provn(request):
     activity_list = Activity.objects.order_by('-startTime')[:]
     entity_list = Entity.objects.order_by('-label')[:]
-    agent_list = Agent.objects.order_by('name')[:]
+    agent_list = Agent.objects.order_by('label')[:]
     used_list = Used.objects.order_by('-id')[:]
     wasGeneratedBy_list = WasGeneratedBy.objects.order_by('-id')[:]
     wasAssociatedWith_list = WasAssociatedWith.objects.order_by('-id')[:]
@@ -210,14 +210,14 @@ def provn(request):
     for a in activity_list:
         af = ActivityFlow.objects.filter(id=a.id)
         if (af):
-            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:docuLink = '" + a.docuLink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.docuLink + "',  voprov:activityflow = '1'" + a.description.docuLink + "']),\n" #  voprov:viewLevel = '" + a.viewLevel + "']),\n"
+            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:doculink = '" + a.doculink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.doculink + "',  voprov:activityflow = '1'" + a.description.doculink + "']),\n" #  voprov:viewLevel = '" + a.viewLevel + "']),\n"
         else:
-            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:docuLink = '" + a.docuLink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.docuLink + "']),\n"
+            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:doculink = '" + a.doculink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.doculink + "']),\n"
     for e in entity_list:
         provstr = provstr + "entity(" + e.id + ", [prov:type = '" + e.type + "', prov:label = '" + e.label + "', voprov:annotation = '" + e.annotation + "', voprov:dataproduct_type = '" + e.description.dataproduct_type + "', voprov:dataproduct_subtype = '" + e.description.dataproduct_subtype + "']),\n"
  
     for ag in agent_list:
-        provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + ag.type + "', voprov:name = '" + ag.name + "', voprov:affiliation = '" + ag.affiliation + "']),\n"
+        provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + ag.type + "', voprov:name = '" + ag.label + "', voprov:affiliation = '" + ag.affiliation + "']),\n"
 
     for u in used_list:
         provstr = provstr + "used(" + u.activity.id + ", " + u.entity.id + ", [prov:role = '" + u.description.role + "']),\n"

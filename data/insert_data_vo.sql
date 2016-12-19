@@ -17,7 +17,7 @@ DELETE FROM prov_vo_activityflow;
 DELETE FROM prov_vo_hadstep;
 -- collection? hadmember?
 
-INSERT INTO prov_vo_activitydescription (id, label, type, subtype, annotation, docu_link) VALUES
+INSERT INTO prov_vo_activitydescription (id, label, type, subtype, annotation, doculink) VALUES
   ("cs:actdesc_cosmosimulation", "Cosmological simulation", "cs:simulation", "", "A cosmological simulation", ""),
   ("cs:actdesc_fof", "FOF halo finding", "cs:post-processing", "cs:halofinder", "Running the FOF halo finder", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
   ("cs:actdesc_mergertree", "Merger tree building", "cs:post-processing", "cs:mergertreebuilding", "Building the merger tree", ""),
@@ -29,7 +29,7 @@ INSERT INTO prov_vo_activitydescription (id, label, type, subtype, annotation, d
 
 -- version?
 -- where should I store the code?
-INSERT INTO prov_vo_activity (id, label, description_link_id, annotation, startTime, endTime, docu_link) VALUES
+INSERT INTO prov_vo_activity (id, label, description_id, annotation, startTime, endTime, doculink) VALUES
   ("mdr1:act_simulation", "MDR1 simulation", "cs:actdesc_cosmosimulation", "The simulation MultiDark Run 1","2010", "2010", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
   ("mdpl2:act_simulation", "MDPL2 simulation", "cs:actdesc_cosmosimulation", "The MDPL2 simulation","2014", "2014", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
   ("mdr1:act_fof", "MDR1 FOF halo finding", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.17", "2010-08-22", "2010-11-09", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
@@ -42,12 +42,12 @@ INSERT INTO prov_vo_activity (id, label, description_link_id, annotation, startT
   ;
 
 -- activityflow: is just another activity!
-INSERT INTO prov_vo_activitydescription (id, label, type, subtype, description, docu_link) VALUES
+INSERT INTO prov_vo_activitydescription (id, label, type, subtype, annotation, doculink) VALUES
   ("cs:actdesc_samflow", "SAM Generation", "voprov:activityflow", "", "An activityflow, shortcut for generating semi-analytical galaxies", "")
   ;
 
 -- insert activityflow into activity and ...
-INSERT INTO prov_vo_activity(id, label, description_id, annotation, startTime, endTime, docu_link) VALUES
+INSERT INTO prov_vo_activity(id, label, description_id, annotation, startTime, endTime, doculink) VALUES
   ("mdpl2:act_samflow", "MDPL2 SAM Generation", "cs:actdesc_samflow", "", "2014", "2016", "")
   ;
 
@@ -90,7 +90,7 @@ INSERT INTO prov_vo_parameter (activity_id, description_id, value) VALUES
   ;
 
 
-INSERT INTO prov_vo_entitydescription (id, label, description, docuLink, dataproduct_type, dataproduct_subtype, level) VALUES
+INSERT INTO prov_vo_entitydescription (id, label, annotation, doculink, dataproduct_type, dataproduct_subtype, level) VALUES
   ("cs:edesc_snapshots", "Simulation snapshots", 
     "snapshots for different times of the simulation, usually containing enough information to restart the simulation, param: snapnums",
     "", "ds:catalog", "", "0"),
@@ -183,7 +183,7 @@ INSERT INTO prov_vo_wasgeneratedby(entity_id, activity_id, description_id) VALUE
   ("mdpl2:galacticus", "mdpl2:act_galacticus", "cs:wgdesc_samgalaxycatalog_sam")
   ;
 
-INSERT INTO prov_vo_agent(id, name, type, affiliation) VALUES
+INSERT INTO prov_vo_agent(id, label, type, affiliation) VALUES
   ("cs:Stefan_Gottloeber", "Stefan Gottlöber", "prov:Person", "AIP, Potsdam, Germany"),
   ("cs:Jaime_Forero_Romero", "Jaime Forero-Romero", "prov:Person", "AIP, Potsdam, Germany"),
   ("cs:Gustavo_Yepes", "Gustavo Yepes", "prov:Person", "UAM, Madrid, Spain"),

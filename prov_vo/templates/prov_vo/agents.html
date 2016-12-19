@@ -11,7 +11,7 @@ Following agents are recorded. Click on one of them to show the details.
 {% if agent_list %}
     <ul>
     {% for agent in agent_list %}
-        <li><a href="{% url 'prov_vo:agent_detail' agent.id %}">{{ agent.name }}</a></li>
+        <li><a href="{% url 'prov_vo:agent_detail' agent.id %}">{{ agent.label }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

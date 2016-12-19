@@ -24,11 +24,11 @@ AGENT_TYPE_CHOICES = (
 class Activity(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     label = models.CharField(max_length=128, null=True)  # should require this, otherwise do not know what to show!
-    description_link = models.ForeignKey("ActivityDescription", null=True)
+    description = models.ForeignKey("ActivityDescription", null=True)
     annotation = models.CharField(max_length=1024, blank=True, null=True)
     startTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
     endTime = models.DateTimeField(null=True)  # should be: null=False, default=timezone.now())
-    docu_link = models.CharField('documentation link', max_length=1024, blank=True, null=True)
+    doculink = models.CharField('documentation link', max_length=1024, blank=True, null=True)
 
     def __str__(self):
         return self.label
@@ -38,11 +38,11 @@ class Activity(models.Model):
         attributes = [
             'id',
             'label',
-            'description_link',
+            'description',
             'annotation',
             'startTime',
             'endTime',
-            'docu_link'
+            'doculink'
         ]
         return attributes
 
@@ -67,7 +67,7 @@ class ActivityDescription(models.Model):
     type = models.CharField(max_length=128, null=True, choices=ACTIVITY_TYPE_CHOICES)
     subtype = models.CharField(max_length=128, blank=True, null=True, choices=ACTIVITY_SUBTYPE_CHOICES)
     annotation = models.CharField(max_length=1024, blank=True, null=True) # should be called annotation!
-    docu_link = models.CharField('documentation link', max_length=1024, blank=True, null=True)
+    doculink = models.CharField('documentation link', max_length=1024, blank=True, null=True)
 
     def __str__(self):
         return self.id
@@ -79,7 +79,7 @@ class ActivityDescription(models.Model):
             'type',
             'subtype',
             'annotation',
-            'docu_link'
+            'doculink'
         ]
         return attributes
 
@@ -94,7 +94,7 @@ class Entity(models.Model):
     size = models.CharField(max_length=128, null=True)
     format = models.CharField(max_length=128, null=True)
     annotation = models.CharField(max_length=1024, blank=True, null=True)
-    description_link = models.ForeignKey("EntityDescription", null=True)
+    description = models.ForeignKey("EntityDescription", null=True)
 
     def __str__(self):
         return self.label
@@ -109,7 +109,7 @@ class Entity(models.Model):
             'size',
             'format',
             'annotation',
-            'description_link'
+            'description'
         ]
         return attributes
 
@@ -119,7 +119,7 @@ class EntityDescription(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     label = models.CharField(max_length=128, null=True)
     annotation = models.CharField(max_length=1024, blank=True, null=True)
-    docu_link = models.CharField('documentation link', max_length=512, blank=True, null=True)
+    doculink = models.CharField('documentation link', max_length=512, blank=True, null=True)
     # (= url)
     dataproduct_type = models.CharField(max_length=128, null=True)
     dataproduct_subtype = models.CharField(max_length=128, null=True)
@@ -133,7 +133,7 @@ class EntityDescription(models.Model):
             'id',
             'label',
             'annotation',
-            'docu_link',
+            'doculink',
             'dataproduct_type',
             'dataproduct_subtype',
             'level'
@@ -145,7 +145,7 @@ class EntityDescription(models.Model):
 @python_2_unicode_compatible
 class Parameter(models.Model):
     id = models.AutoField(primary_key=True)
-    description_link = models.ForeignKey("ParameterDescription", null=True)
+    description = models.ForeignKey("ParameterDescription", null=True)
     # = "label" in current working draft (21-11-2016)!!
     value = models.CharField(max_length=128, null=True)
     activity = models.ForeignKey("Activity", null=True)
@@ -156,7 +156,7 @@ class Parameter(models.Model):
     def get_viewattributes(self):
         attributes = [
             'id',
-            'description_link',
+            'description',
             'value',
             'activity'
         ]
@@ -221,7 +221,7 @@ class Used(models.Model):
     id = models.AutoField(primary_key=True)
     activity = models.ForeignKey(Activity, null=True) #, on_delete=models.CASCADE) # Should be required!
     entity = models.ForeignKey(Entity, null=True) #, on_delete=models.CASCADE) # Should be required!
-    description_link = models.ForeignKey("UsedDescription", null=True)
+    description = models.ForeignKey("UsedDescription", null=True)
 
     def __str__(self):
         return "id=%s; activity=%s; entity=%s; desc.id=%s" % (str(self.id), self.activity, self.entity, self.description_link)
@@ -242,7 +242,7 @@ class WasGeneratedBy(models.Model):
     id = models.AutoField(primary_key=True)
     entity = models.ForeignKey(Entity, null=True) #, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, null=True) #, on_delete=models.CASCADE)
-    description_link = models.ForeignKey("WasGeneratedByDescription", null=True)
+    description = models.ForeignKey("WasGeneratedByDescription", null=True)
 
     def __str__(self):
         return "id=%s; entity=%s; activity=%s; desc.id=%s" % (str(self.id), self.entity, self.activity, self.description_link)
