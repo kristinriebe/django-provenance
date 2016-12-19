@@ -176,7 +176,7 @@ class ParameterDescription(models.Model):
     annotation = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
-        return self.label
+        return self.id
 
     # define the attributes that shall/may be displayed in the detail view
     # for this class
