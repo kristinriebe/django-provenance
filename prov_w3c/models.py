@@ -67,8 +67,8 @@ class Entity(models.Model):
 @python_2_unicode_compatible
 class Used(models.Model):
     id = models.AutoField(primary_key=True)
-    activity = models.ForeignKey(Activity, null=True)
-    entity = models.ForeignKey(Entity, null=True)
+    activity = models.ForeignKey(Activity, null=True, on_delete=models.CASCADE)
+    entity = models.ForeignKey(Entity, null=True, on_delete=models.CASCADE)
     role = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
@@ -77,8 +77,8 @@ class Used(models.Model):
 @python_2_unicode_compatible
 class WasGeneratedBy(models.Model):
     id = models.AutoField(primary_key=True)
-    entity = models.ForeignKey(Entity, null=True)
-    activity = models.ForeignKey(Activity, null=True)
+    entity = models.ForeignKey(Entity, null=True, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, null=True, on_delete=models.CASCADE)
     role = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
@@ -98,8 +98,8 @@ class Agent(models.Model):
 @python_2_unicode_compatible
 class WasAssociatedWith(models.Model):
     id = models.AutoField(primary_key=True)
-    activity = models.ForeignKey(Activity, null=True) 
-    agent = models.ForeignKey(Agent, null=True) #, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, null=True, on_delete=models.CASCADE) 
+    agent = models.ForeignKey(Agent, null=True, on_delete=models.CASCADE)
     role = models.CharField(max_length=128, blank=True, null=True)
 
     def __str__(self):
@@ -108,8 +108,8 @@ class WasAssociatedWith(models.Model):
 @python_2_unicode_compatible
 class WasAttributedTo(models.Model):
     id = models.AutoField(primary_key=True)
-    entity = models.ForeignKey(Entity, null=True) 
-    agent = models.ForeignKey(Agent, null=True) #, on_delete=models.CASCADE)
+    entity = models.ForeignKey(Entity, null=True, on_delete=models.CASCADE) 
+    agent = models.ForeignKey(Agent, null=True, on_delete=models.CASCADE)
     role = models.CharField(max_length=128, blank=True, null=True)
 
     def __str__(self):
