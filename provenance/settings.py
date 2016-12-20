@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import logger
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -106,6 +107,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# Logging setup
+
+LOGGING = {
+    'version': 1,
+    'disable_exiting_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log')
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
