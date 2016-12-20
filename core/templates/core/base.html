@@ -32,5 +32,9 @@
 </div>
 
 <div style="clear:both"></div>
-<p class="footer">A simple provenance webapp. Last revision date: {{ last_revision_date }}</p>
+<p class="footer">A simple provenance webapp. 
+	{% if last_revision_date %}
+	    Last revision date: {{ last_revision_date }}
+	{% endif %}
+</p>
 </html>
