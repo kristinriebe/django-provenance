@@ -112,7 +112,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGGING = {
     'version': 1,
-    'disable_exiting_loggers': False,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },
     'handlers': {
         'file': {
             'level': 'DEBUG',
@@ -121,11 +127,32 @@ LOGGING = {
         }
     },
     'loggers': {
-        'django': {
+        # disable logging of normal django output for now
+#        'django': {
+#            'handlers': ['file'],
+#            'level': 'DEBUG',
+#            'propagate': True,
+#        },
+        'core': {
             'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
-        }
+        },
+        'prov_vo': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'prov_w3c': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'prov_simdm': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
 
