@@ -9,16 +9,17 @@ This web application uses the Django framework to define models and serve proven
 The different parts of the web application are under heavy development and serve to test different possible implementations.
 
 ## Installation
-Download everything and install the required python (2.7) packages:
+Download everything and install the required python (2.7) packages, e.g. using `pip install`:
 
-django
-django-braces -- for json views
-djangorestframework -- rest
-django-extensions -- e.g. for exporting model graphs
-django-test-without-migrations -- for enabling tests of unmanaged models
-pygments
-markdown
-BeautifulSoup -- xml parsing
+django  
+django-braces -- for json views  
+djangorestframework -- rest  
+django-extensions -- e.g. for exporting model graphs  
+django-test-without-migrations -- for enabling tests of unmanaged models  
+pygments  
+markdown  
+BeautifulSoup -- xml parsing  
+logger -- write proper log and error messages
 
 ## Starting the webapp locally
 When everything is installed, start django's test server in the usual way:
