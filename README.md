@@ -34,7 +34,7 @@ The webapp should be visible in the browser and it should even work offline, sin
 ## Deploying the webapp on a server
 * Copy everything to your destination, e.g. /srv/
     - `sudo cp -r provenance /srv/`
-    - Make sure that the webserver-user read (maybe also write) access to this directory. On Ubuntu you can achieve this using:
+    - Make sure that the webserver-user has read (maybe also write) access to this directory. On Ubuntu you can achieve this using:
         + `sudo chown -R www-data:www-data /srv/provenance`
         + on Debian, the user is called `apache2`.
 
@@ -70,7 +70,7 @@ The webapp should be visible in the browser and it should even work offline, sin
     </VirtualHost>
     ```
 
-    - in Ubuntu, the virtual host configuration files lie at: /etc/apache2/sites-available; and still need to be enabled using 
+    - in Ubuntu, the virtual host configuration files lie at: `/etc/apache2/sites-available`; and still need to be enabled using 
         `sudo a2ensite <name of vhost-configuration-file>`
 
 * Reload the webserver, e.g. on Ubuntu: `service apache2 reload`
