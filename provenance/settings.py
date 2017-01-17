@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'prov_vo.apps.ProvVoConfig',
     'prov_w3c.apps.ProvW3CConfig',
-#    'prov_simdm.apps.ProvSimdmConfig',
+    'prov_simdm.apps.ProvSimdmConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

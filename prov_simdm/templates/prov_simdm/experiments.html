@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM - Experiments{% endblock %}
+
+{% block content %}
+<h1>Experiments</h1>
+
+<p>
+Following experiments are recorded. Click on one of them to show the details.
+</p>
+{% if experiment_list %}
+    <ul>
+    {% for experiment in experiment_list %}
+    	<li>{{ experiment.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No experiments are available.</p>
+{% endif %}
+
+{% endblock %}

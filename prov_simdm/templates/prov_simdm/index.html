@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM webapp{% endblock %}
+
+{% block content %}
+<h1>IVOA SimDM webapp</h1>
+
+<p>
+    Pick one of the classes below to show the available records.
+</p>
+<ul>
+    <li><a href="{% url 'prov_simdm:experiments' %}">Experiment</a></li>
+    <li><a href="{% url 'prov_simdm:protocols' %}">Protocol</a></li>
+</ul>
+    Serialisation, Graphs
+<ul>
+    [to be done]
+</ul>
+
+{% endblock %}

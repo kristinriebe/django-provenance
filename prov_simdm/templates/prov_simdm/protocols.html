@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM - Protocols{% endblock %}
+
+{% block content %}
+<h1>Protocols</h1>
+
+<p>
+Following protocols are recorded. Click on one of them to show the details.
+</p>
+{% if protocol_list %}
+    <ul>
+    {% for protocol in protocol_list %}
+    	<li>{{ protocol.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No protocols are available.</p>
+{% endif %}
+
+{% endblock %}
