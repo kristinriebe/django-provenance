@@ -2,6 +2,8 @@
 DELETE FROM prov_simdm_party;
 DELETE FROM prov_simdm_experiment;
 DELETE FROM prov_simdm_protocol;
+DELETE FROM prov_simdm_inputparameter;
+DELETE FROM prov_simdm_parametersetting;
 
 DELETE FROM prov_simdm_appliedalgorithm;
 DELETE FROM prov_simdm_algorithm;
@@ -25,4 +27,20 @@ INSERT INTO prov_simdm_experiment (id, name, protocol_id, executiontime) VALUES
   ("mdpl2:exp_fof", "MDPL2 FOF halo finding", "cs:protocol_fofhf", "-"),
   ("mdpl2:exp_rockstar", "MDPL2 Rockstar building", "cs:protocol_rockstartree", "2015-09-01"),
   ("mdpl2:exp_galacticus", "Running Galacticus on MDPL2", "cs:protocol_galacticus", "2015-10-01")
+  ;
+
+INSERT INTO prov_simdm_inputparameter (id, name, protocol_id, datatype, description) VALUES  -- need multiplicity?
+  ("cs:inparam_forceres", "force resolution", "cs:protocol_artsimu", "string", "(Average) force resolution of the code"),
+  ("cs:inparam_zini",     "z_ini",            "cs:protocol_artsimu", "float",  "Initial redshift, at which the simulation was started"),
+  ("cs:inparam_foflinklen", "linking length", "cs:protocol_fofhf",   "float",  "Relative linking lenth for Friends-of-Friends halo finder")
+  ;
+
+INSERT INTO prov_simdm_parametersetting (experiment_id, inputparameter_id, value) VALUES
+  ("mdr1:exp_simulation", "cs:inparam_forceres", "7.0 h-1.kpc"),
+  ("mdr1:exp_simulation", "cs:inparam_zini", "65.0"),
+  ("mdpl2:exp_simulation", "cs:inparam_forceres", "[5.0,13.0]"),
+  ("mdpl2:exp_simulation", "cs:inparam_zini", "120.0"),
+  ("mdr1:exp_fof", "cs:inparam_foflinklen", "0.17"),
+  ("mdr1:exp_fofc", "cs:inparam_foflinklen", "0.2"),
+  ("mdpl2:exp_fof", "cs:inparam_foflinklen", "0.17")
   ;

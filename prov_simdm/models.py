@@ -105,15 +105,15 @@ class Algorithm(models.Model):
 class InputParameter(models.Model):
     id = models.CharField(primary_key=True, max_length=128)  # new from prov
     # This is refered to as "parameter" from Protocol
-    label = models.CharField(max_length=1024, blank=True, null=True)   # SKOS label # composition!!
     protocol = models.ForeignKey("Protocol", null=True, on_delete=models.SET_NULL)
     # additional attributes for more usefulness:
-    #datatype = models.CharField(max_length=128, null=True)
+    name = models.CharField(max_length=1024, blank=True, null=True)
+    datatype = models.CharField(max_length=128, null=True)
     #unit = models.CharField(max_length=128, null=True)
     #ucd = models.CharField(max_length=128, null=True)
     #utype = models.CharField(max_length=128, null=True)
     #arraysize = models.CharField(max_length=128, null=True)
-    #annotation = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
         return self.id
@@ -121,19 +121,22 @@ class InputParameter(models.Model):
     def get_viewattributes(self):
         attributes = [
             'id',
-            'label',
+            'name',
+            'datatype',
+            'description',
+            'protocol'
         ]
         return attributes
 
 
 class ParameterSetting(models.Model):
-    id = models.CharField(primary_key=True, max_length=128)  # new from prov
+    id = models.AutoField(primary_key=True)  # added for convenience
     # since parameters values could be of any type, but we cannot easily model this, 
-    # a compromise was made: numericValue is set if the value is double, integer, ...; stringValue is used for other cases
-    stringValue = models.CharField(max_length=128, blank=True, null=True)
-    numericValue = models.CharField(max_length=128, blank=True, null=True)
-    # The numericValue should in fact be a "quantity"! But I don't have this datatype defined here. It would consist of a value (type real) and a unit
-    inputParameter = models.OneToOneField("InputParameter", null=True, on_delete=models.SET_NULL) # one-to-one
+    # a compromise was suggested for SimDM: numericValue is set if the value is double, integer, ...; stringValue is used for other cases;
+    # but numericValue would be a quantity, consisting of value and unit; we simplifiy here by just using
+    # a string, that contains the unit, if needed
+    value = models.CharField(max_length=128, blank=True, null=True)
+    inputParameter = models.ForeignKey("InputParameter", null=True, on_delete=models.SET_NULL) # not one-to-one, since there can be many instances of an experiment with its params
     experiment = models.ForeignKey("Experiment", null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -142,9 +145,9 @@ class ParameterSetting(models.Model):
     def get_viewattributes(self):
         attributes = [
             'id',
-            'label',
-            'stringValue',
-            'numericValue'
+            'value',
+            'inputParam',
+            'experiment'
         ]
         return attributes
 
