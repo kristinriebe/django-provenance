@@ -11,7 +11,7 @@ Following experiments are recorded. Click on one of them to show the details.
 {% if experiment_list %}
     <ul>
     {% for experiment in experiment_list %}
-    	<li>{{ experiment.name }}</li>
+        <li><a href="{% url 'prov_simdm:experiment_detail' experiment.id %}">{{ experiment.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+
+{% block title %}Details for a {{ classname }}{% endblock %}
+
+{% block content %}
+{% load extra_filters %}
+
+<h2>{{ classname }}: {{ classobject.id }}</h2>
+<h3>Details</h3>
+    {% for a in attribute_list %}
+            <div class="row">
+                {% if a in link_dict %}
+                    <div class="col-md-2 key">{{ a }}:</div>
+                    <div class="col-md-4 value">
+                        <a href="../../{{ link_dict|get_dictvalue:a }}/{{ classobject | lookup_attribute:a }}">{{ classobject | lookup_attribute:a }}</a>
+                    </div>
+                {% else %}
+                    <div class="col-md-2 key">{{ a }}:</div>
+                    <div class="col-md-4 value">{{ classobject | lookup_attribute:a }}</div>
+                {% endif %}
+            </div>
+    {% endfor %}
+
+{% endblock %}

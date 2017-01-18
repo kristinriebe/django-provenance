@@ -6,12 +6,13 @@
 <h1>Protocols</h1>
 
 <p>
-Following protocols are recorded. Click on one of them to show the details.
+Following protocols are recorded. In SimDM, one protocol usually corresponds to one code. 
+Click on one of them to show the details.
 </p>
 {% if protocol_list %}
     <ul>
     {% for protocol in protocol_list %}
-    	<li>{{ protocol.name }}</li>
+        <li><a href="{% url 'prov_simdm:protocol_detail' protocol.id %}">{{ protocol.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
