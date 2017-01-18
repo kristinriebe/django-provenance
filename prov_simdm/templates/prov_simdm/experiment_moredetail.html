@@ -24,7 +24,7 @@
     {% for p in parametervalue_list %}
         <li>
             <span class="key">
-                <a href="{% url 'prov_simdm:inputparameter_detail' p.id %}">
+                <a href="{% url 'prov_simdm:inputparameter_detail' p.inputParameter.id %}">
                 {{ p.inputParameter.name }}</a>:
             </span>
             <a href="{% url 'prov_simdm:parametersetting_detail' p.id %}">
