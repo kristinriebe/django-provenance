@@ -50,6 +50,25 @@ class ExperimentsView(generic.ListView):
 class ExperimentDetailView(CustomDetailView):
     model = Experiment
     link_dict = {'protocol': 'protocols'}
+    print "link_dict: ", link_dict['protocol']
+
+class ExperimentMoreDetailView(generic.DetailView):
+    model = Experiment
+    template_name = 'prov_simdm/experiment_moredetail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ExperimentMoreDetailView, self).get_context_data(**kwargs)
+
+        self.id = self.kwargs['pk']
+        parametervalue_list = ParameterSetting.objects.filter(experiment_id=str(self.id))
+        if parametervalue_list.exists():
+    		print("There is at least one object in some_queryset")
+    	#print "parameter list: ", parametervalue_list.query
+        #print "p ", parametervalue_list.headline
+        for p in parametervalue_list:
+        	print(p.id, p.inputParameter.id)
+        context['parametervalue_list'] = parametervalue_list
+        return context
 
 
 class ProtocolsView(generic.ListView):

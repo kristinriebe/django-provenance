@@ -10,6 +10,7 @@ urlpatterns = [
     # experiments
     url(r'^experiments/$', views.ExperimentsView.as_view(), name='experiments'),
     url(r'^experiments/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ExperimentDetailView.as_view(), name='experiment_detail'),
+    url(r'^experiments/(?P<pk>[0-9a-zA-Z.:_-]+)/more$', views.ExperimentMoreDetailView.as_view(), name='experiment_moredetail'),
     url(r'^protocols/$', views.ProtocolsView.as_view(), name='protocols'),
     url(r'^protocols/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ProtocolDetailView.as_view(), name='protocol_detail'),
     url(r'^inputparameters/$', views.InputParametersView.as_view(), name='inputparameters'),
