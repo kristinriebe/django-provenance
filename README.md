@@ -1,6 +1,6 @@
 # Provenance web application
 
-This web application uses the Django framework to define models and serve provenance data. Different apps are used for different models:
+This web application uses the Django framework to define models and serve provenance data, using metadata from CosmoSim as an example. Different apps are used for different models:
 
 * `prov_w3c`: implements the W3C PROV-DM model
 * `prov_vo`: implements the IVOA ProvenanceDM model (under development)
@@ -18,8 +18,10 @@ django-extensions -- e.g. for exporting model graphs
 django-test-without-migrations -- for enabling tests of unmanaged models  
 pygments  
 markdown  
+mod_wsgi -- wsgi-module for apache2, needed on the server on which the webapp shall be deployed 
 BeautifulSoup -- xml parsing  
 logger -- write proper log and error messages
+
 
 ## Starting the webapp locally
 When everything is installed, start django's test server in the usual way:
@@ -33,9 +35,9 @@ The webapp should be visible in the browser and it should even work offline, sin
 
 ## Deploying the webapp on a server
 * Copy everything to your destination, e.g. /srv/
-    - `sudo cp -r provenance /srv/`
+    - `sudo cp -r provenance-cosmosim /srv/`
     - Make sure that the webserver-user has read (maybe also write) access to this directory. On Ubuntu you can achieve this using:
-        + `sudo chown -R www-data:www-data /srv/provenance`
+        + `sudo chown -R www-data:www-data /srv/provenance-cosmosim`
         + on Debian, the user is called `apache2`.
 
 * Add a virtual host (or an alias) to your server configuration.
@@ -43,25 +45,25 @@ The webapp should be visible in the browser and it should even work offline, sin
 
     ```
     <VirtualHost *:8111>
-       DocumentRoot "/srv/provenance/"
+       DocumentRoot "/srv/provenance-cosmosim/"
        ServerName Django.local
 
        # This should be omitted in the production environment
        SetEnv APPLICATION_ENV development
 
-       <Directory "/srv/provenance/provenance">
+       <Directory "/srv/provenance-cosmosim/provenance">
            Options Indexes MultiViews FollowSymLinks
            AllowOverride All
            Require all granted
        </Directory>
 
-        Alias /static "/srv/provenance/static/"
-        <Directory "/srv/provenance/static/">
+        Alias /static "/srv/provenance-cosmosim/static/"
+        <Directory "/srv/provenance-cosmosim/static/">
             Require all granted
         </Directory>
 
-        WSGIScriptAlias / /srv/provenance/provenance/wsgi.py
-        <Directory "/srv/provenance/provenance">
+        WSGIScriptAlias / /srv/provenance-cosmosim/provenance/wsgi.py
+        <Directory "/srv/provenance-cosmosim/provenance">
             <Files wsgi.py>
             Require all granted
             </Files>
@@ -71,7 +73,8 @@ The webapp should be visible in the browser and it should even work offline, sin
     ```
 
     - in Ubuntu, the virtual host configuration files lie at: `/etc/apache2/sites-available`; and still need to be enabled using 
-        `sudo a2ensite <name of vhost-configuration-file>`
+        `sudo a2ensite <name of vhost>`
+    - If you use a new port, do not forget to add `Listen 8111` (replace with your own port no.) to your webserver configuration (e.g. ports.conf)
 
 * Reload the webserver, e.g. on Ubuntu: `service apache2 reload`
 
@@ -80,4 +83,7 @@ The webapp should be visible in the browser and it should even work offline, sin
     - `python manage.py collectstatic`
     - You may be asked, if you want to overwrite existing files - check the given paths and type 'yes' to confirm.
 
-* Now open your web browser at the provided port and try the web application!
+* Enter your hostname to ALLOWED_HOSTS in `provenance/settings.py`,if it's not yet there already. E.g. for the localhost:
+    - `ALLOWED_HOSTS = [u'127.0.0.1', u'localhost']`
+
+* Now open your web browser at the provided port (e.g. http://localhost:8111/) and try the web application!
