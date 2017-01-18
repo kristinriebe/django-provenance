@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM - ParameterSettings{% endblock %}
+
+{% block content %}
+<h1>Parameter settings (values)</h1>
+
+<p>
+Following parameter settings are recorded. Click on one of them to show the details.
+</p>
+{% if parametersetting_list %}
+    <ul>
+    {% for p in parametersetting_list %}
+        <li><a href="{% url 'prov_simdm:parametersetting_detail' p.id %}">{{ p.id }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No parameter settings are available.</p>
+{% endif %}
+
+{% endblock %}

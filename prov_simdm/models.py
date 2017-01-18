@@ -13,7 +13,7 @@ class Party(models.Model):
     #address = models.CharField(max_length=1024, blank=True, null=True)
     #telephone = models.CharField(max_length=1024, blank=True, null=True)
     def __str__(self):
-        return self.name
+        return self.id
 
     def get_viewattributes(self):
         attributes = [
@@ -30,7 +30,7 @@ class Experiment(models.Model):
     name = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.id
 
     def get_viewattributes(self):
         attributes = [
@@ -88,7 +88,7 @@ class Algorithm(models.Model):
     code = models.CharField(max_length=128, blank=True, null=True) # additional attribute; added because I don't want it in Protocol
 
     def __str__(self):
-        return self.name
+        return self.id
 
     def get_viewattributes(self):
         attributes = [
@@ -146,7 +146,7 @@ class ParameterSetting(models.Model):
         attributes = [
             'id',
             'value',
-            'inputParam',
+            'inputParameter',
             'experiment'
         ]
         return attributes

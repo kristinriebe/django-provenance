@@ -9,8 +9,10 @@
     Pick one of the classes below to show the available records.
 </p>
 <ul>
-    <li><a href="{% url 'prov_simdm:experiments' %}">Experiment</a></li>
-    <li><a href="{% url 'prov_simdm:protocols' %}">Protocol</a></li>
+    <li><a href="{% url 'prov_simdm:experiments' %}">Experiment</a> (~ Activity)</li>
+    <li><a href="{% url 'prov_simdm:protocols' %}">Protocol</a> (~ ActivityDescription)</li>
+    <li><a href="{% url 'prov_simdm:inputparameters' %}">Input Parameters</a> (~ ParameterDescription)</li>
+    <li><a href="{% url 'prov_simdm:parametersettings' %}">Parameter Settings</a> (~ Parameter)</li>
 </ul>
     Serialisation, Graphs
 <ul>

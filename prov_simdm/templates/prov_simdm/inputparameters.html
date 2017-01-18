@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM - InputParameters{% endblock %}
+
+{% block content %}
+<h1>Input Parameters</h1>
+
+<p>
+Following input parameters are recorded. Click on one of them to show the details.
+</p>
+{% if inputparameter_list %}
+    <ul>
+    {% for ip in inputparameter_list %}
+        <li><a href="{% url 'prov_simdm:inputparameter_detail' ip.id %}">{{ ip.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No input parameters are available.</p>
+{% endif %}
+
+{% endblock %}

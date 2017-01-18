@@ -47,7 +47,6 @@ class ExperimentsView(generic.ListView):
         """Return the experiments (at most 1000, ordered by time)."""
         return Experiment.objects.order_by('-executionTime')[:1000]
 
-
 class ExperimentDetailView(CustomDetailView):
     model = Experiment
     link_dict = {'protocol': 'protocols'}
@@ -58,9 +57,34 @@ class ProtocolsView(generic.ListView):
     context_object_name = 'protocol_list'
 
     def get_queryset(self):
-        """Return the protocols (at most 1000, ordered by time)."""
+        """Return the protocols (at most 1000)."""
         return Protocol.objects.order_by('id')[:1000]
-
 
 class ProtocolDetailView(CustomDetailView):
     model = Protocol
+
+
+class InputParametersView(generic.ListView):
+    template_name = 'prov_simdm/inputparameters.html'
+    context_object_name = 'inputparameter_list'
+
+    def get_queryset(self):
+        """Return the input parameters (at most 1000)."""
+        return InputParameter.objects.order_by('id')[:1000]
+
+class InputParameterDetailView(CustomDetailView):
+    model = InputParameter
+    link_dict = {'protocol': 'protocols'}
+
+
+class ParameterSettingsView(generic.ListView):
+    template_name = 'prov_simdm/parametersettings.html'
+    context_object_name = 'parametersetting_list'
+
+    def get_queryset(self):
+        """Return the parameter settings (values) (at most 1000)."""
+        return ParameterSetting.objects.order_by('id')[:1000]
+
+class ParameterSettingDetailView(CustomDetailView):
+    model = ParameterSetting
+    link_dict = {'inputParameter': 'inputparameters', 'experiment': 'experiments'}
