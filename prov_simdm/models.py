@@ -28,6 +28,9 @@ class Experiment(models.Model):
     executionTime = models.DateTimeField(null=True) # == voprov:endTime
     protocol = models.ForeignKey("Protocol", null=True, on_delete=models.SET_NULL) # == voprov:activitydescription
     name = models.CharField(max_length=1024, blank=True, null=True)
+    #description = 
+    #referenceURL = 
+    #created = 
 
     def __str__(self):
         return self.id
@@ -47,6 +50,8 @@ class Protocol(models.Model):
     name = models.CharField(max_length=128, blank=True, null=True) # = name of the code, not included in SimDM
     code = models.CharField(max_length=128, blank=True, null=True) # must be a URI, for downloading the code!!
     version = models.CharField(max_length=32, blank=True, null=True)
+    description = models.CharField(max_length=32, blank=True, null=True)
+    referenceURL = models.CharField(max_length=32, blank=True, null=True)
     #parameters = [] see InputParameter-class, which refers back to Protocol
 
     def __str__(self):
@@ -57,14 +62,17 @@ class Protocol(models.Model):
             'id',
             'name',
             'code',
-            'version'
+            'version',
+            'description',
+            'referenceURL'
         ]
         return attributes
 
 
 class AppliedAlgorithm(models.Model):
-    id = models.CharField(primary_key=True, max_length=128)  # new from prov
+    id = models.AutoField(primary_key=True)
     algorithm = models.ForeignKey("Algorithm", null=True, on_delete=models.SET_NULL)
+    experiment = models.ForeignKey("Experiment", null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.id
@@ -73,6 +81,7 @@ class AppliedAlgorithm(models.Model):
         attributes = [
             'id',
             'algorithm',
+            'experiment'
         ]
         return attributes
 
@@ -85,7 +94,6 @@ class Algorithm(models.Model):
     description = models.CharField(max_length=1024, blank=True, null=True)
     label = models.CharField(max_length=1024, blank=True, null=True) # should actually be one of the SKOS-vocabularies, = skoscocept
     protocol = models.ForeignKey("Protocol", null=True, on_delete=models.SET_NULL)  # should actually not be null!! composition-relationship!
-    code = models.CharField(max_length=128, blank=True, null=True) # additional attribute; added because I don't want it in Protocol
 
     def __str__(self):
         return self.id
@@ -96,8 +104,7 @@ class Algorithm(models.Model):
             'name',
             'description',
             'label',
-            'protocol',
-            'code'
+            'protocol'
         ]
         return attributes
 

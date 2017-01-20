@@ -6,7 +6,7 @@ def last_revision_date(request):
     """Get datetime of the last commit, useful for checking version on webpage"""
     # if registered in settings.py, it will be applied to each and every context!!
 
-    # works only for development server:
+    # works only for development server, produces error in 'real' server environment
     cmd = "git show -s --format=%ci"
     process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = process.communicate()
@@ -16,5 +16,4 @@ def last_revision_date(request):
     if error:
         logger.error(str(datetime.now()) + ": An error occured in last_revision_date context processor: " + error)
 
-    # On server, write the date after collecting static files?
     return {'last_revision_date': output}

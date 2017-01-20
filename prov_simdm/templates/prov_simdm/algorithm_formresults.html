@@ -1,0 +1,56 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM - Algorithms{% endblock %}
+
+{% block content %}
+<h1>Search results</h1>
+
+<p>
+Following experiments are recorded using the algorithm <b>{{ algorithm.name }}</b>.
+</p>
+{% if experiment_list %}
+    <table class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>ExecutionTime</th>
+            <th>Protocol</th>
+            <th>Parameters</th>
+        </thead>
+        <tbody>
+    {% for experiment in experiment_list %}
+        <tr><td>
+            <a href="{% url 'prov_simdm:experiment_detail' experiment.id %}">{{ experiment.name }}</a>
+        </td><td>
+            {{ experiment.executionTime }}
+        </td><td>
+            <a href="{% url 'prov_simdm:protocol_detail' experiment.protocol.id %}">{{ experiment.protocol.name }}</a>
+        </td><td>
+    {% if experiment.parametervalue_list %}
+        <ul>
+    {% for p in experiment.parametervalue_list %}
+        <li>
+            <span class="key">
+                <a href="{% url 'prov_simdm:inputparameter_detail' p.inputParameter.id %}">
+                {{ p.inputParameter.name }}</a>:
+            </span>
+            <a href="{% url 'prov_simdm:parametersetting_detail' p.id %}">
+                {{ p.value }}</a>
+            <br>
+            <em>{{ p.inputParameter.description }}</em><br>
+            <b>datatype:</b> {{ p.inputParameter.datatype }}
+            </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+        </td></tr>
+
+    {% endfor %}
+
+        </tbody>
+    </table>
+{% else %}
+    <p class="notfound">No experiments using this algorithm found.</p>
+{% endif %}
+
+
+{% endblock %}

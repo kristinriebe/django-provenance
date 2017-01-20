@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM - Algorithms{% endblock %}
+
+{% block content %}
+<h1>Algorithms</h1>
+
+<p>
+Following algorithms are recorded. In SimDM, one protocol can have many algorithms.
+</p>
+{% if algorithm_list %}
+    <ul>
+    {% for algorithm in algorithm_list %}
+        <li><a href="{% url 'prov_simdm:algorithm_detail' algorithm.id %}">{{ algorithm.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p class="notfound">No algorithms are available.</p>
+{% endif %}
+
+{% endblock %}

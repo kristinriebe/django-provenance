@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block title %}SimDM search{% endblock %}
+
+{% block content %}
+
+<h2>SimDM search</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    Search for experiments using the algorithm specified in the search field.
+  </div>
+</div>
+<form action="/simdm/form/" method="post">
+    {% csrf_token %}
+
+    {% for field in form.visible_fields %}
+  <div class="row">
+    <div class="col-md-2">
+          {{ field.label }}:
+    </div>
+    <div class="col-md-4">
+          {{ field }}
+      <div style="clear: both"></div>
+      <div>
+        <span class="helptext">{{field.help_text }}</span>
+          {{field.errors}}
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <input type="submit" name="submit" value="Submit"/>
+    </div>
+  </div>
+</form>
+
+{% endblock %}
