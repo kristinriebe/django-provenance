@@ -26,9 +26,9 @@ Following experiments are recorded using the algorithm <b>{{ algorithm.name }}</
             <a href="{% url 'prov_simdm:protocol_detail' experiment.protocol.id %}">{{ experiment.protocol.name }}</a>
         </td><td>
     {% if experiment.parametervalue_list %}
-        <ul>
+        <ul class="list-unstyled">
     {% for p in experiment.parametervalue_list %}
-        <li>
+        <li style="margin-bottom: 10px;">
             <span class="key">
                 <a href="{% url 'prov_simdm:inputparameter_detail' p.inputParameter.id %}">
                 {{ p.inputParameter.name }}</a>:

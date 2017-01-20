@@ -54,6 +54,7 @@ INSERT INTO prov_simdm_algorithm (id, name, protocol_id, description, label) VAL
 
 INSERT INTO prov_simdm_appliedalgorithm(algorithm_id, experiment_id) VALUES
   ("cs:algo_art", "mdr1:exp_simulation"),
+  ("cs:algo_art", "mdpl2:exp_simulation"),
   ("cs:algo_fof", "mdr1:exp_fof"),
   ("cs:algo_fof", "mdr1:exp_fofc"),
   ("cs:algo_fof", "mdpl2:exp_fof"),
