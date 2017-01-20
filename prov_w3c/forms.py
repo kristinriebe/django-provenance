@@ -11,7 +11,7 @@ class EntityForm(forms.Form):
     def clean_entity_id(self):
         desired_id = self.cleaned_data['entity_id']
         if desired_id not in [e.id for e in self.entity_list]:
-            print "id: " + desired_id
+            #print "id: " + desired_id
             raise ValidationError(
                 _('Invalid value: %(value)s is not a valid entity_id'),
                 code='invalid',

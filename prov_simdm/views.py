@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, render_to_response
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 import json
@@ -8,8 +8,10 @@ from django.http import JsonResponse
 from django.db.models.fields.related import ManyToManyField
 from django.core import serializers
 from rest_framework.renderers import JSONRenderer
+from django.views.generic.edit import FormView
 
-from .models import Experiment, Protocol, InputParameter, ParameterSetting
+from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm
+from .forms import AlgorithmForm
 
 
 class CustomDetailView(generic.DetailView):
@@ -100,3 +102,35 @@ class ParameterSettingsView(generic.ListView):
 class ParameterSettingDetailView(CustomDetailView):
     model = ParameterSetting
     link_dict = {'inputParameter': 'inputparameters', 'experiment': 'experiments'}
+
+
+class AlgorithmsView(generic.ListView):
+    template_name = 'prov_simdm/algorithms.html'
+    context_object_name = 'algorithm_list'
+
+    def get_queryset(self):
+        return Algorithm.objects.order_by('id')[:1000]
+
+class AlgorithmDetailView(CustomDetailView):
+    model = Algorithm
+    link_dict = {'protocol': 'protocols'}
+
+
+# Form views
+class AlgorithmFormResultsView(FormView):
+    template_name = 'prov_simdm/algorithm_form.html'
+    form_class = AlgorithmForm
+
+    def form_valid(self, form):
+        algorithm_id = form.cleaned_data['algorithm_id']
+        algorithm = Algorithm.objects.get(id=algorithm_id)
+
+        applied_set = AppliedAlgorithm.objects.filter(algorithm_id = algorithm.id)
+        experiment_list = [Experiment.objects.get(id=a.experiment_id) for a in applied_set]
+
+        for e in experiment_list:
+            parametervalue_list = ParameterSetting.objects.filter(experiment_id=str(e.id))
+            e.parametervalue_list = parametervalue_list
+        
+        return render_to_response('prov_simdm/algorithm_formresults.html', context={'algorithm': algorithm, 'experiment_list': experiment_list})
+

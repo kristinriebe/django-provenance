@@ -9,12 +9,12 @@ DELETE FROM prov_simdm_appliedalgorithm;
 DELETE FROM prov_simdm_algorithm;
 
 
-INSERT INTO prov_simdm_protocol (id, name, code, version) VALUES
-  ("cs:protocol_artsimu", "ART", "ART link", "--"), -- should be "various" in code, but in fact using only 1 here.
-  ("cs:protocol_fofhf", "FOF", "FOF link", "--"),
-  ("cs:protocol_fofmtree", "FOF Merger tree", "not public", "--"),
-  ("cs:protocol_rockstartree", "Rockstar tree", "https://bitbucket.org/gfcstanford/rockstar, https://bitbucket.org/pbehroozi/consistent-trees#markdown-header-quick-start-for-rockstar-users", "--"),
-  ("cs:protocol_galacticus", "Galacticus", "https://sites.google.com/site/galacticusmodel/", "--")
+INSERT INTO prov_simdm_protocol (id, name, code, version, description, referenceURL) VALUES
+  ("cs:protocol_artsimu", "ART", "[link to ART code]", "--", "Adaptive Refinement Tree code for running cosmological simulatios, Kravtsov et al. 1997, ApJS, 111, 73", "http://adsabs.harvard.edu/abs/1997ApJS..111...73K"),
+  ("cs:protocol_fofhf", "FOF", "not public", "--", "Friends-of-Friends cluster finder, applied version is described in Riebe et al. (2013), AN, 334, 691", "http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("cs:protocol_fofmtree", "FOF Merger tree", "not public", "--", "Custom code for generating merger tree data from FOF data", "--"),
+  ("cs:protocol_rockstartree", "Rockstar tree", "https://bitbucket.org/gfcstanford/rockstar, https://bitbucket.org/pbehroozi/consistent-trees#markdown-header-quick-start-for-rockstar-users", "--", "Code for building Rockstar catalog with consistent merger trees", ""),
+  ("cs:protocol_galacticus", "Galacticus", "https://sites.google.com/site/galacticusmodel/", "--", "Galacticus code for semi-analytical galaxies", "")
   ;
 
 INSERT INTO prov_simdm_experiment (id, name, protocol_id, executiontime) VALUES
@@ -44,3 +44,21 @@ INSERT INTO prov_simdm_parametersetting (experiment_id, inputparameter_id, value
   ("mdr1:exp_fofc", "cs:inparam_foflinklen", "0.2"),
   ("mdpl2:exp_fof", "cs:inparam_foflinklen", "0.17")
   ;
+
+INSERT INTO prov_simdm_algorithm (id, name, protocol_id, description, label) VALUES
+  ("cs:algo_art", "Adaptive mesh refinement", "cs:protocol_artsimu", "code uses a grid for calculating potential, forces etc.; grid size is adaptive", ""),
+  ("cs:algo_fof", "Friends-of-Friends", "cs:protocol_fofhf", "code uses friends-of-friends algorithm for finding groups of connected particles (clusters)", ""),
+  ("cs:algo_phasespace", "Phase-space halo finder", "cs:protocol_rockstartree", "algorithm for finding halos using phase-space information", ""),
+  ("cs:algo_sam", "SAM", "cs:protocol_galacticus", "algorithm for finding halos using phase-space information", "")
+ ;
+
+INSERT INTO prov_simdm_appliedalgorithm(algorithm_id, experiment_id) VALUES
+  ("cs:algo_art", "mdr1:exp_simulation"),
+  ("cs:algo_fof", "mdr1:exp_fof"),
+  ("cs:algo_fof", "mdr1:exp_fofc"),
+  ("cs:algo_fof", "mdpl2:exp_fof"),
+  ("cs:algo_phasespace", "mdr1:exp_rockstar"),
+  ("cs:algo_phasespace", "mdpl2:exp_rockstar"),
+  ("cs:algo_sam", "mdpl2:exp_galacticus")
+  ;
+

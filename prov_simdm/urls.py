@@ -7,7 +7,7 @@ urlpatterns = [
     # index view
     url(r'^$', views.IndexView.as_view(), name='index'),
 
-    # experiments
+    # experiments etc.
     url(r'^experiments/$', views.ExperimentsView.as_view(), name='experiments'),
     url(r'^experiments/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ExperimentDetailView.as_view(), name='experiment_detail'),
     url(r'^experiments/(?P<pk>[0-9a-zA-Z.:_-]+)/more$', views.ExperimentMoreDetailView.as_view(), name='experiment_moredetail'),
@@ -17,5 +17,10 @@ urlpatterns = [
     url(r'^inputparameters/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.InputParameterDetailView.as_view(), name='inputparameter_detail'),
     url(r'^parametersettings/$', views.ParameterSettingsView.as_view(), name='parametersettings'),
     url(r'^parametersettings/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ParameterSettingDetailView.as_view(), name='parametersetting_detail'),
+    url(r'^alorithms/$', views.AlgorithmsView.as_view(), name='algorithms'),
+    url(r'^algorithms/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.AlgorithmDetailView.as_view(), name='algorithm_detail'),
+    url(r'^form/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
+    #url(r'^form/$', views.get_algorithmId, name='get_algorithmId'), # also works!
+    #url(r'^form/results/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
 ]
 
