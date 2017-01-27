@@ -10,7 +10,7 @@ from django.core import serializers
 from rest_framework.renderers import JSONRenderer
 
 from .models import Activity, ActivityDescription, Entity, EntityDescription, Used, UsedDescription, WasGeneratedBy, Agent, WasAssociatedWith, WasAttributedTo
-from .models import Parameter, ParameterDescription, ActivityFlow, HadStep
+from .models import Parameter, ParameterDescription, ActivityFlow, HadStep, WasDerivedFrom
 
 # use a custom details-class that does everything the way I want it;
 # uses one template for all and sets the necessary context-variables
@@ -240,9 +240,16 @@ def provn(request):
 
 
 def json_view(request):
-    activity_list = Activity.objects.order_by('label')[:]
-    entity_list = Entity.objects.order_by('label')[:]
-    agent_list = Agent.objects.order_by('label')[:]
+    activity_list = Activity.objects.all()
+    entity_list = Entity.objects.all()
+    agent_list = Agent.objects.all()
+    used_list = Used.objects.all()
+    wasgeneratedby_list = WasGeneratedBy.objects.all()
+    wasattributedto_list = WasAttributedTo.objects.all()
+    wasassociatedwith_list = WasAssociatedWith.objects.all()
+    wasderivedfrom_list = WasDerivedFrom.objects.all()
+
+
 
     adict = {}
     for a in activity_list:
@@ -256,10 +263,36 @@ def json_view(request):
     for ag in agent_list:
         agdict.update(ag.get_json())
 
+    udict = {}
+    for u in used_list:
+        udict.update(u.get_json())
+
+    wgdict = {}
+    for wg in wasgeneratedby_list:
+        wgdict.update(wg.get_json())
+
+    watdict = {}
+    for wat in wasattributedto_list:
+        watdict.update(wat.get_json())
+
+    wasdict = {}
+    for was in wasassociatedwith_list:
+        wasdict.update(was.get_json())
+
+    wddict = {}
+    for wd in wasderivedfrom_list:
+        wddict.update(wd.get_json())
+
+
     allobjects = {
         "activity": adict,
         "entity": edict,
-        "agent": agdict
+        "agent": agdict,
+        "used": udict,
+        "wasGeneratedBy": wgdict,
+        "wasAttributedTo": watdict,
+        "wasAssociatedWith": wasdict,
+        "wasDerivedFrom": wddict
     }
 
     json_str = json.dumps(allobjects,

@@ -55,12 +55,12 @@ class Activity(models.Model):
             'prov:startTime': self.startTime,
             'prov:endTime': self.endTime,
             'vprov:annotation': self.annotation,
-            'voprov:doculink': self.doculink
-            #'voprov:type': self.description.type,
-            #'voprov:subtype': self.description.subtype,
-            #'voprov:description_label': self.description.label,
-            #'voprov:description_annotation': self.description.annotation,
-            #'voprov:description_doculink': self.description.doculink
+            'voprov:doculink': self.doculink,
+            'voprov:type': self.description.type,
+            'voprov:subtype': self.description.subtype,
+            'voprov:description_label': self.description.label,
+            'voprov:description_annotation': self.description.annotation,
+            'voprov:description_doculink': self.description.doculink
         }
         return obj_dict
 
@@ -285,6 +285,16 @@ class Used(models.Model):
     def __str__(self):
         return "id=%s; activity=%s; entity=%s; desc.id=%s" % (str(self.id), self.activity, self.entity, self.description)
 
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:activity': self.activity.id,
+            'prov:entity': self.entity.id,
+            'voprov:role': self.description.role
+        }
+        return obj_dict
+
 
 @python_2_unicode_compatible
 class UsedDescription(models.Model):
@@ -303,9 +313,20 @@ class WasGeneratedBy(models.Model):
     entity = models.ForeignKey(Entity, null=True, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, null=True, on_delete=models.CASCADE)
     description = models.ForeignKey("WasGeneratedByDescription", null=True, on_delete=models.SET_NULL)
+    # time
 
     def __str__(self):
         return "id=%s; entity=%s; activity=%s; desc.id=%s" % (str(self.id), self.entity, self.activity, self.description)
+
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:entity': self.entity.id,
+            'prov:activity': self.activity.id,
+            'voprov:role': self.description.role
+        }
+        return obj_dict
 
 
 @python_2_unicode_compatible
@@ -329,6 +350,16 @@ class WasAssociatedWith(models.Model):
     def __str__(self):
         return "id=%s; activity=%s; agent=%s; role=%s" % (str(self.id), self.activity, self.agent, self.role)
 
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:activity': self.activity.id,
+            'prov:agent': self.agent.id,
+            'voprov:role': self.role
+        }
+        return obj_dict
+
 
 @python_2_unicode_compatible
 class WasAttributedTo(models.Model):
@@ -340,6 +371,16 @@ class WasAttributedTo(models.Model):
     def __str__(self):
         return "id=%s; entity=%s; agent=%s; role=%s" % (str(self.id), self.entity, self.agent, self.role)
 
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:entity': self.entity.id,
+            'prov:agent': self.agent.id,
+            'voprov:role': self.role
+        }
+        return obj_dict
+
 
 @python_2_unicode_compatible
 class WasDerivedFrom(models.Model):
@@ -349,6 +390,15 @@ class WasDerivedFrom(models.Model):
 
     def __str__(self):
         return "id=%s; entity=%s; progenitor=%s" % (str(self.id), self.entity, self.progenitor)
+
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:usedEntity': self.progenitor.id,
+            'prov:generatedEntity': self.entity.id,
+        }
+        return obj_dict
 
 
 @python_2_unicode_compatible
