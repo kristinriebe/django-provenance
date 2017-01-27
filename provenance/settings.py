@@ -127,12 +127,6 @@ LOGGING = {
         }
     },
     'loggers': {
-        # disable logging of normal django output for now
-#        'django': {
-#            'handlers': ['file'],
-#            'level': 'DEBUG',
-#            'propagate': True,
-#        },
         'core': {
             'handlers': ['file'],
             'level': 'DEBUG',

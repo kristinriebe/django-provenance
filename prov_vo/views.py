@@ -232,8 +232,41 @@ def provn(request):
         provstr = provstr + "wasAttributedTo(" + wa.entity.id + ", " + wa.agent.id + ", [prov:role = '" + wa.role + "']),\n"
 
     for p in parameter_list:
-        provstr = provstr + "Entity(" + str(p.id) + ", [prov:type = 'parameter', prov:label = '" + p.description.label + "', prov:value = '" + str(p.value) + "', voprov:datatype = '" + str(p.description.datatype) + "', voprov:unit = '" + str(p.description.unit) + "', voprov:ucd = '" + str(p.description.ucd) + "', voprov:utype = '" + str(p.description.utype) + "', voprov:arraysize = '" + str(p.description.arraysize) + "', voprov:annotation = '" + str(p.description.annotation) + "']),\n"
+        provstr = provstr + "entity(" + str(p.id) + ", [prov:type = 'parameter', prov:label = '" + p.description.label + "', prov:value = '" + str(p.value) + "', voprov:datatype = '" + str(p.description.datatype) + "', voprov:unit = '" + str(p.description.unit) + "', voprov:ucd = '" + str(p.description.ucd) + "', voprov:utype = '" + str(p.description.utype) + "', voprov:arraysize = '" + str(p.description.arraysize) + "', voprov:annotation = '" + str(p.description.annotation) + "']),\n"
 
     provstr += "endDocument"
 
     return HttpResponse(provstr, content_type='text/plain')
+
+
+def json_view(request):
+    activity_list = Activity.objects.order_by('label')[:]
+    entity_list = Entity.objects.order_by('label')[:]
+    agent_list = Agent.objects.order_by('label')[:]
+
+    adict = {}
+    for a in activity_list:
+        adict.update(a.get_json())
+
+    edict = {}
+    for e in entity_list:
+        edict.update(e.get_json())
+
+    agdict = {}
+    for ag in agent_list:
+        agdict.update(ag.get_json())
+
+    allobjects = {
+        "activity": adict,
+        "entity": edict,
+        "agent": agdict
+    }
+
+    json_str = json.dumps(allobjects,
+                sort_keys=True,
+                indent=4
+               )
+
+    return HttpResponse(json_str, content_type='text/plain')
+
+    # JsonResponse

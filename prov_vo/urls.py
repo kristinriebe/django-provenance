@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^graph/$', views.graph, name='graph'),
 
     # serialisations
-    url(r'^provn/$', views.provn, name='provn')
+    url(r'^provn/$', views.provn, name='provn'),
+    url(r'^json/$', views.json_view, name='json_view')
 
 ]

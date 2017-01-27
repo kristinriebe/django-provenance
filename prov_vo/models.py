@@ -19,6 +19,7 @@ AGENT_TYPE_CHOICES = (
     ('prov:Person','prov:Person'),
 )
 
+
 # main ProvDM classes:
 @python_2_unicode_compatible
 class Activity(models.Model):
@@ -46,11 +47,22 @@ class Activity(models.Model):
         ]
         return attributes
 
-
-    # TODO: add getjson to each class, use in json-serialisation
-    def getjson(self, activity_id):
-        activity_dict = {'id': id, 'label': label, 'description': description}
-        return JsonResponse(activity_dict)
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:label': self.label,
+            'prov:startTime': self.startTime,
+            'prov:endTime': self.endTime,
+            'vprov:annotation': self.annotation,
+            'voprov:doculink': self.doculink
+            #'voprov:type': self.description.type,
+            #'voprov:subtype': self.description.subtype,
+            #'voprov:description_label': self.description.label,
+            #'voprov:description_annotation': self.description.annotation,
+            #'voprov:description_doculink': self.description.doculink
+        }
+        return obj_dict
 
 
 @python_2_unicode_compatible
@@ -114,6 +126,27 @@ class Entity(models.Model):
         return attributes
 
 
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:label': self.label,
+            'prov:type': self.type,
+            'cs:location': self.location,
+            'cs:access': self.access,
+            'cs:size': self.size,
+            'cs:format': self.format,
+            'voprov:annotation': self.annotation,
+            'voprov:description_label': self.description.label,
+            'voprov:description_doculink': self.description.doculink,
+            'voprov:description_annotation': self.description.annotation,
+            'voprov:dataproduct_type': self.description.dataproduct_type,
+            'voprov:dataproduct_subtype': self.description.dataproduct_subtype,
+            'voprov:level': self.description.level
+        }
+        return obj_dict
+
+
 @python_2_unicode_compatible
 class EntityDescription(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
@@ -161,6 +194,22 @@ class Parameter(models.Model):
             'activity'
         ]
         return attributes
+
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:value': self.label,
+            'prov:label': self.description.label,
+            'voprov:activity': self.activity.id,
+            'voprov:datatype': self.description.datatype,
+            'voprov:unit': self.description.unit,
+            'voprov:ucd': self.description.ucd,
+            'voprov:utype': self.description.utype,
+            'voprov:arraysize': self.description.arraysize,
+            'voprov:annotation': self.annotation
+         }
+        return obj_dict
 
 
 @python_2_unicode_compatible
@@ -214,6 +263,16 @@ class Agent(models.Model):
         ]
         return attributes
 
+    def get_json(self):
+        obj_dict = {}
+        obj_dict[self.id] = {
+            'prov:id': self.id,
+            'prov:label': self.label,
+            'prov:type': self.type,
+            'voprov:affiliation': self.affiliation
+         }
+        return obj_dict
+
 
 # relation classes
 @python_2_unicode_compatible
@@ -236,6 +295,7 @@ class UsedDescription(models.Model):
 
     def __str__(self):
         return "id=%s; activity=%s; entity=%s; role=%s" % (str(self.id), self.activity, self.entity, self.role)
+
 
 @python_2_unicode_compatible
 class WasGeneratedBy(models.Model):

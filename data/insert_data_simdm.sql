@@ -50,7 +50,7 @@ INSERT INTO prov_simdm_algorithm (id, name, protocol_id, description, label) VAL
   ("cs:algo_fof", "Friends-of-Friends", "cs:protocol_fofhf", "code uses friends-of-friends algorithm for finding groups of connected particles (clusters)", ""),
   ("cs:algo_phasespace", "Phase-space halo finder", "cs:protocol_rockstartree", "algorithm for finding halos using phase-space information", ""),
   ("cs:algo_sam", "SAM", "cs:protocol_galacticus", "algorithm for finding halos using phase-space information", "")
- ;
+  ;
 
 INSERT INTO prov_simdm_appliedalgorithm(algorithm_id, experiment_id) VALUES
   ("cs:algo_art", "mdr1:exp_simulation"),
