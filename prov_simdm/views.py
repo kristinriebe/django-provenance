@@ -12,7 +12,7 @@ from django.views.generic.edit import FormView
 
 from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm
 from .forms import AlgorithmForm
-
+import datetime
 
 class CustomDetailView(generic.DetailView):
     model = Experiment  # shall be overwritten from inherited classes!

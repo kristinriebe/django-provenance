@@ -30,13 +30,13 @@ INSERT INTO prov_vo_activitydescription (id, label, type, subtype, annotation, d
 -- version?
 -- where should I store the code?
 INSERT INTO prov_vo_activity (id, label, description_id, annotation, startTime, endTime, doculink) VALUES
-  ("mdr1:act_simulation", "MDR1 simulation", "cs:actdesc_cosmosimulation", "The simulation MultiDark Run 1","2010", "2010", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
-  ("mdpl2:act_simulation", "MDPL2 simulation", "cs:actdesc_cosmosimulation", "The MDPL2 simulation","2014", "2014", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
+  ("mdr1:act_simulation", "MDR1 simulation", "cs:actdesc_cosmosimulation", "The simulation MultiDark Run 1","2010-03-01", "2010-08-20", "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
+  ("mdpl2:act_simulation", "MDPL2 simulation", "cs:actdesc_cosmosimulation", "The MDPL2 simulation","2014-01-01", "2014-01-01", "Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
   ("mdr1:act_fof", "MDR1 FOF halo finding", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.17", "2010-08-22", "2010-11-09", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
   ("mdr1:act_fofc", "MDR1 FOFc halo finding, c-version", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.2", "2010-08-23", "2010-08-29", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
-  ("mdr1:act_fofmtree", "MDR1 FOFMtree building", "cs:actdesc_mergertree", "Building the merger tree for a FOF halo finder", "2011", "2011", "-"),
+  ("mdr1:act_fofmtree", "MDR1 FOFMtree building", "cs:actdesc_mergertree", "Building the merger tree for a FOF halo finder", "2011-01-01", "2011-03-01", "-"),
   ("mdr1:act_rockstar", "MDR1 Rockstar building", "cs:actdesc_mergertree", "Building the Rockstar catalog + merger tree", "2015-04-19", "2015-06-20", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
-  ("mdpl2:act_fof", "MDPL2 FOF halo finding", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.17", "-", "-", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
+  ("mdpl2:act_fof", "MDPL2 FOF halo finding", "cs:actdesc_fof", "Running the FOF halo finder, basic linking length 0.17", "2014-08-20", "2014-09-13", "Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R"),
   ("mdpl2:act_rockstar", "MDPL2 Rockstar building", "cs:actdesc_mergertree", "Building the Rockstar catalog + merger tree", "2015-02-09", "2015-09-01", "Behroozi, Wechsler and Wu, 2013, APJ 762, 109"),
   ("mdpl2:act_galacticus", "Running Galacticus on MDPL2", "cs:actdesc_sam", "Building the Galacticus galaxy catalog", "2015-09-30", "2015-10-01", "Benson et al.")
   ;
@@ -189,7 +189,7 @@ INSERT INTO prov_vo_agent(id, label, type, affiliation) VALUES
   ("cs:Gustavo_Yepes", "Gustavo Yepes", "prov:Person", "UAM, Madrid, Spain"),
   ("cs:Peter_Behroozi", "Peter Behroozi", "prov:Person", "UC Berkeley, Berkeley, USA"),
   ("cs:Christoph_Behrens", "Christoph Behrens", "prov:Person", "Georg-August-Universität Göttingen, Göttingen, Germany"),
-  ("cs:MultiDark", "MultiDark project", "prov:organization", "Spain+Germany+USA")
+  ("cs:MultiDark", "MultiDark project", "prov:Organization", "Spain+Germany+USA")
   ;
 
 INSERT INTO prov_vo_wasassociatedwith(activity_id, agent_id, role) VALUES

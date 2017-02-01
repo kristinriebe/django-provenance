@@ -39,4 +39,8 @@
     <p class="notfound">No parameters are available.</p>
 {% endif %}
 
+Test for datetime:
+
+{{ experiment.name }}, {{ experiment.executionTime | date:'Y-m-d' }}
+
 {% endblock %}

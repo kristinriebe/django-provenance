@@ -25,7 +25,7 @@ class Party(models.Model):
 
 class Experiment(models.Model):
     id = models.CharField(primary_key=True, max_length=128)  # new from prov
-    executionTime = models.DateTimeField(null=True) # == voprov:endTime
+    executionTime = models.DateField(null=True) # == voprov:endTime
     protocol = models.ForeignKey("Protocol", null=True, on_delete=models.SET_NULL) # == voprov:activitydescription
     name = models.CharField(max_length=1024, blank=True, null=True)
     #description = 

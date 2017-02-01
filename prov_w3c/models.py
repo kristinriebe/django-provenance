@@ -5,28 +5,33 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.http import JsonResponse
 
 
-ACTIVITY_TYPE_CHOICES = (
+AACTIVITY_TYPE_CHOICES = (
     ('cs:simulation', 'cs:simulation'),
-    ('cs:processing', 'cs:processing'),
+    ('cs:post-processing', 'cs:post-processing'),
 )
 ACTIVITY_SUBTYPE_CHOICES = (
-    ('cs:halofinding', 'cs:halofinding'),
-    ('cs:mergertree-generation', 'cs:mergertree-generation'),
+    ('cs:halofinder', 'cs:halofinder'),
+    ('cs:mergertreebuilding', 'cs:mergertreebuilding'),
+    ('cs:galaxybuilding', 'cs:galaxybuilding'),
 )
-
 AGENT_TYPE_CHOICES = (
-    ('voprov:Project','voprov:Project'),
-    ('prov:Person','prov:Person'),
+    ('prov:Person', 'prov:Person'),
+    ('prov:Organization', 'prov:Organization'),
 )
 
+AGENT_ROLE_CHOICES = (
+    ("publisher", "publisher"),
+    ("creator", "creator"),
+    ("publisher", "operator"),
+)
 
 # main ProvDM classes:
 @python_2_unicode_compatible
 class Activity(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     label = models.CharField(max_length=128, null=True) # should require this, otherwise do not know what to show!
-    startTime = models.DateTimeField(null=True) # should be: null=False, default=timezone.now())
-    endTime = models.DateTimeField(null=True) # should be: null=False, default=timezone.now())
+    startTime = models.DateField(null=True) # should be: null=False, default=timezone.now())
+    endTime = models.DateField(null=True) # should be: null=False, default=timezone.now())
     description = models.CharField(max_length=1024, blank=True, null=True)
     type = models.CharField(max_length=128, null=True, choices=ACTIVITY_TYPE_CHOICES)
     subtype = models.CharField(max_length=128, null=True, choices=ACTIVITY_SUBTYPE_CHOICES)
@@ -100,7 +105,7 @@ class WasAssociatedWith(models.Model):
     id = models.AutoField(primary_key=True)
     activity = models.ForeignKey(Activity, null=True, on_delete=models.CASCADE) 
     agent = models.ForeignKey(Agent, null=True, on_delete=models.CASCADE)
-    role = models.CharField(max_length=128, blank=True, null=True)
+    role = models.CharField(max_length=128, blank=True, null=True, choices=AGENT_ROLE_CHOICES)
 
     def __str__(self):
         return "id=%s; activity=%s; agent=%s; role=%s" % (str(self.id), self.activity, self.agent, self.role)
@@ -110,7 +115,7 @@ class WasAttributedTo(models.Model):
     id = models.AutoField(primary_key=True)
     entity = models.ForeignKey(Entity, null=True, on_delete=models.CASCADE) 
     agent = models.ForeignKey(Agent, null=True, on_delete=models.CASCADE)
-    role = models.CharField(max_length=128, blank=True, null=True)
+    role = models.CharField(max_length=128, blank=True, null=True, choices=AGENT_ROLE_CHOICES)
 
     def __str__(self):
         return "id=%s; entity=%s; agent=%s; role=%s" % (str(self.id), self.entity, self.agent, self.role)

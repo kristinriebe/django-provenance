@@ -18,13 +18,13 @@ INSERT INTO prov_simdm_protocol (id, name, code, version, description, reference
   ;
 
 INSERT INTO prov_simdm_experiment (id, name, protocol_id, executiontime) VALUES
-  ("mdr1:exp_simulation", "MDR1 simulation", "cs:protocol_artsimu", "2010"),  --, "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
-  ("mdpl2:exp_simulation", "MDPL2 simulation", "cs:protocol_artsimu", "2014"), --"Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
+  ("mdr1:exp_simulation", "MDR1 simulation", "cs:protocol_artsimu", "2010-08-20"),  --, "Prada et al. (2012), MNRAS, 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P"),
+  ("mdpl2:exp_simulation", "MDPL2 simulation", "cs:protocol_artsimu", "2014-01-01"), --"Klypin, Yepes, Gottlöber, Prada, Heß, (2016) MNRAS 457, 4340"),
   ("mdr1:exp_fof", "MDR1 FOF halo finding", "cs:protocol_fofhf", "2010-11-09"),
   ("mdr1:exp_fofc", "MDR1 FOFc halo finding, c-version", "cs:protocol_fofhf", "2010-08-29"),
-  ("mdr1:exp_fofmtree", "MDR1 FOFMtree building", "cs:protocol_fofmtree", "2011"),
+  ("mdr1:exp_fofmtree", "MDR1 FOFMtree building", "cs:protocol_fofmtree", "2011-03-01"),
   ("mdr1:exp_rockstar", "MDR1 Rockstar building", "cs:protocol_rockstartree", "2015-06-20"),
-  ("mdpl2:exp_fof", "MDPL2 FOF halo finding", "cs:protocol_fofhf", "-"),
+  ("mdpl2:exp_fof", "MDPL2 FOF halo finding", "cs:protocol_fofhf", "2014-09-13"),
   ("mdpl2:exp_rockstar", "MDPL2 Rockstar building", "cs:protocol_rockstartree", "2015-09-01"),
   ("mdpl2:exp_galacticus", "Running Galacticus on MDPL2", "cs:protocol_galacticus", "2015-10-01")
   ;
