@@ -5,7 +5,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.http import JsonResponse
 
 
-AACTIVITY_TYPE_CHOICES = (
+ACTIVITY_TYPE_CHOICES = (
     ('cs:simulation', 'cs:simulation'),
     ('cs:post-processing', 'cs:post-processing'),
 )
