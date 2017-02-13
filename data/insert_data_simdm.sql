@@ -8,6 +8,11 @@ DELETE FROM prov_simdm_parametersetting;
 DELETE FROM prov_simdm_appliedalgorithm;
 DELETE FROM prov_simdm_algorithm;
 
+DELETE FROM prov_simdm_inputdataset;
+DELETE FROM prov_simdm_outputdataset;
+DELETE FROM prov_simdm_inputdataobjecttype;
+DELETE FROM prov_simdm_outputdataobjecttype;
+
 
 INSERT INTO prov_simdm_protocol (id, name, code, version, description, referenceURL) VALUES
   ("cs:protocol_artsimu", "ART", "[link to ART code]", "--", "Adaptive Refinement Tree code for running cosmological simulatios, Kravtsov et al. 1997, ApJS, 111, 73", "http://adsabs.harvard.edu/abs/1997ApJS..111...73K"),
@@ -63,3 +68,18 @@ INSERT INTO prov_simdm_appliedalgorithm(algorithm_id, experiment_id) VALUES
   ("cs:algo_sam", "mdpl2:exp_galacticus")
   ;
 
+INSERT INTO prov_simdm_inputdataset(id, name, description, url, experiment_id, product_id, inputtype_id) VALUES
+  ("mdr1:in_snapshots", "MDR1 Snapshots (input)", "Snapshots of the simulation", "", "mdr1:exp_fof", "mdr1:out_snapshots", "cs:inputtype_snaps")
+  ;
+
+INSERT INTO prov_simdm_outputdataset(id, name, numberofobjects, accessurl, experiment_id, objecttype_id) VALUES
+  ("mdr1:out_snapshots", "MDR1 Snapshots (output)", 85, "", "mdr1:exp_simulation", "cs:outputtype_snaps")
+  ;
+
+INSERT INTO prov_simdm_inputdataobjecttype(id, name, description, label, definition_id, protocol_id) VALUES
+  ("cs:inputtype_snaps", "-", "-", "-", "cs:outputtype_snaps", "cs:protocol_fofhf")
+  ;
+
+INSERT INTO prov_simdm_outputdataobjecttype(id, name, description, label, protocol_id) VALUES
+  ("cs:outputtype_snaps", "Snapshots", "Snapshots of a simulation", "", "cs:protocol_artsimu")
+  ;

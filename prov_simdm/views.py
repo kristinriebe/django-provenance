@@ -76,6 +76,7 @@ class ProtocolsView(generic.ListView):
 
 class ProtocolDetailView(CustomDetailView):
     model = Protocol
+    # contains: input-/ouput-dataobjecttype
 
 
 class InputParametersView(generic.ListView):
