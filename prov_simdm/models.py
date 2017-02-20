@@ -4,14 +4,16 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
 
-# Create your models here.
 @python_2_unicode_compatible
 class Party(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
     name = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname
     #email = models.CharField(max_length=1024, blank=True, null=True)
     #address = models.CharField(max_length=1024, blank=True, null=True)
-    #telephone = models.CharField(max_length=1024, blank=True, null=True)
+    #telephone = models.CharField(max_length=1024, blank=True, null=True
+    # own attributes:
+    affiliation = models.CharField(max_length=1024, blank=True, null=True)
+
     def __str__(self):
         return self.id
 
@@ -19,6 +21,25 @@ class Party(models.Model):
         attributes = [
             'id',
             'name',
+        ]
+        return attributes
+
+
+@python_2_unicode_compatible
+class Contact(models.Model):
+    id = models.AutoField(primary_key=True)
+    role = models.CharField(max_length=128, null=True)
+    party = models.ForeignKey("Party", null=True, on_delete=models.SET_NULL)
+    experiment = models.ForeignKey("Experiment", null=True, on_delete=models.SET_NULL)
+    # pointer to protocol is allowed in SimDM; makes sense here, because can be used for people responsible for certain types of code (creators)
+    protocol = models.ForeignKey("Protocol", null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.id
+
+    def get_viewattributes(self):
+        attributes = [
+            'role',
         ]
         return attributes
 
@@ -36,6 +57,9 @@ class Experiment(models.Model):
     #referenceURL = 
     #created = 
     # collections: appliedAlgorithm (AppliedAlgorithm), inputData (InputDataset), outputData (OutputDataset), parameter (ParameterSetting)
+    # collections inherited from Resource: Contact
+    # attribute inherited from Resource:
+    project = models.ForeignKey("Project", null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.id
@@ -45,7 +69,8 @@ class Experiment(models.Model):
             'id',
             'name',
             'executionTime',
-            'protocol'
+            'protocol',
+            'project'
         ]
         return attributes
 
@@ -170,7 +195,6 @@ class ParameterSetting(models.Model):
         return attributes
 
 
-
 @python_2_unicode_compatible
 class InputDataset(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
@@ -215,7 +239,9 @@ class OutputDataset(models.Model):
     # objectType = models.ForeignKey("ObjectType", null=True, on_delete=models.SET_NULL)
     # using ForeignKey to ObjectTye does NOT work, since ObjectType is an abstract class
     objectType = models.ForeignKey("OutputDataObjectType", null=True, on_delete=models.SET_NULL)
-    # collections: object (DataObject), characterisation (StatisticalSummary, not implemented here)
+    # collections:
+    # object (DataObject, see below)
+    # characterisation (StatisticalSummary, not implemented here)
 
 
     def __str__(self):
@@ -277,7 +303,12 @@ class DataObject(models.Model):
 
 @python_2_unicode_compatible
 class InputDataObject(models.Model):
-    # This class connects InputDataset and DataObject. It serves as a protection 
+    # This class connects InputDataset and DataObject. 
+    # It allows to specify onlya subset of an outputDataset that was actually 
+    # used as input for something else, by providing a link to dataObject.
+    # An OutputDataset consists of DataObject, an InputDataset consists of InputDataObjects that refer to DataObjects.
+    # 
+    # Thus it serves as a protection 
     # layer against composition-destruction, i.e. inputDataset can contain many 
     # InputDataObjects, which themselves link (1-1) to data objects.
     # Each dataObject can be part of 1 OutputDataset.
@@ -286,8 +317,17 @@ class InputDataObject(models.Model):
     id = models.AutoField(primary_key=True)
     inputDataset = models.ForeignKey("InputDataset", null=True, on_delete=models.SET_NULL) # many can refer to the same inputdataset
     # renamed object to dataobject
-    dataobject = models.ForeignKey("DataObject", null=True, on_delete=models.SET_NULL) # only 1-1
+    dataObject = models.ForeignKey("DataObject", null=True, on_delete=models.SET_NULL) # only 1-1
 
     def __str__(self):
         return self.id
 
+@python_2_unicode_compatible
+class Project(models.Model):
+    id = models.CharField(primary_key=True, max_length=128)
+    name = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.CharField(max_length=1024, blank=True, null=True)
+    referenceURL = models.CharField(max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.id

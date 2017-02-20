@@ -12,6 +12,8 @@ DELETE FROM prov_simdm_inputdataset;
 DELETE FROM prov_simdm_outputdataset;
 DELETE FROM prov_simdm_inputdataobjecttype;
 DELETE FROM prov_simdm_outputdataobjecttype;
+DELETE FROM prov_simdm_inputdataobject;
+DELETE FROM prov_simdm_dataobject;
 
 
 INSERT INTO prov_simdm_protocol (id, name, code, version, description, referenceURL) VALUES
@@ -36,15 +38,22 @@ INSERT INTO prov_simdm_experiment (id, name, protocol_id, executiontime) VALUES
 
 INSERT INTO prov_simdm_inputparameter (id, name, protocol_id, datatype, description) VALUES  -- need multiplicity?
   ("cs:inparam_forceres", "force resolution", "cs:protocol_artsimu", "string", "(Average) force resolution of the code"),
-  ("cs:inparam_zini",     "z_ini",            "cs:protocol_artsimu", "float",  "Initial redshift, at which the simulation was started"),
-  ("cs:inparam_foflinklen", "linking length", "cs:protocol_fofhf",   "float",  "Relative linking lenth for Friends-of-Friends halo finder")
+  ("cs:inparam_zini",     "z_ini",            "cs:protocol_artsimu", "float", "Initial redshift, at which the simulation was started"),
+  ("cs:inparam_foflinklen", "linking length", "cs:protocol_fofhf", "float", "Relative linking lenth for Friends-of-Friends halo finder"),
+  ("cs:inparam_boxsize", "box size", "cs:protocol_artsimu", "float", "Side length of simulation box"),
+  ("cs:inparam_particleres", "particle resolution", "cs:protocol_artsimu", "int", "Number of particles per dimension")
   ;
+-- still missing: cosmological parameters (omega_lambda etc, sigma, ...)
 
 INSERT INTO prov_simdm_parametersetting (experiment_id, inputparameter_id, value) VALUES
   ("mdr1:exp_simulation", "cs:inparam_forceres", "7.0 h-1.kpc"),
   ("mdr1:exp_simulation", "cs:inparam_zini", "65.0"),
+  ("mdr1:exp_simulation", "cs:inparam_boxsize", "1 h-1.Gpc"),
+  ("mdr1:exp_simulation", "cs:inparam_particleres", "2048"),
   ("mdpl2:exp_simulation", "cs:inparam_forceres", "[5.0,13.0]"),
   ("mdpl2:exp_simulation", "cs:inparam_zini", "120.0"),
+  ("mdpl2:exp_simulation", "cs:inparam_boxsize", "1 h-1.Gpc"),
+  ("mdpl2:exp_simulation", "cs:inparam_particleres", "4096"),
   ("mdr1:exp_fof", "cs:inparam_foflinklen", "0.17"),
   ("mdr1:exp_fofc", "cs:inparam_foflinklen", "0.2"),
   ("mdpl2:exp_fof", "cs:inparam_foflinklen", "0.17")
@@ -69,11 +78,14 @@ INSERT INTO prov_simdm_appliedalgorithm(algorithm_id, experiment_id) VALUES
   ;
 
 INSERT INTO prov_simdm_inputdataset(id, name, description, url, experiment_id, product_id, inputtype_id) VALUES
-  ("mdr1:in_snapshots", "MDR1 Snapshots (input)", "Snapshots of the simulation", "", "mdr1:exp_fof", "mdr1:out_snapshots", "cs:inputtype_snaps")
+  ("mdr1:in_snapshots_fof", "MDR1 Snapshots (input)", "Snapshots of the simulation", "", "mdr1:exp_fof", "mdr1:out_snapshots", "cs:inputtype_snaps"),
+  ("mdr1:in_snapshots_fofc", "MDR1 Snapshots (input)", "Snapshots of the simulation", "", "mdr1:exp_fofc", "mdr1:out_snapshots", "cs:inputtype_snaps")
   ;
 
 INSERT INTO prov_simdm_outputdataset(id, name, numberofobjects, accessurl, experiment_id, objecttype_id) VALUES
-  ("mdr1:out_snapshots", "MDR1 Snapshots (output)", 85, "", "mdr1:exp_simulation", "cs:outputtype_snaps")
+  ("mdr1:out_snapshots", "MDR1 Snapshots (output)", 85, "", "mdr1:exp_simulation", "cs:outputtype_snaps"),
+  ("mdr1:out_fof", "MDR1 FOF catalog (output)", 85, "", "mdr1:exp_fof", "cs:outputtype_fof"),
+  ("mdr1:out_fofc", "MDR1 FOFc catalog (output)", 85, "", "mdr1:exp_fofc", "cs:outputtype_fof")
   ;
 
 INSERT INTO prov_simdm_inputdataobjecttype(id, name, description, label, definition_id, protocol_id) VALUES
@@ -81,5 +93,20 @@ INSERT INTO prov_simdm_inputdataobjecttype(id, name, description, label, definit
   ;
 
 INSERT INTO prov_simdm_outputdataobjecttype(id, name, description, label, protocol_id) VALUES
-  ("cs:outputtype_snaps", "Snapshots", "Snapshots of a simulation", "", "cs:protocol_artsimu")
+  ("cs:outputtype_snaps", "Snapshots", "Snapshots of a simulation", "", "cs:protocol_artsimu"),
+  ("cs:outputtype_fof", "FOF catalog", "List of friends-of-friends clusters", "", "cs:protocol_fofhf")
+  ;
+
+INSERT INTO prov_simdm_inputdataobject(inputdataset_id, dataobject_id) VALUES
+  ("mdr1:in_snapshots_fof", "mdr1:snapshot_5"),
+  ("mdr1:in_snapshots_fof", "mdr1:snapshot_85"),
+  ("mdr1:in_snapshots_fofc", "mdr1:snapshot_5"),
+  ("mdr1:in_snapshots_fofc", "mdr1:snapshot_85")
+  ;
+
+INSERT INTO prov_simdm_dataobject(id, outputdataset_id) VALUES
+  ("mdr1:snapshot_1", "mdr1:out_snapshots"),
+  ("mdr1:snapshot_2", "mdr1:out_snapshots"),
+  ("mdr1:snapshot_5", "mdr1:out_snapshots"),
+  ("mdr1:snapshot_85", "mdr1:out_snapshots")
   ;

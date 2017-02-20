@@ -1,0 +1,633 @@
+# Experiments
+-   model: prov_simdm.experiment
+    pk: mdr1:exp_simulation
+    fields: 
+        executionTime: 2010-08-20
+        protocol: 'cs:protocol_artsimu'
+        name: MDR1 simulation
+        project: 'cs:project_multidark'
+-   model: prov_simdm.experiment
+    pk: mdr1:exp_fof
+    fields: 
+        executionTime: 2010-11-09
+        protocol: 'cs:protocol_fofhf'
+        name: MDR1 FOF halo finding
+        project: 'cs:project_multidark'
+-   model: prov_simdm.experiment
+    pk: mdr1:exp_fofc
+    fields:
+        executionTime: 2010-08-29
+        protocol: 'cs:protocol_fofhf'
+        name: 'MDR1 FOFc halo finding, c-version'
+        project: 'cs:project_multidark'
+-   model: prov_simdm.experiment
+    pk: mdr1:exp_fofmergertree
+    fields:
+        executionTime: 2011-03-01
+        protocol: 'cs:protocol_fofmergertree'
+        name: MDR1 FOFMtree building
+        project: 'cs:project_multidark'
+-   model: prov_simdm.experiment
+    pk: mdr1:exp_rockstartree
+    fields:
+        executionTime: 2015-06-20
+        protocol: 'cs:protocol_rockstartree'
+        name: 'MDR1 Rockstar building, including tree links'
+        project: 'cs:project_multidark'
+
+-   model: prov_simdm.experiment
+    pk: mdpl2:exp_simulation
+    fields:
+        executionTime: 2014-01-01
+        protocol: 'cs:protocol_artsimu'
+        name: MDPL2 simulation
+        project: 'cs:project_multidark'
+-   model: prov_simdm.experiment
+    pk: mdpl2:exp_fof
+    fields: 
+        executionTime: 2014-09-13
+        protocol: 'cs:protocol_fofhf'
+        name: MDPL2 FOF halo finding
+        project: 'cs:project_multidark'
+-   model: prov_simdm.experiment
+    pk: mdpl2:exp_rockstartree
+    fields: 
+        executionTime: 2015-09-01
+        protocol: 'cs:protocol_rockstartree'
+        name: MDPL2 Rockstar building
+        project: 'cs:project_multidark'
+-   model: prov_simdm.experiment
+    pk: mdpl2:exp_galacticus
+    fields: 
+        executionTime: 2015-10-01
+        protocol: 'cs:protocol_galacticus'
+        name: Running Galacticus on MDPL2
+        project: 'cs:project_multidark'
+
+
+
+
+# Protocols
+-   model: prov_simdm.protocol
+    pk: cs:protocol_artsimu
+    fields:
+        name: ART
+        code: '[link to ART code]'
+        version: --
+        description: 'Adaptive Refinement Tree code for running cosmological simulatios, Kravtsov et al. 1997, ApJS, 111, 73'
+        referenceURL: 'http://adsabs.harvard.edu/abs/1997ApJS..111...73K'
+-   model: prov_simdm.protocol
+    pk: cs:protocol_fofhf
+    fields:
+        name: FOF
+        code: not public
+        version: --
+        description: 'Friends-of-Friends cluster finder, applied version is described in Riebe et al. (2013), AN, 334, 691'
+        referenceURL: 'http://adsabs.harvard.edu/abs/2013AN....334..691R'
+-   model: prov_simdm.protocol
+    pk: cs:protocol_fofmergertree
+    fields:
+        name: FOF Merger tree
+        code: not public
+        version: --
+        description: Custom code for generating merger tree data from FOF data
+        referenceURL: --
+-   model: prov_simdm.protocol
+    pk: cs:protocol_galacticus
+    fields:
+        name: Galacticus
+        code: 'https://sites.google.com/site/galacticusmodel/'
+        version: --
+        description: Galacticus code for semi-analytical galaxies
+        referenceURL: ''
+-   model: prov_simdm.protocol
+    pk: cs:protocol_rockstartree
+    fields:
+        name: Rockstar tree
+        code: 'https://bitbucket.org/gfcstanford/rockstar, https://bitbucket.org/pbehroozi/consistent-trees'
+        version: --
+        description: Code for building Rockstar catalog with consistent merger trees
+        referenceURL: ''
+
+
+# Algorithms
+-   model: prov_simdm.algorithm
+    pk: cs:algo_art
+    fields:
+        name: Adaptive mesh refinement
+        description: 'code uses a grid for calculating potential, forces etc.; grid size is adaptive'
+        label: ''
+        protocol: 'cs:protocol_artsimu'
+-   model: prov_simdm.algorithm
+    pk: cs:algo_fof
+    fields:
+        name: Friends-of-Friends
+        description: code uses friends-of-friends algorithm for finding groups of connected particles (clusters)
+        label: ''
+        protocol: 'cs:protocol_fofhf'
+-   model: prov_simdm.algorithm
+    pk: cs:algo_phasespace
+    fields:
+        name: Phase-space halo finder
+        description: algorithm for finding halos using phase-space information
+        label: ''
+        protocol: 'cs:protocol_rockstartree'
+-   model: prov_simdm.algorithm
+    pk: cs:algo_sam
+    fields:
+        name: SAM
+        description: algorithm for finding halos using phase-space information
+        label: ''
+        protocol: 'cs:protocol_galacticus'
+
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_art'
+        experiment: 'mdr1:exp_simulation'
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_art'
+        experiment: 'mdpl2:exp_simulation'
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_fof'
+        experiment: 'mdr1:exp_fof'
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_fof'
+        experiment: 'mdr1:exp_fofc'
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_fof'
+        experiment: 'mdpl2:exp_fof'
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_phasespace'
+        experiment: 'mdr1:exp_rockstar'
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_phasespace'
+        experiment: 'mdpl2:exp_rockstar'
+-   model: prov_simdm.appliedalgorithm
+    fields:
+        algorithm: 'cs:algo_sam'
+        experiment: 'mdpl2:exp_galacticus'
+
+
+# Parameters
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_boxsize
+    fields:
+        protocol: 'cs:protocol_artsimu'
+        name: box size
+        datatype: float
+        description: Side length of simulation box
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_foflinklen
+    fields:
+        protocol: 'cs:protocol_fofhf'
+        name: linking length
+        datatype: float
+        description: Relative linking lenth for Friends-of-Friends halo finder
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_forceres
+    fields:
+        protocol: 'cs:protocol_artsimu'
+        name: force resolution
+        datatype: string
+        description: (Average) force resolution of the code
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_particleres
+    fields:
+        protocol: 'cs:protocol_artsimu'
+        name: particle resolution
+        datatype: int
+        description: Number of particles per dimension
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_zini
+    fields:
+        protocol: 'cs:protocol_artsimu'
+        name: z_ini
+        datatype: float
+        description: 'Initial redshift, at which the simulation was started'
+
+-   model: prov_simdm.parametersetting
+    fields:
+        value: 7.0 h-1.kpc
+        inputParameter: 'cs:inparam_forceres'
+        experiment: 'mdr1:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '65.0'
+        inputParameter: 'cs:inparam_zini'
+        experiment: 'mdr1:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: 1 h-1.Gpc
+        inputParameter: 'cs:inparam_boxsize'
+        experiment: 'mdr1:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '2048'
+        inputParameter: 'cs:inparam_particleres'
+        experiment: 'mdr1:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '[5.0,13.0]'
+        inputParameter: 'cs:inparam_forceres'
+        experiment: 'mdpl2:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '120.0'
+        inputParameter: 'cs:inparam_zini'
+        experiment: 'mdpl2:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: 1 h-1.Gpc
+        inputParameter: 'cs:inparam_boxsize'
+        experiment: 'mdpl2:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '4096'
+        inputParameter: 'cs:inparam_particleres'
+        experiment: 'mdpl2:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '0.17'
+        inputParameter: 'cs:inparam_foflinklen'
+        experiment: 'mdr1:exp_fof'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '0.2'
+        inputParameter: 'cs:inparam_foflinklen'
+        experiment: 'mdr1:exp_fofc'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '0.17'
+        inputParameter: 'cs:inparam_foflinklen'
+        experiment: 'mdpl2:exp_fof'
+
+
+# Datasets
+# -- OutputDataset
+-   model: prov_simdm.outputdataset
+    pk: mdr1:out_snapshots
+    fields:
+        name: MDR1 snapshots (output)
+        numberOfObjects: 85
+        accessURL: ''
+        experiment: 'mdr1:exp_simulation'
+        objectType: 'cs:outputtype_snaps'
+
+-   model: prov_simdm.outputdataset
+    pk: mdr1:out_fof
+    fields:
+        name: MDR1 FOF catalog (output)
+        numberOfObjects: 85
+        accessURL: 'https://www.cosmosim.org/'
+        experiment: 'mdr1:exp_fof'
+        objectType: 'cs:outputtype_fof'
+
+-   model: prov_simdm.outputdataset
+    pk: mdr1:out_fofc
+    fields:
+        name: MDR1 FOFc catalog (output)
+        numberOfObjects: 85
+        accessURL: 'https://www.cosmosim.org/'
+        experiment: 'mdr1:exp_fofc'
+        objectType: 'cs:outputtype_fof'
+
+-   model: prov_simdm.outputdataset
+    pk: mdr1:out_fofmergertree
+    fields:
+        name: MDR1 merger tree (output)
+        numberOfObjects: 39
+        accessURL: 'https://www.cosmosim.org/'
+        experiment: 'mdr1:exp_fofmergertree'
+        objectType: 'cs:outputtype_fofmergertree'
+
+-   model: prov_simdm.outputdataset
+    pk: mdr1:out_rockstar
+    fields:
+        name: MDR1 Rockstar catalog+trees
+        numberOfObjects: 85
+        accessURL: 'https://www.cosmosim.org/'
+        experiment: 'mdr1:exp_rockstar'
+        objectType: 'cs:outputtype_rockstartree'
+
+
+
+-   model: prov_simdm.outputdataset
+    pk: mdpl2:out_snapshots
+    fields:
+        name: MDPL2 simulation snapshots (output)
+        numberOfObjects: 85
+        accessURL: ''
+        experiment: 'mdpl2:exp_simulation'
+        objectType: 'cs:outputtype_snaps'
+
+-   model: prov_simdm.outputdataset
+    pk: mdpl2:out_fof
+    fields:
+        name: MDPL2 FOF catalog (output)
+        numberOfObjects: 85
+        accessURL: 'https://www.cosmosim.org/'
+        experiment: 'mdpl2:exp_fof'
+        objectType: 'cs:outputtype_fof'
+
+-   model: prov_simdm.outputdataset
+    pk: mdpl2:out_rockstar
+    fields:
+        name: MDPL2 Rockstar catalog+trees
+        numberOfObjects: 85
+        accessURL: 'https://www.cosmosim.org/'
+        experiment: 'mdpl2:exp_rockstar'
+        objectType: 'cs:outputtype_rockstartree'
+
+-   model: prov_simdm.outputdataset
+    pk: mdpl2:out_galacticus
+    fields:
+        name: MDPL2 Galacticus catalog
+        numberOfObjects: 85
+        accessURL: 'https://www.cosmosim.org/'
+        experiment: 'mdpl2:exp_galacticus'
+        objectType: 'cs:outputtype_galacticus'
+
+
+# -- InputDataset
+-   model: prov_simdm.inputdataset
+    pk: mdr1:in_snapshots_fof
+    fields:
+        name: MDR1 Snapshots (input)
+        description: Snapshots of the simulation
+        url: ''
+        experiment: 'mdr1:exp_fof'
+        product: 'mdr1:out_snapshots'
+        inputtype: 'cs:inputtype_snaps'
+
+-   model: prov_simdm.inputdataset
+    pk: mdr1:in_snapshots_fofc
+    fields:
+        name: MDR1 Snapshots (input)
+        description: Snapshots of the simulation
+        url: ''
+        experiment: 'mdr1:exp_fofc'
+        product: 'mdr1:out_snapshots'
+        inputtype: 'cs:inputtype_snaps'
+
+-   model: prov_simdm.inputdataset
+    pk: mdr1:in_snapshots_fofmergertree
+    fields:
+        name: MDR1 Snapshots (input)
+        description: Snapshots of the simulation
+        url: ''
+        experiment: 'mdr1:exp_fofmergertree'
+        product: 'mdr1:out_snapshots'
+        inputtype: 'cs:inputtype_snaps'
+
+-   model: prov_simdm.inputdataset
+    pk: mdr1:in_snapshots_rockstar
+    fields:
+        name: MDR1 Snapshots (input)
+        description: Snapshots of the simulation
+        url: ''
+        experiment: 'mdr1:exp_rockstartree'
+        product: 'mdr1:out_snapshots'
+        inputtype: 'cs:inputtype_snaps'
+
+-   model: prov_simdm.inputdataset
+    pk: mdpl2:in_snapshots_fof
+    fields:
+        name: MDPL2 Snapshots (input)
+        description: Snapshots of the simulation
+        url: ''
+        experiment: 'mdpl2:exp_fof'
+        product: 'mdpl2:out_snapshots'
+        inputtype: 'cs:inputtype_snaps'
+
+-   model: prov_simdm.inputdataset
+    pk: mdpl2:in_snapshots_rockstar
+    fields:
+        name: MDPL2 Snapshots (input)
+        description: Snapshots of the simulation
+        url: ''
+        experiment: 'mdpl2:exp_rockstartree'
+        product: 'mdpl2:out_snapshots'
+        inputtype: 'cs:inputtype_snaps'
+
+-   model: prov_simdm.inputdataset
+    pk: mdpl2:in_rockstar_galacticus
+    fields:
+        name: MDPL2 Rockstar (input)
+        description: Rockstar halo catalog for MDPL2
+        url: ''
+        experiment: 'mdpl2:exp_galacticus'
+        product: 'mdpl2:out_rockstar'
+        inputtype: 'cs:inputtype_rockstartree'
+
+
+
+# -- OutputDataObjectType
+-   model: prov_simdm.outputdataobjecttype
+    pk: cs:outputtype_snaps
+    fields:
+        name: Snapshots
+        description: Snapshots of a simulation
+        label: ''
+        protocol: 'cs:protocol_artsimu'
+
+-   model: prov_simdm.outputdataobjecttype
+    pk: cs:outputtype_fof
+    fields:
+        name: FOF catalog
+        description: List of friends-of-friends clusters
+        label: ''
+        protocol: 'cs:protocol_fofhf'
+
+-   model: prov_simdm.outputdataobjecttype
+    pk: cs:outputtype_fofmergertree
+    fields:
+        name: FOF merger trees
+        description: Catalog for FOF with merger tree links
+        label: ''
+        protocol: 'cs:protocol_fofmergertree'
+
+-   model: prov_simdm.outputdataobjecttype
+    pk: cs:outputtype_rockstartree
+    fields:
+        name: Rockstar trees
+        description: Rockstar catalog with consistent tree links for merging information
+        label: ''
+        protocol: 'cs:protocol_rockstartree'
+
+-   model: prov_simdm.outputdataobjecttype
+    pk: cs:outputtype_galacticus
+    fields:
+        name: Galacticus galaxies
+        description: Galacticus catalog with properties of semi-analytical galaxies
+        label: ''
+        protocol: 'cs:protocol_galacticus'
+
+
+# -- InputDataObjectType
+-   model: prov_simdm.inputdataobjecttype
+    pk: cs:inputtype_snaps
+    fields:
+        name: '-'
+        description: '-'
+        label: '-'
+        definition: 'cs:outputtype_snaps'
+        protocol: 'cs:protocol_fofhf'
+
+-   model: prov_simdm.inputdataobjecttype
+    pk: cs:inputtype_rockstartree
+    fields:
+        name: '-'
+        description: '-'
+        label: '-'
+        definition: 'cs:outputtype_rockstartree'
+        protocol: 'cs:protocol_rockstartree'
+
+
+# -- InputDataObject
+# ------ Map between InputDataset and DataObject:
+-   model: prov_simdm.inputdataobject
+    fields:
+        inputDataset: 'mdr1:in_snapshots_fof'
+        dataObject: 'mdr1:snapshot_5'
+-   model: prov_simdm.inputdataobject
+    fields:
+        inputDataset: 'mdr1:in_snapshots_fof'
+        dataObject: 'mdr1:snapshot_85'
+-   model: prov_simdm.inputdataobject
+    fields:
+        inputDataset: 'mdr1:in_snapshots_fofc'
+        dataObject: 'mdr1:snapshot_5'
+-   model: prov_simdm.inputdataobject
+    fields:
+        inputDataset: 'mdr1:in_snapshots_fofc'
+        dataObject: 'mdr1:snapshot_85'
+
+
+# -- DataObject
+# ----- I just put a few examples here to show how it works, links to OutputDataset are included here
+-   model: prov_simdm.dataobject
+    pk: mdr1:snapshot_1
+    fields:
+        outputDataset: 'mdr1:out_snapshots'
+-   model: prov_simdm.dataobject
+    pk: mdr1:snapshot_2
+    fields:
+        outputDataset: 'mdr1:out_snapshots'
+-   model: prov_simdm.dataobject
+    pk: mdr1:snapshot_5
+    fields:
+        outputDataset: 'mdr1:out_snapshots'
+-   model: prov_simdm.dataobject
+    pk: mdr1:snapshot_85
+    fields:
+        outputDataset: 'mdr1:out_snapshots'
+
+
+# -- Party
+-   model: prov_simdm.party
+    pk: cs:Stefan_Gottloeber
+    fields:
+        name: Stefan Gottlöber
+        affiliation: 'AIP, Potsdam, Germany'
+
+-   model: prov_simdm.party
+    pk: cs:Jaime_Forero_Romero
+    fields:
+        name: Jaime Forero-Romero
+        affiliation: 'AIP, Potsdam, Germany'
+
+-   model: prov_simdm.party
+    pk: cs:Gustavo_Yepes
+    fields:
+        name: Gustavo Yepes
+        affiliation: 'UAM, Madrid, Spain'
+
+-   model: prov_simdm.party
+    pk: cs:Peter_Behroozi
+    fields:
+        name: Peter Behroozi
+        affiliation: 'UC Berkeley, Berkeley, USA'
+
+-   model: prov_simdm.party
+    pk: cs:Christoph_Behrens
+    fields:
+        name: Christoph Behrens
+        affiliation: 'Georg-August-Universität Göttingen, Göttingen, Germany'
+
+-   model: prov_simdm.party
+    pk: cs:MultiDark
+    fields:
+        name: MultiDark project
+        affiliation: 'Spain+Germany+USA'
+
+
+# -- Contact
+# ----- relations between party and experiment/protocol
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Gustavo_Yepes
+        experiment: mdr1:exp_simulation
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Stefan_Gottloeber
+        experiment: mdr1:exp_fof
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Stefan_Gottloeber
+        experiment: mdr1:exp_fofc
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Jaime_Forero_Romero
+        experiment: mdr1:exp_fofmergertree
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Peter_Behroozi
+        experiment: mdr1:exp_rockstartree
+
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Gustavo_Yepes
+        experiment: mdpl2:exp_simulation
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Stefan_Gottloeber
+        experiment: mdpl2:exp_fof
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Peter_Behroozi
+        experiment: mdpl2:exp_rockstartree
+
+-   model: prov_simdm.contact
+    fields:
+        role: creator
+        party: cs:Christoph_Behrens
+        experiment: mdpl2:exp_galacticus
+
+# -- Project
+-   model: prov_simdm.project
+    fields:
+        id: cs:project_multidark
+        name: Multidark
+        description: The MultiDark simulation suite
+        referenceURL: https://www.cosmosim.org/
