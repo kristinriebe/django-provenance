@@ -22,5 +22,9 @@ urlpatterns = [
     url(r'^form/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
     #url(r'^form/$', views.get_algorithmId, name='get_algorithmId'), # also works!
     #url(r'^form/results/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
+
+    # simdal urls
+    url(r'^simdal/protocols/$', views.simdal_protocols, name='simdal_protocols'),
+
 ]
 

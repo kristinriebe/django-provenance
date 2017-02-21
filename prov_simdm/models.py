@@ -301,6 +301,7 @@ class DataObject(models.Model):
     def __str__(self):
         return self.id
 
+
 @python_2_unicode_compatible
 class InputDataObject(models.Model):
     # This class connects InputDataset and DataObject. 
@@ -321,6 +322,7 @@ class InputDataObject(models.Model):
 
     def __str__(self):
         return self.id
+
 
 @python_2_unicode_compatible
 class Project(models.Model):

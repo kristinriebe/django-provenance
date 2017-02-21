@@ -10,9 +10,14 @@ from django.core import serializers
 from rest_framework.renderers import JSONRenderer
 from django.views.generic.edit import FormView
 
-from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm
+from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project
 from .forms import AlgorithmForm
 import datetime
+from .serializers import ProtocolSerializer
+from .renderers import VOTableRenderer
+
+
+
 
 class CustomDetailView(generic.DetailView):
     model = Experiment  # shall be overwritten from inherited classes!
@@ -134,4 +139,66 @@ class AlgorithmFormResultsView(FormView):
             e.parametervalue_list = parametervalue_list
         
         return render_to_response('prov_simdm/algorithm_formresults.html', context={'algorithm': algorithm, 'experiment_list': experiment_list})
+
+
+# SimDAL views
+# ============
+
+# SimDAL Repository
+#class Projects(generic.ListView):
+#    template_name = 'prov_simdm/projects.html'
+#    context_object_name = 'project_list'
+#
+#    def get_queryset(self):
+#        projects = Project.objects.order_by('id')
+#        # TODO: convert to xml representation
+#        return projects
+
+#def projects(request):
+#    return HttpResponse(json_str, content_type='text/plain')
+
+def simdal_projects(request):
+    projects = Project.objects.order_by('id')
+
+    return HttpResponse(projects, content_type='text/plain')
+
+
+def simdal_protocols(request):
+    protocols = Protocol.objects.order_by('id')
+
+    # test serializers:
+    data = serializers.serialize('xml', protocols) #, fields=('name','')) # => works
+
+    # use custom serializer:
+    serializer = ProtocolSerializer(protocols, many=True)
+    data = serializer.data
+
+
+    # generate a VOTable, with one resource and one table only
+    data = protocols.values()
+    description = "SimDAL list of protocols"
+    votable = VOTableRenderer().render(data, tabledescription=description)
+
+    response = HttpResponse(votable, content_type="application/xml")
+    #response = HttpResponse(votable, content_type="text/plain")
+
+    # could also easily render serialized data into json:
+    #json = JSONRenderer().render(protocols.values())
+    #response = HttpResponse(json, content_type='application/json')
+
+    return response
+
+# SimDAL Search
+
+
+
+# SimDAL Data Access
+#class Datasets(generic.ListView):
+#    template_name = 'prov_simdm/datasets.html'
+#    context_object_name = 'dataset_list'
+#
+#    def get_queryset(self):
+#        datasets = OutputDataset.objects.order_by('id')
+#        # TODO: convert to xml representation
+#        return datasets
 
