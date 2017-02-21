@@ -172,12 +172,13 @@ def simdal_protocols(request):
     # use custom serializer:
     serializer = ProtocolSerializer(protocols, many=True)
     data = serializer.data
-
+    # xmlns:simdm="http://www.ivoa.net/documents/SimDM"
 
     # generate a VOTable, with one resource and one table only
     data = protocols.values()
-    description = "SimDAL list of protocols"
-    votable = VOTableRenderer().render(data, tabledescription=description)
+    tabledef = {'description': "SimDAL list of protocols", 'utype': 'SimDM:/resource/protocol/Protocol'}
+    fieldsdef = [{'name': 'code', 'description': 'url for source code or code description'}]
+    votable = VOTableRenderer().render(data, tabledef=tabledef, fieldsdef=fieldsdef)
 
     response = HttpResponse(votable, content_type="application/xml")
     #response = HttpResponse(votable, content_type="text/plain")

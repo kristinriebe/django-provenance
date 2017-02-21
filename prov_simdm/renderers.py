@@ -45,15 +45,18 @@ class VOTableRenderer(BaseRenderer):
             #'complex':'doubleComplex'
         }
 
-        def render(self, data, fields=None, tabledescription=None):
+        def render(self, data, votabledef={}, resourcedef={}, tabledef={}, fieldsdef=None):
             """
             parameters:
-              data = list of Python dictionaries (one for each row)
-              fields = optional list of field definitions; MUST contain a unique 'name' key
+              data = list of Python dictionaries (ordered, one for each row)
+              fieldsdef = optional list of field definitions; MUST contain a unique 'name' key
                        e.g. field = [ {'name': 'ra', 'ID': 'ra', 'datatype': 'float'},
                                       {'name': 'de', 'ID': 'de', 'datatype': 'float'}
                                     ]
-              tabledescription = optional free text for table DESCRIPTION element
+              votabledef = dictionary of global votable attributes and/or description
+                            TODO: include here group, info, param-elements as well!
+              tabledef = dictionary of table attributes and/or description
+              resourcedef = list of dictionary of resource attributes and/or description
             """
 
             if data is None:
@@ -66,44 +69,66 @@ class VOTableRenderer(BaseRenderer):
 
             xml.startDocument()
 
-            # add votable magic
-            xml.startElement("VOTABLE", {'version': self.version, 'xmlns': self.xmlns, 'xmlns:xsi': self.xmlns_xsi})
+            # add votable root element with namespace definitions
+            votabledef['version'] = self.version
+            votabledef['xmlns'] = self.xmlns
+            votabledef['xmlns:xsi'] = self.xmlns_xsi
 
-            xml.startElement("RESOURCE", {})    # possible attribute: "name"
-            xml.startElement("TABLE", {})    # possible attribute: "name"
+            xml.startElement("VOTABLE", votabledef)
+
+            # add one or more resources;
+            # there can be many resources and they can be nested ...
+            # but we just assume that we have only one resource with one table;
+            # may be improved in the future
+            resourcedescription = None
+            if 'description' in resourcedef:
+                resourcedescription = resourcedef['description']
+                resourcedef.pop('description', None)
+
+            xml.startElement("RESOURCE", resourcedef)
+            if resourcedescription:
+                xml.startElement("DESCRIPTION", {})
+                xml.characters(smart_text(resourcedescription))
+                xml.endElement("DESCRIPTION")
+
+            # add table
+            tabledescription = None
+            if 'description' in tabledef:
+                tabledescription = tabledef['description']
+                tabledef.pop('description', None)
             
-
-            # table DESCRIPTION
-            if tabledescription is not None:
+            xml.startElement("TABLE", tabledef)
+            if tabledescription:
                 xml.startElement("DESCRIPTION", {})
                 xml.characters(smart_text(tabledescription))
                 xml.endElement("DESCRIPTION")
+
             # GROUP, with children: PARAM and FIELDref
             #xml.startElement("GROUP", {})
-            #if tabledescription is not None:
-            #    xml.characters(smart_text(tabledescription))
             #xml.endElement("GROUP")
-            
+
             # PARAM and FIELD definitions with name, ID, ucd, datatype, width, precision, unit
             # and possible DESCRIPTION as child
-            xml.startElement("PARAM", {'url': '/protocols/', 'datatype': 'char'})
-            xml.endElement("PARAM")
-            
+            #xml.startElement("PARAM", {'url': '/protocols/', 'datatype': 'char'})
+            #xml.endElement("PARAM")
+
             # define one field for each column:
             # assume, that all rows have the same columns (even if empty value),
             # and that all fields are sorted in the same way for each row,
             # so can use the first row to determine the field names, datatypes etc.
             fieldnames = []
-            if fields is not None:
-                fieldnames = [f['name'] for f in fields]
+            if fieldsdef is not None:
+                fieldnames = [f['name'] for f in fieldsdef]
 
             for key, value in data[0].items():
                 # create dict of FIELD attributes based on available information
                 # Note: ID *must* be unique, name should be unique in FIELD attributes of VOTable
                 
+                # first check, if field information is already provided,
+                # if not, fill at least name, ID and datatype attributes
                 field = {}
                 if key in fieldnames:
-                    field = [f for f in fields if f['name'] == key][0]
+                    field = [f for f in fieldsdef if f['name'] == key][0]
 
                 # 'name' is a required key in provided fields-dict
                 if 'name' not in field:
@@ -120,7 +145,10 @@ class VOTableRenderer(BaseRenderer):
 
                     field['datatype'] = vodatatype
 
-                # more possible attributes: unit, ucd, arraysize, width, precision
+                if 'arraysize' not in field:
+                    field['arraysize'] = '*'
+
+                # more possible attributes: unit, ucd, width, precision
                 # need to be provided by fields-dictionary or won't be used at all
 
                 # extract description from field-dictionary, since it will be a child-element:
@@ -131,24 +159,15 @@ class VOTableRenderer(BaseRenderer):
                     field.pop('description', None)
 
                 xml.startElement("FIELD", field)
-                if 'fielddescription' in field:
+                if fielddescription is not None:
                     xml.startElement("DESCRIPTION", {})
                     xml.characters(smart_text(fielddescription))
                     xml.endElement("DESCRIPTION")
                 xml.endElement("FIELD")
 
-            # DATA element
-            xml.startElement("DATA", {})
-            # TABLEDATA element
-            xml.startElement("TABLEDATA", {})
+            # add DATA element with TABLEDATA, rows and values
+            self.votable_data(xml, data)
 
-            # TR/TD for rows and data fields
-            if data is not None:
-                self.votable_data(xml, data)
-            #self._to_xml(xml, data)
-
-            xml.endElement("TABLEDATA")
-            xml.endElement("DATA")
             xml.endElement("TABLE")
             xml.endElement("RESOURCE")
             xml.endElement("VOTABLE")
@@ -156,12 +175,22 @@ class VOTableRenderer(BaseRenderer):
 
             return stream.getvalue()
 
-        def votable_data(self, xml, data):
-            # not working yet for nested votables!!
-            #if hasattr(data, '__iter__'):
-            #xml.startElement("DATA", {})
-            #xml.startElement("TABLEDATA", {})
 
+        def votable_data(self, xml, data):
+            # if there is no data, then DATA-element does not exist => nothing to do!
+            if data is None:
+                return
+
+            # there is at most one DATA-element per TABLE,
+            # thus no need for recursions here
+            xml.startElement("DATA", {})
+
+            # use TABLEDATA here exclusively;
+            # could in the future also use FITS, BINARY or BINARY2 instead
+            xml.startElement("TABLEDATA", {})
+
+            # loop through all data rows and add them,
+            # fields MUST be in the same order as for field definitions
             for row in data:
                 xml.startElement('TR', {})
 
@@ -172,6 +201,5 @@ class VOTableRenderer(BaseRenderer):
 
                 xml.endElement('TR')
 
-            #xml.endElement("TABLEDATA")
-            #xml.endElement("DATA")
- 
+            xml.endElement("TABLEDATA")
+            xml.endElement("DATA")
