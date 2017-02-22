@@ -5,7 +5,8 @@ from django.utils.six.moves import StringIO
 from django.utils.encoding import smart_text
 from django.utils.encoding import smart_unicode
 from rest_framework.renderers import BaseRenderer
-
+from django.utils import timezone
+import lxml.etree as etree  # for pretty printing xml
 
 class VOTableRenderer(BaseRenderer):
         """
@@ -25,7 +26,12 @@ class VOTableRenderer(BaseRenderer):
         xmlns = "http://www.ivoa.net/xml/VOTable/v1.3"
         #xmlns_stc = "http://www.ivoa.net/xml/STC/v1.30"
         # TODO: define more namespaces like for STC, maybe need to get them as params
-        
+
+        comment = "<!--\n"\
+                + " !  Generated using Django with SimplerXMLGenerator and VOTableRenderer\n"\
+                + " !  at "+str(timezone.now())+"\n"\
+                + " !-->\n"
+
         # mapping from python data types to VOTable datatypes
         # NOTE: float in Python is implemented as double in C 
         # (see https://docs.python.org/2/library/stdtypes.html),
@@ -45,7 +51,7 @@ class VOTableRenderer(BaseRenderer):
             #'complex':'doubleComplex'
         }
 
-        def render(self, data, votabledef={}, resourcedef={}, tabledef={}, fieldsdef=None):
+        def render(self, data, votabledef={}, resourcedef={}, tabledef={}, fieldsdef=None, prettyprint=False):
             """
             parameters:
               data = list of Python dictionaries (ordered, one for each row)
@@ -68,6 +74,9 @@ class VOTableRenderer(BaseRenderer):
             xml = SimplerXMLGenerator(stream, self.charset)
 
             xml.startDocument()
+
+            # add a comment
+            xml._write(self.comment)
 
             # add votable root element with namespace definitions
             votabledef['version'] = self.version
@@ -130,9 +139,7 @@ class VOTableRenderer(BaseRenderer):
                 if key in fieldnames:
                     field = [f for f in fieldsdef if f['name'] == key][0]
 
-                # 'name' is a required key in provided fields-dict
-                if 'name' not in field:
-                    field['name'] = key
+                field['name'] = key
         
                 if 'ID' not in field:
                     field['ID'] = key
@@ -173,7 +180,22 @@ class VOTableRenderer(BaseRenderer):
             xml.endElement("VOTABLE")
             xml.endDocument()
 
-            return stream.getvalue()
+            xml_string = stream.getvalue()
+
+            # make the xml pretty, i.e. use linebreaks and indentation
+            # the sax XMLGenerator behind SimpleXMLGenerator does not seem to support this,
+            # thus need a library that can do it.
+            # xml.dom.minidom is a solution, but has some known bugs/inconvenience (e.g.
+            #    it inserts whitespace before text nodes!)
+            # lxml.etree is more advanced, thus using this one
+            # TODO: since we use lxml anyway, maybe build the whole xml-tree with lxml.etree!
+            # NOTE: This removes any possibly existing comments from the xml output!
+            if prettyprint is True:
+                parsed = etree.fromstring(xml_string)
+                pretty_xml = etree.tostring(parsed, pretty_print=True)
+                xml_string = pretty_xml
+
+            return xml_string
 
 
         def votable_data(self, xml, data):
@@ -203,3 +225,8 @@ class VOTableRenderer(BaseRenderer):
 
             xml.endElement("TABLEDATA")
             xml.endElement("DATA")
+
+        def pprint_xml_string(s):
+            """Pretty-print an XML string with minidom"""
+            parsed = minidom.parse(io.BytesIO(s))
+            return parsed.toprettyxml()
