@@ -51,18 +51,17 @@ class VOTableRenderer(BaseRenderer):
             #'complex':'doubleComplex'
         }
 
-        def render(self, data, votabledef={}, resourcedef={}, tabledef={}, fieldsdef=None, prettyprint=False):
+
+        def render(self, data, votabledef={}, fieldsdef=None, prettyprint=False):
             """
             parameters:
               data = list of Python dictionaries (ordered, one for each row)
               fieldsdef = optional list of field definitions; MUST contain a unique 'name' key
-                       e.g. field = [ {'name': 'ra', 'ID': 'ra', 'datatype': 'float'},
-                                      {'name': 'de', 'ID': 'de', 'datatype': 'float'}
-                                    ]
+                       e.g. fieldsdef = [ {'attrs': {'name': 'ra', 'ID': 'ra', 'datatype': 'float'}, 'description': 'This is the right ascension'},
+                                          {'attrs': {'name': 'de', 'ID': 'de', 'datatype': 'float'}}
+                                        ]
               votabledef = dictionary of global votable attributes and/or description
                             TODO: include here group, info, param-elements as well!
-              tabledef = dictionary of table attributes and/or description
-              resourcedef = list of dictionary of resource attributes and/or description
             """
 
             if data is None:
@@ -79,105 +78,18 @@ class VOTableRenderer(BaseRenderer):
             xml._write(self.comment)
 
             # add votable root element with namespace definitions
-            votabledef['version'] = self.version
-            votabledef['xmlns'] = self.xmlns
-            votabledef['xmlns:xsi'] = self.xmlns_xsi
-
-            xml.startElement("VOTABLE", votabledef)
-
-            # add one or more resources;
-            # there can be many resources and they can be nested ...
-            # but we just assume that we have only one resource with one table;
-            # may be improved in the future
-            resourcedescription = None
-            if 'description' in resourcedef:
-                resourcedescription = resourcedef['description']
-                resourcedef.pop('description', None)
-
-            xml.startElement("RESOURCE", resourcedef)
-            if resourcedescription:
-                xml.startElement("DESCRIPTION", {})
-                xml.characters(smart_text(resourcedescription))
-                xml.endElement("DESCRIPTION")
-
-            # add table
-            tabledescription = None
-            if 'description' in tabledef:
-                tabledescription = tabledef['description']
-                tabledef.pop('description', None)
+            votabledef['VOTABLE']['attrs'] = {}
+            votabledef['VOTABLE']['attrs']['version'] = self.version
+            votabledef['VOTABLE']['attrs']['xmlns'] = self.xmlns
+            votabledef['VOTABLE']['attrs']['xmlns:xsi'] = self.xmlns_xsi
             
-            xml.startElement("TABLE", tabledef)
-            if tabledescription:
-                xml.startElement("DESCRIPTION", {})
-                xml.characters(smart_text(tabledescription))
-                xml.endElement("DESCRIPTION")
+            # get field definition from first data row
+            fieldsdef = self.get_fields_properties(data[0], fieldsdef)
 
-            # GROUP, with children: PARAM and FIELDref
-            #xml.startElement("GROUP", {})
-            #xml.endElement("GROUP")
+            # add field definitions to votabledef
+            votabledef['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = fieldsdef
+            self.add_xml(xml, votabledef)
 
-            # PARAM and FIELD definitions with name, ID, ucd, datatype, width, precision, unit
-            # and possible DESCRIPTION as child
-            #xml.startElement("PARAM", {'url': '/protocols/', 'datatype': 'char'})
-            #xml.endElement("PARAM")
-
-            # define one field for each column:
-            # assume, that all rows have the same columns (even if empty value),
-            # and that all fields are sorted in the same way for each row,
-            # so can use the first row to determine the field names, datatypes etc.
-            fieldnames = []
-            if fieldsdef is not None:
-                fieldnames = [f['name'] for f in fieldsdef]
-
-            for key, value in data[0].items():
-                # create dict of FIELD attributes based on available information
-                # Note: ID *must* be unique, name should be unique in FIELD attributes of VOTable
-                
-                # first check, if field information is already provided,
-                # if not, fill at least name, ID and datatype attributes
-                field = {}
-                if key in fieldnames:
-                    field = [f for f in fieldsdef if f['name'] == key][0]
-
-                field['name'] = key
-        
-                if 'ID' not in field:
-                    field['ID'] = key
-
-                if 'datatype' not in field:
-                    try:
-                        vodatatype = datatypes[type(data)]
-                    except:
-                        vodatatype = 'char'
-
-                    field['datatype'] = vodatatype
-
-                if 'arraysize' not in field:
-                    field['arraysize'] = '*'
-
-                # more possible attributes: unit, ucd, width, precision
-                # need to be provided by fields-dictionary or won't be used at all
-
-                # extract description from field-dictionary, since it will be a child-element:
-                fielddescription = None
-                if 'description' in field:
-                    fielddescription = field['description']
-                    # remove from field-dict:
-                    field.pop('description', None)
-
-                xml.startElement("FIELD", field)
-                if fielddescription is not None:
-                    xml.startElement("DESCRIPTION", {})
-                    xml.characters(smart_text(fielddescription))
-                    xml.endElement("DESCRIPTION")
-                xml.endElement("FIELD")
-
-            # add DATA element with TABLEDATA, rows and values
-            self.votable_data(xml, data)
-
-            xml.endElement("TABLE")
-            xml.endElement("RESOURCE")
-            xml.endElement("VOTABLE")
             xml.endDocument()
 
             xml_string = stream.getvalue()
@@ -198,7 +110,36 @@ class VOTableRenderer(BaseRenderer):
             return xml_string
 
 
-        def votable_data(self, xml, data):
+        def add_xml(self, xml, data):
+            if isinstance(data, dict):
+                for key, value in data.items():
+
+                    if key.upper() == 'DATA':
+                        self.add_data(xml, value)
+                    elif key.upper() == 'FIELDS' or key.upper() == 'PARAMS':
+                        self.add_xml(xml, value)
+                    elif key == 'attrs':
+                        # exclude attrs, i.e. do not add as child-element
+                        pass
+                    else:
+                        attrs = {}
+                        if 'attrs' in value:
+                            attrs = value['attrs']
+
+                        xml.startElement(key.upper(), attrs)
+                        self.add_xml(xml, value)
+                        xml.endElement(key.upper())
+            elif hasattr(data, '__iter__'):
+                # This is a list. Lists in VOTables have no wrapper 
+                # around them (except for groups, maybe), so add list items directly
+                for d in data:
+
+                    self.add_xml(xml, d)
+            else:
+                xml.characters(smart_unicode(data))
+
+
+        def add_data(self, xml, data):
             # if there is no data, then DATA-element does not exist => nothing to do!
             if data is None:
                 return
@@ -226,7 +167,51 @@ class VOTableRenderer(BaseRenderer):
             xml.endElement("TABLEDATA")
             xml.endElement("DATA")
 
-        def pprint_xml_string(s):
-            """Pretty-print an XML string with minidom"""
-            parsed = minidom.parse(io.BytesIO(s))
-            return parsed.toprettyxml()
+
+        def get_fields_properties(self, datarow, fieldsdef):
+            # define one field for each column:
+            # assume, that all rows have the same columns (even if empty value),
+            # and that all fields are sorted in the same way for each row,
+            # so can use the first row to determine the field names, datatypes etc.
+
+            fieldnames = []
+            if fieldsdef is not None:
+                fieldnames = [f['attrs']['name'] for f in fieldsdef]
+
+            newfieldsdef = [] 
+            for key, value in datarow.items():
+                # create dict of FIELD attributes based on available information
+                # Note: ID *must* be unique, name should be unique in FIELD attributes of VOTable
+                
+                # first check, if field information is already provided,
+                # if not, fill at least name, ID and datatype attributes
+                field = {}
+                fieldattrs = {}
+                if key in fieldnames:
+                    field = [f for f in fieldsdef if f['attrs']['name'] == key][0]
+                    fieldattrs = field['attrs']
+                
+                fieldattrs['name'] = key
+        
+                if 'ID' not in field:
+                    fieldattrs['ID'] = key
+
+                if 'datatype' not in field:
+                    try:
+                        vodatatype = datatypes[type(data)]
+                    except:
+                        vodatatype = 'char'
+
+                    fieldattrs['datatype'] = vodatatype
+
+                if 'arraysize' not in field:
+                    fieldattrs['arraysize'] = '*'
+
+                # more possible attributes: unit, ucd, width, precision
+                # need to be provided by fields-dictionary or won't be used at all                
+
+                field['attrs'] = fieldattrs
+
+                newfieldsdef.append({'field': field}) 
+
+            return newfieldsdef

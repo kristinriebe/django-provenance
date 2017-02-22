@@ -176,9 +176,23 @@ def simdal_protocols(request):
 
     # generate a VOTable, with one resource and one table only
     data = protocols.values()
-    tabledef = {'description': "SimDAL list of protocols", 'utype': 'SimDM:/resource/protocol/Protocol'}
-    fieldsdef = [{'name': 'code', 'description': 'url for source code or code description'}]
-    votable = VOTableRenderer().render(data, tabledef=tabledef, fieldsdef=fieldsdef)
+    tabledef = {'description': "SimDAL list of protocols", 'attrs': {'utype': 'SimDM:/resource/protocol/Protocol'}}
+    fieldsdef = [{'attrs': {'name': 'code'}, 'description': 'url for source code or code description'}]
+
+
+    votabledef = {
+                    'VOTABLE': {
+                        'RESOURCE': {
+                            'TABLE': {
+                                'description': tabledef['description'],
+                                'attrs': tabledef['attrs'],
+                                'data': data
+                            }
+                        }
+                    }
+                    }
+
+    votable = VOTableRenderer().render(data, votabledef=votabledef, fieldsdef=fieldsdef, prettyprint=True)
 
     response = HttpResponse(votable, content_type="application/xml")
     #response = HttpResponse(votable, content_type="text/plain")
