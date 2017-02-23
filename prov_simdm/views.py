@@ -175,24 +175,31 @@ def simdal_protocols(request):
     # xmlns:simdm="http://www.ivoa.net/documents/SimDM"
 
     # generate a VOTable, with one resource and one table only
+    # first construct a simple dictionary ...
     data = protocols.values()
-    tabledef = {'description': "SimDAL list of protocols", 'attrs': {'utype': 'SimDM:/resource/protocol/Protocol'}}
-    fieldsdef = [{'attrs': {'name': 'code'}, 'description': 'url for source code or code description'}]
 
+    # -- optional additional metadata
+    tabledescription = "SimDAL list of protocols"
+    tableattrs = {'utype': 'SimDM:/resource/protocol/Protocol'}
+    fields = [{'attrs': {'name': 'code'}, 'description': 'url for source code or code description'}]
 
-    votabledef = {
+    votable_meta = {
                     'VOTABLE': {
                         'RESOURCE': {
                             'TABLE': {
-                                'description': tabledef['description'],
-                                'attrs': tabledef['attrs'],
-                                'data': data
+                                'DESCRIPTION': tabledescription,
+                                'attrs': tableattrs,
+                                'FIELDS': fields,
                             }
                         }
                     }
-                    }
+                }
 
-    votable = VOTableRenderer().render(data, votabledef=votabledef, fieldsdef=fieldsdef, prettyprint=True)
+    # ... then render as xml VOTable using VOTableRenderer,
+    # (missing field definitions will be added automatically)
+    #votable = VOTableRenderer().render(data, votable_meta=votable_meta, prettyprint=False)
+    data = None
+    votable = VOTableRenderer().render(data, prettyprint=False)
 
     response = HttpResponse(votable, content_type="application/xml")
     #response = HttpResponse(votable, content_type="text/plain")

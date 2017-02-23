@@ -74,7 +74,7 @@
         name: ART
         code: '[link to ART code]'
         version: --
-        description: 'Adaptive Refinement Tree code for running cosmological simulatios, Kravtsov et al. 1997, ApJS, 111, 73'
+        description: 'Adaptive Refinement Tree code for running cosmological simulations, Kravtsov et al. 1997, ApJS, 111, 73'
         referenceURL: 'http://adsabs.harvard.edu/abs/1997ApJS..111...73K'
 -   model: prov_simdm.protocol
     pk: cs:protocol_fofhf

@@ -11,7 +11,7 @@ The different parts of the web application are under heavy development and serve
 ## Installation
 Download everything and install the required python (2.7) packages, e.g. using `pip install`:
 
-django  
+django  -- version 1.10
 django-braces -- for json views  
 djangorestframework -- rest  
 django-extensions -- e.g. for exporting model graphs  
@@ -23,10 +23,22 @@ BeautifulSoup -- xml parsing
 logger -- write proper log and error messages
 
 
+## Testing
+Tests can be run as usual:
+
+```
+python manage.py test
+```
+
+This executes all tests in the subdirectories as well. Currently, there are only a few tests available, but this will hopefully improve in the future.
+
+
 ## Starting the webapp locally
 When everything is installed, start django's test server in the usual way:
 
+```
 python manage.py runserver
+```
 
 and point a web browser to localhost:8000. Note that you can also provide a different port as additional argument to manage.py, if the default port is already in use.
 

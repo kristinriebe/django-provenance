@@ -52,22 +52,19 @@ class VOTableRenderer(BaseRenderer):
         }
 
 
-        def render(self, data, votabledef={}, fieldsdef=None, prettyprint=False):
+        def render(self, data, votable_meta={}, prettyprint=False):
             """
             parameters:
               data = list of Python dictionaries (ordered, one for each row)
-              fieldsdef = optional list of field definitions; MUST contain a unique 'name' key
-                       e.g. fieldsdef = [ {'attrs': {'name': 'ra', 'ID': 'ra', 'datatype': 'float'}, 'description': 'This is the right ascension'},
-                                          {'attrs': {'name': 'de', 'ID': 'de', 'datatype': 'float'}}
-                                        ]
-              votabledef = dictionary of global votable attributes and/or description
+              votable_meta = dictionary of attributes and/or descriptions etc., also may include
+                            field definitions;
+                            attributes have to be provided as extra dictionary, e.g. for the fields:
+                            e.g. votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = 
+                                    [ {'attrs': {'name': 'ra', 'ID': 'ra', 'datatype': 'float'}, 'description': 'This is the right ascension'},
+                                      {'attrs': {'name': 'de', 'ID': 'de', 'datatype': 'float'}}
+                                    ]
                             TODO: include here group, info, param-elements as well!
             """
-
-            if data is None:
-                return  ''
-            # TODO: should return empty table instead, but then it's not so easy
-            # to get the field definitions !
         
             stream = StringIO()
             xml = SimplerXMLGenerator(stream, self.charset)
@@ -77,18 +74,42 @@ class VOTableRenderer(BaseRenderer):
             # add a comment
             xml._write(self.comment)
 
-            # add votable root element with namespace definitions
-            votabledef['VOTABLE']['attrs'] = {}
-            votabledef['VOTABLE']['attrs']['version'] = self.version
-            votabledef['VOTABLE']['attrs']['xmlns'] = self.xmlns
-            votabledef['VOTABLE']['attrs']['xmlns:xsi'] = self.xmlns_xsi
-            
-            # get field definition from first data row
-            fieldsdef = self.get_fields_properties(data[0], fieldsdef)
+            # add namespace definitions, if not there already
+            if 'VOTABLE' not in votable_meta:
+                votable_meta['VOTABLE'] = {}
+            attrs = {}
+            if 'attrs' in votable_meta['VOTABLE']:
+                attrs = votable_meta['VOTABLE']['attrs']
 
-            # add field definitions to votabledef
-            votabledef['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = fieldsdef
-            self.add_xml(xml, votabledef)
+            if 'version' not in attrs:
+                attrs['version'] = self.version
+            if 'xmlns' not in attrs:
+                attrs['xmlns'] = self.xmlns
+            if 'xmlns' not in attrs:
+                attrs['xmlns:xsi'] = self.xmlns_xsi
+            votable_meta['VOTABLE']['attrs'] = attrs
+
+            # construct the nested dictionary for VOTABLE structure, if not yet existing
+            if 'RESOURCE' not in votable_meta['VOTABLE']:
+                votable_meta['VOTABLE']['RESOURCE'] = {}
+
+            if 'TABLE' not in votable_meta['VOTABLE']['RESOURCE']:
+                votable_meta['VOTABLE']['RESOURCE']['TABLE'] = {}
+
+            if 'FIELDS' not in votable_meta['VOTABLE']['RESOURCE']['TABLE']:
+                votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = {}
+
+            # fill missing field definitions by inspecting first data row
+            if data is not None:
+                fields = votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS']
+                fields = self.get_fields_properties(data[0], fields)
+                votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = fields
+
+            # add data-node to votable dictionary:
+            votable_meta['VOTABLE']['RESOURCE']['TABLE']['DATA'] = data
+
+            # convert to proper xml VOTable
+            self.add_node(xml, votable_meta)
 
             xml.endDocument()
 
@@ -110,15 +131,15 @@ class VOTableRenderer(BaseRenderer):
             return xml_string
 
 
-        def add_xml(self, xml, data):
+        def add_node(self, xml, data):
             if isinstance(data, dict):
                 for key, value in data.items():
 
                     if key.upper() == 'DATA':
                         self.add_data(xml, value)
                     elif key.upper() == 'FIELDS' or key.upper() == 'PARAMS':
-                        self.add_xml(xml, value)
-                    elif key == 'attrs':
+                        self.add_node(xml, value)
+                    elif key.lower() == 'attrs':
                         # exclude attrs, i.e. do not add as child-element
                         pass
                     else:
@@ -127,14 +148,13 @@ class VOTableRenderer(BaseRenderer):
                             attrs = value['attrs']
 
                         xml.startElement(key.upper(), attrs)
-                        self.add_xml(xml, value)
+                        self.add_node(xml, value)
                         xml.endElement(key.upper())
             elif hasattr(data, '__iter__'):
                 # This is a list. Lists in VOTables have no wrapper 
                 # around them (except for groups, maybe), so add list items directly
                 for d in data:
-
-                    self.add_xml(xml, d)
+                    self.add_node(xml, d)
             else:
                 xml.characters(smart_unicode(data))
 
@@ -147,6 +167,7 @@ class VOTableRenderer(BaseRenderer):
             # there is at most one DATA-element per TABLE,
             # thus no need for recursions here
             xml.startElement("DATA", {})
+
 
             # use TABLEDATA here exclusively;
             # could in the future also use FITS, BINARY or BINARY2 instead
@@ -173,6 +194,9 @@ class VOTableRenderer(BaseRenderer):
             # assume, that all rows have the same columns (even if empty value),
             # and that all fields are sorted in the same way for each row,
             # so can use the first row to determine the field names, datatypes etc.
+            #
+            # TODO: rewrite, so this returns everything from the datarow,
+            # merge with provided fieldsdef in a second step in another function
 
             fieldnames = []
             if fieldsdef is not None:
