@@ -25,6 +25,9 @@ urlpatterns = [
 
     # simdal urls
     url(r'^simdal/protocols/$', views.simdal_protocols, name='simdal_protocols'),
+    url(r'^simdal/projects/$', views.simdal_projects, name='simdal_projects'),
+    url(r'^simdal/experiments/$', views.simdal_experiments, name='simdal_experiments'),
+    url(r'^simdal/datasets/$', views.simdal_datasets, name='simdal_datasets'),
 
 ]
 

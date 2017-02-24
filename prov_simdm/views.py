@@ -10,9 +10,10 @@ from django.core import serializers
 from rest_framework.renderers import JSONRenderer
 from django.views.generic.edit import FormView
 
-from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project
-from .forms import AlgorithmForm
+from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project, OutputDataset
 import datetime
+from .forms import AlgorithmForm
+
 from .serializers import ProtocolSerializer
 from .renderers import VOTableRenderer
 
@@ -152,13 +153,12 @@ class AlgorithmFormResultsView(FormView):
 #        # TODO: convert to xml representation
 #        return projects
 
-#def projects(request):
-#    return HttpResponse(json_str, content_type='text/plain')
-
 def simdal_projects(request):
     projects = Project.objects.order_by('id')
-
-    return HttpResponse(projects, content_type='text/plain')
+    data = projects.values()
+    votable = VOTableRenderer().render(data, prettyprint=False)
+    response = HttpResponse(votable, content_type="application/xml")
+    return response
 
 
 def simdal_protocols(request):
@@ -187,13 +187,10 @@ def simdal_protocols(request):
                 }
             ]
 
-
-
-
-
     votable_meta = {
                     'VOTABLE': {
                         'RESOURCE': {
+                            'attrs': {'type': 'results'},
                             'TABLE': {
                                 'attrs': tableattrs,
                                 'DESCRIPTION': tabledescription,
@@ -219,6 +216,11 @@ def simdal_protocols(request):
     return response
 
 # SimDAL Search
+def simdal_experiments(request):
+    data = Experiment.objects.order_by('id').values()
+    votable = VOTableRenderer().render(data, prettyprint=False)
+    response = HttpResponse(votable, content_type="application/xml")
+    return response
 
 
 
@@ -231,3 +233,9 @@ def simdal_protocols(request):
 #        datasets = OutputDataset.objects.order_by('id')
 #        # TODO: convert to xml representation
 #        return datasets
+
+def simdal_datasets(request):
+    data = OutputDataset.objects.order_by('id').values()
+    votable = VOTableRenderer().render(data, prettyprint=False)
+    response = HttpResponse(votable, content_type="application/xml")
+    return response
