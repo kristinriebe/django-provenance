@@ -8,6 +8,7 @@ from rest_framework.renderers import BaseRenderer
 from django.utils import timezone
 import lxml.etree as etree  # for pretty printing xml
 
+
 class VOTableRenderer(BaseRenderer):
         """
         Takes a list of (ordered) Python dictionaries and 
@@ -60,8 +61,8 @@ class VOTableRenderer(BaseRenderer):
                             field definitions;
                             attributes have to be provided as extra dictionary, e.g. for the fields:
                             e.g. votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = 
-                                    [ {'attrs': {'name': 'ra', 'ID': 'ra', 'datatype': 'float'}, 'description': 'This is the right ascension'},
-                                      {'attrs': {'name': 'de', 'ID': 'de', 'datatype': 'float'}}
+                                    [ {'FIELD': {'attrs': {'name': 'ra', 'ID': 'ra', 'datatype': 'float'}, 'DESCRIPTION': 'This is the right ascension'}},
+                                      {'FIELD': {'attrs': {'name': 'de', 'ID': 'de', 'datatype': 'float'}}
                                     ]
                             TODO: include here group, info, param-elements as well!
             """
@@ -104,6 +105,7 @@ class VOTableRenderer(BaseRenderer):
                 fields = votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS']
                 fields = self.get_fields_properties(data[0], fields)
                 votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = fields
+
 
             # add data-node to votable dictionary:
             votable_meta['VOTABLE']['RESOURCE']['TABLE']['DATA'] = data
@@ -200,7 +202,7 @@ class VOTableRenderer(BaseRenderer):
 
             fieldnames = []
             if fieldsdef is not None:
-                fieldnames = [f['attrs']['name'] for f in fieldsdef]
+                fieldnames = [f['FIELD']['attrs']['name'] for f in fieldsdef]
 
             newfieldsdef = [] 
             for key, value in datarow.items():
@@ -212,11 +214,11 @@ class VOTableRenderer(BaseRenderer):
                 field = {}
                 fieldattrs = {}
                 if key in fieldnames:
-                    field = [f for f in fieldsdef if f['attrs']['name'] == key][0]
+                    field = [f['FIELD'] for f in fieldsdef if f['FIELD']['attrs']['name'] == key][0]
                     fieldattrs = field['attrs']
-                
+
                 fieldattrs['name'] = key
-        
+
                 if 'ID' not in field:
                     fieldattrs['ID'] = key
 
@@ -236,6 +238,6 @@ class VOTableRenderer(BaseRenderer):
 
                 field['attrs'] = fieldattrs
 
-                newfieldsdef.append({'field': field}) 
+                newfieldsdef.append({'FIELD': field})
 
             return newfieldsdef

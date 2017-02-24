@@ -17,11 +17,9 @@ from .serializers import ProtocolSerializer
 from .renderers import VOTableRenderer
 
 
-
-
 class CustomDetailView(generic.DetailView):
     model = Experiment  # shall be overwritten from inherited classes!
-    
+
     template_name = 'prov_simdm/details.html'  # this is now general enough to be used with every detail class
     link_dict = {}
 
@@ -137,7 +135,7 @@ class AlgorithmFormResultsView(FormView):
         for e in experiment_list:
             parametervalue_list = ParameterSetting.objects.filter(experiment_id=str(e.id))
             e.parametervalue_list = parametervalue_list
-        
+
         return render_to_response('prov_simdm/algorithm_formresults.html', context={'algorithm': algorithm, 'experiment_list': experiment_list})
 
 
@@ -181,25 +179,35 @@ def simdal_protocols(request):
     # -- optional additional metadata
     tabledescription = "SimDAL list of protocols"
     tableattrs = {'utype': 'SimDM:/resource/protocol/Protocol'}
-    fields = [{'attrs': {'name': 'code'}, 'description': 'url for source code or code description'}]
+    fields = [
+                {'FIELD': {
+                    'attrs': {'name': 'code'},
+                    'DESCRIPTION': 'url for source code or code description'
+                    }
+                }
+            ]
+
+
+
+
 
     votable_meta = {
                     'VOTABLE': {
                         'RESOURCE': {
                             'TABLE': {
-                                'DESCRIPTION': tabledescription,
                                 'attrs': tableattrs,
+                                'DESCRIPTION': tabledescription,
                                 'FIELDS': fields,
                             }
                         }
                     }
                 }
+    #print "input votable_meta: ", votable_meta
 
     # ... then render as xml VOTable using VOTableRenderer,
     # (missing field definitions will be added automatically)
-    #votable = VOTableRenderer().render(data, votable_meta=votable_meta, prettyprint=False)
-    data = None
-    votable = VOTableRenderer().render(data, prettyprint=False)
+    votable = VOTableRenderer().render(data, votable_meta=votable_meta, prettyprint=False)
+    #votable = VOTableRenderer().render(data, prettyprint=False)
 
     response = HttpResponse(votable, content_type="application/xml")
     #response = HttpResponse(votable, content_type="text/plain")
@@ -223,4 +231,3 @@ def simdal_protocols(request):
 #        datasets = OutputDataset.objects.order_by('id')
 #        # TODO: convert to xml representation
 #        return datasets
-
