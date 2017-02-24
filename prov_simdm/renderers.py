@@ -66,7 +66,7 @@ class VOTableRenderer(BaseRenderer):
                                     ]
                             TODO: include here group, info, param-elements as well!
             """
-        
+
             stream = StringIO()
             xml = SimplerXMLGenerator(stream, self.charset)
 
@@ -135,23 +135,32 @@ class VOTableRenderer(BaseRenderer):
 
         def add_node(self, xml, data):
             if isinstance(data, dict):
-                for key, value in data.items():
+                # Because the order of items in the votable dictionary actually
+                # matters, we need to make sure that we go through these
+                # items in the correct order.
+                # Thus, first define list of possible keys and then compare:
 
-                    if key.upper() == 'DATA':
-                        self.add_data(xml, value)
-                    elif key.upper() == 'FIELDS' or key.upper() == 'PARAMS':
-                        self.add_node(xml, value)
-                    elif key.lower() == 'attrs':
-                        # exclude attrs, i.e. do not add as child-element
-                        pass
-                    else:
-                        attrs = {}
-                        if 'attrs' in value:
-                            attrs = value['attrs']
+                votable_keys = ['attrs', 'VOTABLE', 'DESCRIPTION', 'PARAMS', 'GROUPS', 'VALUES', 'LINK', 'TABLE', 'RESOURCE', 'FIELDS', 'FIELD', 'DATA', 'INFO', 'MIN', 'MAX', 'OPTION']
 
-                        xml.startElement(key.upper(), attrs)
-                        self.add_node(xml, value)
-                        xml.endElement(key.upper())
+                for key in votable_keys:
+                    if key in data:
+                        value = data[key]
+
+                        if key.upper() == 'DATA':
+                            self.add_data(xml, value)
+                        elif key.upper() == 'FIELDS' or key.upper() == 'PARAMS':
+                            self.add_node(xml, value)
+                        elif key.lower() == 'attrs':
+                            # exclude attrs, i.e. do not add as child-element
+                            pass
+                        else:
+                            attrs = {}
+                            if 'attrs' in value:
+                                attrs = value['attrs']
+
+                            xml.startElement(key.upper(), attrs)
+                            self.add_node(xml, value)
+                            xml.endElement(key.upper())
             elif hasattr(data, '__iter__'):
                 # This is a list. Lists in VOTables have no wrapper 
                 # around them (except for groups, maybe), so add list items directly

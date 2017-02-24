@@ -63,7 +63,7 @@ class VOTableRendererTestCase(TestCase):
         self.assertEqual(votable[ienddate:], expected_votable[ienddate:])
 
 
-    def test_votable_with_table_metadara(self):
+    def test_votable_with_table_metadata(self):
         protocols = Protocol.objects.order_by('id')
         data = protocols.values('name','id','description')
 
@@ -71,7 +71,7 @@ class VOTableRendererTestCase(TestCase):
         votable_meta['VOTABLE']['RESOURCE']['TABLE']['DESCRIPTION'] = "SimDAL list of protocols"
         votable_meta['VOTABLE']['RESOURCE']['TABLE']['attrs'] = {'utype': 'SimDM:/resource/protocol/Protocol'}
 
-        votable = VOTableRenderer().render(data, prettyprint=False)
+        votable = VOTableRenderer().render(data, votable_meta=votable_meta, prettyprint=False)
 
         expected_votable = '<?xml version="1.0" encoding="utf-8"?>\n' \
             + '<!--\n'\
