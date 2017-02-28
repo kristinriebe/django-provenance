@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+
+{% block title %}SimDM Search for Datasets{% endblock %}
+
+{% block content %}
+
+<h2>SimDM Search for Datasets</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    Search for datasets using the specified properties.
+  </div>
+</div>
+<form action="/simdm/datasetform/" method="post">
+    {% csrf_token %}
+
+    {% for field in form.visible_fields %}
+  <div class="row">
+    <div class="col-md-2">
+          {{ field.label }}:
+    </div>
+    <div class="col-md-4">
+          {{ field }}
+      <div style="clear: both"></div>
+      <div>
+        <span class="helptext">{{field.help_text }}</span>
+          {{field.errors}}
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <input type="submit" name="submit" value="Submit"/>
+    </div>
+  </div>
+
+</form>
+
+{% endblock %}

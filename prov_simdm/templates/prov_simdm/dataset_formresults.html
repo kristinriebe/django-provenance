@@ -1,0 +1,63 @@
+{% extends "core/base.html" %}
+
+{% block title %}IVOA SimDM - Datasets{% endblock %}
+
+{% block content %}
+<h1>Search results</h1>
+
+<p>
+Following datasets are recorded</b>.
+</p>
+{% if dataset_list %}
+    <table class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>Project</th>
+            <th>AccessURL</th>
+            <th>Experiment</th>
+            <th>Protocol</th>
+            <th>Parameters</th>
+        </thead>
+        <tbody>
+    {% for dataset in dataset_list %}
+        <tr><td>
+            {{ dataset.name }}
+        </td><td>
+            {{ dataset.experiment.project.name }}
+        </td><td>
+            {{ dataset.accessURL }}
+        </td><td>
+            
+            {{ dataset.experiment.name }}
+        </td><td>
+            {{ dataset.experiment.protocol.name }}
+        </td><td>
+    {% if dataset.experiment.parametervalue_list %}
+        <ul class="list-unstyled">
+    {% for p in dataset.experiment.parametervalue_list %}
+        <li style="margin-bottom: 10px;">
+            <span class="key">
+                <a href="{% url 'prov_simdm:inputparameter_detail' p.inputParameter.id %}">
+                {{ p.inputParameter.name }}</a>:
+            </span>
+            <a href="{% url 'prov_simdm:parametersetting_detail' p.id %}">
+                {{ p.value }}</a>
+            <br>
+            <em>{{ p.inputParameter.description }}</em><br>
+            <b>datatype:</b> {{ p.inputParameter.datatype }}
+            </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+        </td></tr>
+
+    {% endfor %}
+
+        </tbody>
+    </table>
+{% else %}
+    <p class="notfound">No datasets found.</p>
+{% endif %}
+
+
+{% endblock %}

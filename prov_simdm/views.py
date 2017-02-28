@@ -142,6 +142,30 @@ class AlgorithmFormResultsView(FormView):
         return render_to_response('prov_simdm/algorithm_formresults.html', context={'algorithm': algorithm, 'experiment_list': experiment_list})
 
 
+class DatasetFormResultsView(FormView):
+    template_name = 'prov_simdm/dataset_form.html'
+    form_class = DatasetForm
+
+    def form_valid(self, form):
+        project_id = form.cleaned_data['project_id']
+        protocol_type = form.cleaned_data['protocol_type']
+
+        if project_id == 'any':
+            experiment_list = Experiment.objects.all()
+        else:
+            experiment_list = Experiment.objects.filter(project_id=project_id)
+
+        if protocol_type != 'any':
+            experiment_list = experiment_list.filter(protocol__type=protocol_type)
+
+        dataset_list = []
+        for e in experiment_list:
+            olist = OutputDataset.objects.filter(experiment_id=e.id)
+            for o in olist:
+                dataset_list.append(o)
+
+        return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list})
+
 
 # ProvenanceDM views
 # ==================
