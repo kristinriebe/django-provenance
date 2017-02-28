@@ -94,6 +94,13 @@ form ul li label {
   font-weight: normal;
 }
 
+form ul#id_parameter li {
+  float: none;
+  padding-left: 0px;
+}
+
+
+
 /* detail list of attributes */
 .key {
   font-weight: 700;

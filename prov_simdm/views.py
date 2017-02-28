@@ -167,6 +167,28 @@ class DatasetFormResultsView(FormView):
         return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list})
 
 
+def get_parameters(request): # url: datasetformjson
+    # Get all available parameters for a given protocol_id,
+    # will be used by javascript to fill the parameters automatically into the dataset search form
+
+    protocol=request.GET.get('protocol')
+    #print "parent: ", protocol
+    parameter_list = []
+    if protocol:
+        if protocol == 'any':
+            # again load all possible parameters, not sure, how to do without:
+            for param in InputParameter.objects.all():
+                parameter_list.append(dict(id=param.id, value=unicode(param.name)))
+        else:
+            for param in InputParameter.objects.filter(protocol__id=protocol):
+                parameter_list.append(dict(id=param.id, value=unicode(param.name)))
+
+        # whatever happens, add option 'any' as well -- not really needed
+        # ret.insert(0, dict(id='', value='any'))
+
+    return HttpResponse(json.dumps(parameter_list), content_type='application/json')
+
+
 # ProvenanceDM views
 # ==================
 

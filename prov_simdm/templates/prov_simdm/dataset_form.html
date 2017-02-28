@@ -4,6 +4,55 @@
 
 {% block content %}
 
+<script>
+    function update_parameters(url, selector) {
+        /* Function to update the visible parameters depending on
+         * which params are returned from a getJSON call
+         */
+
+        $.getJSON(url, function(data) {
+            /* store all desired parameters in an array */
+            var option_list = [];
+            $.each(data, function() {
+                option_list.push(this.id);
+            });
+
+            /* search for the corresponding parameters in the hidden fields (display: none) 
+             * and show them; hide the ones that don't match */
+            $(selector).each( function(){
+                window.console.log('hey there.');
+                $(this).find('li').each( function(){
+                    e = $(this).find('label input')
+                    a = e.attr('value');
+                    window.console.log('value: ', a);
+                    if (option_list.indexOf(a) != -1) {
+                        window.console.log('param found!');
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // alternative: add options via javascript here directly
+            //$.each(data, function () {
+            //
+            //    opt.append($('<option/>').val(this.id).text(this.value));
+            //});
+            //opt.val(old_val);
+            //opt.change();
+        })
+    }
+
+    $(function(){
+        /* if the field with id_parent is changing, then call update_parameters-function
+         * for updating the visible/hidden params */
+        $('#id_protocol').change(function(){
+            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#id_parameter');
+        });
+    });
+</script>
+
 <h2>SimDM Search for Datasets</h2>
 
 <div class="row">
