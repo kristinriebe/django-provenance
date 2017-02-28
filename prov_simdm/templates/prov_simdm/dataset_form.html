@@ -20,13 +20,10 @@
             /* search for the corresponding parameters in the hidden fields (display: none) 
              * and show them; hide the ones that don't match */
             $(selector).each( function(){
-                window.console.log('hey there.');
                 $(this).find('li').each( function(){
                     e = $(this).find('label input')
                     a = e.attr('value');
-                    window.console.log('value: ', a);
                     if (option_list.indexOf(a) != -1) {
-                        window.console.log('param found!');
                         $(this).show();
                     } else {
                         $(this).hide();
