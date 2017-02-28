@@ -3,17 +3,19 @@ from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-import json
 from django.http import JsonResponse
 from django.db.models.fields.related import ManyToManyField
 from django.core import serializers
-from rest_framework.renderers import JSONRenderer
 from django.views.generic.edit import FormView
+from django.db.models import F  # for renaming fields extracted from database
+
+from rest_framework.renderers import JSONRenderer
+
+import json
+
 
 from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project, OutputDataset
-import datetime
-from .forms import AlgorithmForm
-
+from .forms import AlgorithmForm, DatasetForm
 from .serializers import ProtocolSerializer
 from .renderers import VOTableRenderer
 
@@ -140,6 +142,18 @@ class AlgorithmFormResultsView(FormView):
         return render_to_response('prov_simdm/algorithm_formresults.html', context={'algorithm': algorithm, 'experiment_list': experiment_list})
 
 
+
+# ProvenanceDM views
+# ==================
+
+def voprov_entities(request):
+    # get datasets and rename fields from database, so they fit to provenancedm-attributes of Entity
+    data = OutputDataset.objects.order_by('id').annotate(location=F('accessURL'), type=F('objectType_id')).values('id','name','type','location')
+    votable = VOTableRenderer().render(data, prettyprint=False)
+    response = HttpResponse(votable, content_type="application/xml")
+    return response
+
+
 # SimDAL views
 # ============
 
@@ -199,7 +213,6 @@ def simdal_protocols(request):
                         }
                     }
                 }
-    #print "input votable_meta: ", votable_meta
 
     # ... then render as xml VOTable using VOTableRenderer,
     # (missing field definitions will be added automatically)
@@ -215,13 +228,13 @@ def simdal_protocols(request):
 
     return response
 
+
 # SimDAL Search
 def simdal_experiments(request):
     data = Experiment.objects.order_by('id').values()
     votable = VOTableRenderer().render(data, prettyprint=False)
     response = HttpResponse(votable, content_type="application/xml")
     return response
-
 
 
 # SimDAL Data Access

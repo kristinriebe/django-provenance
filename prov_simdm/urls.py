@@ -23,11 +23,19 @@ urlpatterns = [
     #url(r'^form/$', views.get_algorithmId, name='get_algorithmId'), # also works!
     #url(r'^form/results/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
 
+    #url(r'^datasetform/$', views.DatasetFormResultsView.as_view(), name='dataset_form'),
+    #url(r'^datasetform_parameters/$', views.get_parameters, name='datasetform_parameters'),
+
+    # provenancedm urls
+    url(r'^voprov/entities/$', views.voprov_entities, name='voprov_entities'),
+
+
     # simdal urls
     url(r'^simdal/protocols/$', views.simdal_protocols, name='simdal_protocols'),
     url(r'^simdal/projects/$', views.simdal_projects, name='simdal_projects'),
     url(r'^simdal/experiments/$', views.simdal_experiments, name='simdal_experiments'),
     url(r'^simdal/datasets/$', views.simdal_datasets, name='simdal_datasets'),
+
 
 ]
 
