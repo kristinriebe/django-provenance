@@ -3,6 +3,10 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
+PROTOCOL_TYPE_CHOICES = [
+                            ('Simulation', 'Simulation'),
+                            ('Analysis', 'Analysis')
+                        ]
 
 @python_2_unicode_compatible
 class Party(models.Model):
@@ -81,6 +85,7 @@ class Protocol(models.Model):
     name = models.CharField(max_length=128, blank=True, null=True) # = name of the code, not included in SimDM
     code = models.CharField(max_length=128, blank=True, null=True) # must be a URI, for downloading the code!!
     version = models.CharField(max_length=32, blank=True, null=True)
+    ptype = models.CharField(name="type", max_length=128, null=True, choices=PROTOCOL_TYPE_CHOICES)
     description = models.CharField(max_length=32, blank=True, null=True)
     referenceURL = models.CharField(max_length=32, blank=True, null=True)
     #parameters = [] see InputParameter-class, which refers back to Protocol
@@ -93,6 +98,7 @@ class Protocol(models.Model):
             'id',
             'name',
             'code',
+            'type',
             'version',
             'description',
             'referenceURL'

@@ -65,6 +65,13 @@
         project: 'cs:project_multidark'
 
 
+-   model: prov_simdm.experiment
+    pk: clues3_lggas:exp_simulation
+    fields:
+        executionTime: 2008-11-29
+        protocol: 'cs:protocol_gadgetsimu'
+        name: CLUES WM3 LG Gas simulation
+        project: 'cs:project_clues'
 
 
 # Protocols
@@ -74,6 +81,7 @@
         name: ART
         code: '[link to ART code]'
         version: --
+        type: 'Simulation'
         description: 'Adaptive Refinement Tree code for running cosmological simulations, Kravtsov et al. 1997, ApJS, 111, 73'
         referenceURL: 'http://adsabs.harvard.edu/abs/1997ApJS..111...73K'
 -   model: prov_simdm.protocol
@@ -82,6 +90,7 @@
         name: FOF
         code: not public
         version: --
+        type: 'Analysis'
         description: 'Friends-of-Friends cluster finder, applied version is described in Riebe et al. (2013), AN, 334, 691'
         referenceURL: 'http://adsabs.harvard.edu/abs/2013AN....334..691R'
 -   model: prov_simdm.protocol
@@ -90,6 +99,7 @@
         name: FOF Merger tree
         code: not public
         version: --
+        type: 'Analysis'
         description: Custom code for generating merger tree data from FOF data
         referenceURL: --
 -   model: prov_simdm.protocol
@@ -98,6 +108,7 @@
         name: Galacticus
         code: 'https://sites.google.com/site/galacticusmodel/'
         version: --
+        type: 'Analysis'
         description: Galacticus code for semi-analytical galaxies
         referenceURL: ''
 -   model: prov_simdm.protocol
@@ -106,8 +117,19 @@
         name: Rockstar tree
         code: 'https://bitbucket.org/gfcstanford/rockstar, https://bitbucket.org/pbehroozi/consistent-trees'
         version: --
+        type: 'Analysis'
         description: Code for building Rockstar catalog with consistent merger trees
-        referenceURL: ''
+        referenceURL: 'http://wwwmpa.mpa-garching.mpg.de/galform/gadget/'
+
+-   model: prov_simdm.protocol
+    pk: cs:protocol_gadgetsimu
+    fields:
+        name: Gadget 2
+        code: 'http://wwwmpa.mpa-garching.mpg.de/galform/gadget/#download'
+        version: '2'
+        type: 'Simulation'
+        description: 'A code for cosmological simulations of structure formation'
+        referenceURL: 'http://wwwmpa.mpa-garching.mpg.de/galform/gadget/'
 
 
 # Algorithms
@@ -163,18 +185,18 @@
 -   model: prov_simdm.appliedalgorithm
     fields:
         algorithm: 'cs:algo_phasespace'
-        experiment: 'mdr1:exp_rockstar'
+        experiment: 'mdr1:exp_rockstartree'
 -   model: prov_simdm.appliedalgorithm
     fields:
         algorithm: 'cs:algo_phasespace'
-        experiment: 'mdpl2:exp_rockstar'
+        experiment: 'mdpl2:exp_rockstartree'
 -   model: prov_simdm.appliedalgorithm
     fields:
         algorithm: 'cs:algo_sam'
         experiment: 'mdpl2:exp_galacticus'
 
 
-# Parameters
+# InputParameter
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_boxsize
     fields:
@@ -211,6 +233,7 @@
         datatype: float
         description: 'Initial redshift, at which the simulation was started'
 
+# ParameterSetting
 -   model: prov_simdm.parametersetting
     fields:
         value: 7.0 h-1.kpc
@@ -275,7 +298,7 @@
     fields:
         name: MDR1 snapshots (output)
         numberOfObjects: 85
-        accessURL: ''
+        accessURL: 'partially at https://www.cosmosim.org/'
         experiment: 'mdr1:exp_simulation'
         objectType: 'cs:outputtype_snaps'
 
@@ -312,7 +335,7 @@
         name: MDR1 Rockstar catalog+trees
         numberOfObjects: 85
         accessURL: 'https://www.cosmosim.org/'
-        experiment: 'mdr1:exp_rockstar'
+        experiment: 'mdr1:exp_rockstartree'
         objectType: 'cs:outputtype_rockstartree'
 
 
@@ -321,7 +344,7 @@
     pk: mdpl2:out_snapshots
     fields:
         name: MDPL2 simulation snapshots (output)
-        numberOfObjects: 85
+        numberOfObjects: 125
         accessURL: ''
         experiment: 'mdpl2:exp_simulation'
         objectType: 'cs:outputtype_snaps'
@@ -330,7 +353,7 @@
     pk: mdpl2:out_fof
     fields:
         name: MDPL2 FOF catalog (output)
-        numberOfObjects: 85
+        numberOfObjects: 125
         accessURL: 'https://www.cosmosim.org/'
         experiment: 'mdpl2:exp_fof'
         objectType: 'cs:outputtype_fof'
@@ -339,19 +362,28 @@
     pk: mdpl2:out_rockstar
     fields:
         name: MDPL2 Rockstar catalog+trees
-        numberOfObjects: 85
+        numberOfObjects: 125
         accessURL: 'https://www.cosmosim.org/'
-        experiment: 'mdpl2:exp_rockstar'
+        experiment: 'mdpl2:exp_rockstartree'
         objectType: 'cs:outputtype_rockstartree'
 
 -   model: prov_simdm.outputdataset
     pk: mdpl2:out_galacticus
     fields:
-        name: MDPL2 Galacticus catalog
-        numberOfObjects: 85
+        name: MDPL2 Galacticus catalog (output)
+        numberOfObjects: 125
         accessURL: 'https://www.cosmosim.org/'
         experiment: 'mdpl2:exp_galacticus'
         objectType: 'cs:outputtype_galacticus'
+
+-   model: prov_simdm.outputdataset
+    pk: clues3_lggas:out_snapshots
+    fields:
+        name: CLUES WM3 LGGas simulation snapshots (output)
+        numberOfObjects: 85
+#        accessURL: ''
+        experiment: 'clues3_lggas:exp_simulation'
+        objectType: 'cs:outputtype_snaps'
 
 
 # -- InputDataset
@@ -631,3 +663,10 @@
         name: Multidark
         description: The MultiDark simulation suite
         referenceURL: https://www.cosmosim.org/
+
+-   model: prov_simdm.project
+    fields:
+        id: cs:project_clues
+        name: CLUES
+        description: Constrained Local UniversE Simulations
+        referenceURL: https://www.clues-project.org/
