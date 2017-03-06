@@ -99,6 +99,10 @@ form ul#id_parameters li {
   padding-left: 0px;
 }
 
+.gray {
+  color: #aaa;
+}
+
 
 
 /* detail list of attributes */

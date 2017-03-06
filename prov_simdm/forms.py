@@ -39,7 +39,7 @@ class DatasetForm(forms.Form):
             self.fields['paramvalue_'+p.id] = forms.IntegerField(label='value', required=False)
 
             self.fields['param_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldsettype': 'label'})
-            self.fields['paramvalue_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldsettype': 'value'})
+            self.fields['paramvalue_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldsettype': 'value', 'min': p.minval, 'max': p.maxval, 'value': p.default})
             # how to access these attributes in form-template???
 
             #print self.fields

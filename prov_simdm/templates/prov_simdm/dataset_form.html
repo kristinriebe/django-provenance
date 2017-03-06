@@ -31,7 +31,7 @@
             });
             opt.val(old_val);
             opt.change();
-        })
+        });
     }
 
     function update_parameters(url, selector) {
@@ -64,20 +64,38 @@
                     }
                 });
             });
-
-            // alternative: add options via javascript here directly
-            //$.each(data, function () {
-            //
-            //    opt.append($('<option/>').val(this.id).text(this.value));
-            //});
-            //opt.val(old_val);
-            //opt.change();
-        })
+        });
     }
 
+    function switch_gray_out(objid) {
+        /* Function to gray out not-needed areas */
+
+      if ( $("input[id='"+objid+"']").is(":checked")  ) {
+          //window.console.log('checked!');
+          $("div[paramid='"+objid+"']").each( function(){
+            $(this).removeClass("gray");
+          });
+      } else {
+          //window.console.log('not checked!');
+          $("div[paramid='"+objid+"']").each( function(){
+            $(this).addClass("gray");
+          });
+      }
+
+    }
+
+
+    /* document ready? Go! */
     $(function(){
         // initially hide the noparams-div
         $('div#noparams').hide();
+
+        // update all parameter styles (based on checked or not)
+        $('#parameters').find("input[fieldsettype='label']").each(
+          function() {
+            //window.console.log("switch off "+this.id);
+            switch_gray_out(this.id);
+        });
 
         /* if #id_protocol_type is changing, call the update_protocols-function for
          * updating the protocols-list */
@@ -90,10 +108,15 @@
         /* if the field with id=id_protocol is changing, then call update_parameters-function
          * for updating the visible/hidden params */
         $('#id_protocol').change(function(){
-            //window.console.log('protocol selected: ' + $(this).val());
             update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#parameters');
         });
-    });
+
+        $("input[id='id_param_cs:inparam_forceres']").change( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_zini']").change( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_foflinklen']").change( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_boxsize']").change( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_particleres']").change( function() { switch_gray_out(this.id); });
+});
 </script>
 
 
@@ -138,12 +161,11 @@
     {% for field in form %}
 
         {% if field.name|startswith:"param_" == True %}
-    <div class="row paramrow" paramfield="{{ field.name | strip_left_of_first:"_" }}">
+    <div class="row paramrow" paramfield="{{ field.name | strip_left_of_last:"_" }}">
       <div class="col-md-2">
-          {{ field.label }}:
       </div>
-      <div class="col-md-1">
-          {{ field }}
+      <div class="col-md-2">
+          {{ field }}&nbsp;&nbsp;{{ field.label }}
         <div style="clear: both"></div>
         <div>
           <span class="helptext">{{ field.help_text }}</span>
@@ -151,10 +173,7 @@
         </div>
       </div>
           {% elif field.name|startswith:"paramvalue_" == True %}
-      <div class="col-md-1">
-          {{ field.label }}:
-      </div>
-      <div class="col-md-4">
+      <div class="col-md-4" paramid="id_{{ field.name|cut:"value" }}">
           {{ field }}
         <div style="clear: both"></div>
         <div>

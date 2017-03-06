@@ -202,8 +202,12 @@
     fields:
         protocol: 'cs:protocol_artsimu'
         name: box size
-        datatype: float
+        datatype: int
         description: Side length of simulation box
+        minval: '0'
+        maxval: '10000'
+        default: '1000'
+        unit: 'Mpc/h'
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_foflinklen
     fields:
@@ -211,6 +215,10 @@
         name: linking length
         datatype: float
         description: Relative linking lenth for Friends-of-Friends halo finder
+        minval: '0'
+        maxval: '1.0'
+        default: '0.17'
+        unit: ''
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_forceres
     fields:
@@ -218,6 +226,10 @@
         name: force resolution
         datatype: string
         description: (Average) force resolution of the code
+        minval: '0'
+        maxval: '100'
+        default: '13'
+        unit: 'kpc/h'
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_particleres
     fields:
@@ -225,6 +237,10 @@
         name: particle resolution
         datatype: int
         description: Number of particles per dimension
+        minval: '128'
+        maxval: '4096'
+        default: '2048'
+        unit: ''
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_zini
     fields:
@@ -232,6 +248,10 @@
         name: z_ini
         datatype: float
         description: 'Initial redshift, at which the simulation was started'
+        minval: '0'
+        maxval: '200'
+        default: '40'
+        unit: ''
 
 # ParameterSetting
 -   model: prov_simdm.parametersetting

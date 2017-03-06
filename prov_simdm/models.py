@@ -162,6 +162,12 @@ class InputParameter(models.Model):
     #utype = models.CharField(max_length=128, null=True)
     #arraysize = models.CharField(max_length=128, null=True)
     description = models.CharField(max_length=1024, blank=True, null=True)
+    # own additional parameters for nicer search form:
+    minval = models.CharField(max_length=128, blank=True, null=True)
+    maxval = models.CharField(max_length=128, blank=True, null=True)
+    default = models.CharField(max_length=128, blank=True, null=True)
+    unit = models.CharField(max_length=128, blank=True, null=True)
+
 
     def __str__(self):
         return self.id
