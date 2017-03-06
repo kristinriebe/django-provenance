@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load form_extras %}
 
 {% block title %}SimDM Search for Datasets{% endblock %}
 
@@ -45,10 +46,11 @@
         /* if the field with id_parent is changing, then call update_parameters-function
          * for updating the visible/hidden params */
         $('#id_protocol').change(function(){
-            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#id_parameter');
+            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#id_parameters');
         });
     });
 </script>
+
 
 <h2>SimDM Search for Datasets</h2>
 
@@ -61,6 +63,29 @@
     {% csrf_token %}
 
     {% for field in form.visible_fields %}
+      {% if field.name|startswith:"param" == False %}
+  <div class="row">
+    <div class="col-md-2">
+          {{ field.label }}:
+    </div>
+    <div class="col-md-4">
+          {{ field }}
+     <div style="clear: both"></div>
+      <div>
+        <span class="helptext">{{ field.help_text }}</span>
+          {{ field.errors }}
+      </div>
+    </div>
+  </div>
+      {% endif %}
+    {% endfor %}
+
+  <fieldset class="parameters">
+    <legend>Parameters</legend>
+    {% for field in form.visible_fields %}
+
+
+        {% if field.name|strip_right_of:"_"  == "param" %}
   <div class="row">
     <div class="col-md-2">
           {{ field.label }}:
@@ -68,13 +93,19 @@
     <div class="col-md-4">
           {{ field }}
       <div style="clear: both"></div>
-      <div>
-        <span class="helptext">{{field.help_text }}</span>
-          {{field.errors}}
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
       </div>
     </div>
-  </div>
+        {% endif %}
+
     {% endfor %}
+
+  </fieldset>
+
+ 
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-4">

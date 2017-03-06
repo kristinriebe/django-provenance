@@ -149,6 +149,7 @@ class DatasetFormResultsView(FormView):
     def form_valid(self, form):
         project_id = form.cleaned_data['project_id']
         protocol_type = form.cleaned_data['protocol_type']
+        #parameters = form.cleaned_data['parameters']
 
         if project_id == 'any':
             experiment_list = Experiment.objects.all()
@@ -157,6 +158,11 @@ class DatasetFormResultsView(FormView):
 
         if protocol_type != 'any':
             experiment_list = experiment_list.filter(protocol__type=protocol_type)
+
+        # restrict experiment_list based on chosen parameters:
+        #if parameters:
+        #    print parameters
+            #experiment_list = experiment_list.filter(inputParameter_protocol=experiment_protocolprotocol_type)
 
         dataset_list = []
         for e in experiment_list:
