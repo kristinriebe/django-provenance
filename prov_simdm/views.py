@@ -173,6 +173,24 @@ class DatasetFormResultsView(FormView):
         return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list})
 
 
+def get_protocols(request): # url: datasetform_protocols
+    # Get all available protocols for a given protocol_type,
+    # will be used by javascript to fill the parameters automatically into the dataset search form
+
+    protocol_type = request.GET.get('protocol_type')
+    protocol_list = []
+    if protocol_type:
+        if protocol_type == 'any':
+            # again load all possible parameters, not sure, how to do without:
+            for p in Protocol.objects.all():
+                protocol_list.append(dict(id=p.id, value=unicode(p.name)))
+        else:
+            for p in Protocol.objects.filter(type=protocol_type):
+                protocol_list.append(dict(id=p.id, value=unicode(p.name)))
+
+    return HttpResponse(json.dumps(protocol_list), content_type='application/json')
+
+
 def get_parameters(request): # url: datasetform_parameters
     # Get all available parameters for a given protocol_id,
     # will be used by javascript to fill the parameters automatically into the dataset search form

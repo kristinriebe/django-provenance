@@ -6,6 +6,34 @@
 {% block content %}
 
 <script>
+    function update_protocols(url, selector) {
+        /* Function to update the protocols in drop-down list,
+         * depending on protocol-list returned from url
+         */
+
+        $.getJSON(url, function(data) {
+            // add options via javascript here directly
+            opt = $("select"+selector);
+            window.console.log('opt: ', opt);
+
+
+            old_val = opt.val();
+            window.console.log('oldval: ', old_val);
+            // remove all existing options and replace with new
+            opt.find('option').remove();
+
+            // add 'any' option again
+            opt.append($('<option/>').val('any').text('any'));
+
+            $.each(data, function () {
+                window.console.log(this.id);
+                opt.append($('<option/>').val(this.id).text(this.value));
+            });
+            opt.val(old_val);
+            opt.change();
+        })
+    }
+
     function update_parameters(url, selector) {
         /* Function to update the visible parameters depending on
          * which params are returned from a getJSON call
@@ -51,9 +79,18 @@
         // initially hide the noparams-div
         $('div#noparams').hide();
 
-        /* if the field with id_parent is changing, then call update_parameters-function
+        /* if #id_protocol_type is changing, call the update_protocols-function for
+         * updating the protocols-list */
+        $('#id_protocol_type').change(function(){
+            var selectedvalue = $('#id_protocol_type input:checked').val();
+            window.console.log('protocol_type changed to ' + selectedvalue);
+            update_protocols('/simdm/datasetform_protocols?protocol_type=' + selectedvalue, '#id_protocol');
+        });
+
+        /* if the field with id=id_protocol is changing, then call update_parameters-function
          * for updating the visible/hidden params */
         $('#id_protocol').change(function(){
+            //window.console.log('protocol selected: ' + $(this).val());
             update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#parameters');
         });
     });

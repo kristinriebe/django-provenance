@@ -24,6 +24,7 @@ urlpatterns = [
     #url(r'^form/results/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
 
     url(r'^datasetform/$', views.DatasetFormResultsView.as_view(), name='dataset_form'),
+    url(r'^datasetform_protocols/$', views.get_protocols, name='datasetform_protocols'),
     url(r'^datasetform_parameters/$', views.get_parameters, name='datasetform_parameters'),
     # provenancedm urls
     url(r'^voprov/entities/$', views.voprov_entities, name='voprov_entities'),
