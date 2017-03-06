@@ -173,11 +173,11 @@ class DatasetFormResultsView(FormView):
         return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list})
 
 
-def get_parameters(request): # url: datasetformjson
+def get_parameters(request): # url: datasetform_parameters
     # Get all available parameters for a given protocol_id,
     # will be used by javascript to fill the parameters automatically into the dataset search form
 
-    protocol=request.GET.get('protocol')
+    protocol = request.GET.get('protocol')
     #print "parent: ", protocol
     parameter_list = []
     if protocol:

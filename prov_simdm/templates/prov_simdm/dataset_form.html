@@ -12,19 +12,24 @@
          */
 
         $.getJSON(url, function(data) {
-            /* store all desired parameters in an array */
+            /* store all desired parameters (id) in an array */
             var option_list = [];
             $.each(data, function() {
                 option_list.push(this.id);
             });
 
+            if (option_list.length == 0) {
+              $('div#noparams').show();
+            }
+
+            //window.console.log(option_list);
             /* search for the corresponding parameters in the hidden fields (display: none) 
              * and show them; hide the ones that don't match */
             $(selector).each( function(){
-                $(this).find('li').each( function(){
-                    e = $(this).find('label input')
-                    a = e.attr('value');
-                    if (option_list.indexOf(a) != -1) {
+                $(this).find('div.paramrow').each( function(){
+                    paramid = $(this).attr('paramfield');
+                    //window.console.log('a: ', a);
+                    if (option_list.indexOf(paramid) != -1) {
                         $(this).show();
                     } else {
                         $(this).hide();
@@ -43,10 +48,13 @@
     }
 
     $(function(){
+        // initially hide the noparams-div
+        $('div#noparams').hide();
+
         /* if the field with id_parent is changing, then call update_parameters-function
          * for updating the visible/hidden params */
         $('#id_protocol').change(function(){
-            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#id_parameters');
+            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#parameters');
         });
     });
 </script>
@@ -62,56 +70,78 @@
 <form action="/simdm/datasetform/" method="post">
     {% csrf_token %}
 
+  <fieldset id="main">
+    <legend>Main properties</legend>
     {% for field in form.visible_fields %}
       {% if field.name|startswith:"param" == False %}
-  <div class="row">
-    <div class="col-md-2">
+    <div class="row">
+      <div class="col-md-2">
           {{ field.label }}:
-    </div>
-    <div class="col-md-4">
-          {{ field }}
-     <div style="clear: both"></div>
-      <div>
-        <span class="helptext">{{ field.help_text }}</span>
-          {{ field.errors }}
       </div>
-    </div>
-  </div>
-      {% endif %}
-    {% endfor %}
-
-  <fieldset class="parameters">
-    <legend>Parameters</legend>
-    {% for field in form.visible_fields %}
-
-
-        {% if field.name|strip_right_of:"_"  == "param" %}
-  <div class="row">
-    <div class="col-md-2">
-          {{ field.label }}:
-    </div>
-    <div class="col-md-4">
+      <div class="col-md-4">
           {{ field }}
-      <div style="clear: both"></div>
+        <div style="clear: both"></div>
         <div>
           <span class="helptext">{{ field.help_text }}</span>
             {{ field.errors }}
         </div>
       </div>
     </div>
+      {% endif %}
+    {% endfor %}
+  </fieldset>
+
+  <fieldset id="parameters">
+    <legend>Parameters</legend>
+    <div class="row" id="noparams">
+      <div class="col-md-2">
+      No parameters available for this protocol.
+      </div>
+    </div>
+    {% for field in form %}
+
+        {% if field.name|startswith:"param_" == True %}
+    <div class="row paramrow" paramfield="{{ field.name | strip_left_of_first:"_" }}">
+      <div class="col-md-2">
+          {{ field.label }}:
+      </div>
+      <div class="col-md-1">
+          {{ field }}
+        <div style="clear: both"></div>
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
+      </div>
+          {% elif field.name|startswith:"paramvalue_" == True %}
+      <div class="col-md-1">
+          {{ field.label }}:
+      </div>
+      <div class="col-md-4">
+          {{ field }}
+        <div style="clear: both"></div>
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
+      </div>
+    </div> <!-- row -->
         {% endif %}
+
 
     {% endfor %}
 
   </fieldset>
 
- 
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-4">
-      <input type="submit" name="submit" value="Submit"/>
+  <fieldset id="submit">
+    <hr>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <input type="submit" name="submit" value="Submit"/>
+      </div>
     </div>
-  </div>
+  </fieldset>
 
 </form>
 
