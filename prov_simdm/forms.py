@@ -27,19 +27,30 @@ class DatasetForm(forms.Form):
     protocol_choices.insert(0, ('any', 'any'))
     protocol = forms.ChoiceField(choices=protocol_choices, initial=0, required=False)
 
-    # add list of all parameters to the form initially (especially since protocol is set to 'any' initially)
     # do not use a multi-checkbox with MultipleChoiceField with CheckboxSelectMultiple, but rather
     # make a set of form fields for each parameter
     # => use a boolean for the single check boxes, and add a custom range/value field
+    # add all parameters to the form initially, but will hide them using display: none initially using javascript
     def __init__(self, *args, **kwargs):
         super(DatasetForm, self).__init__(*args, **kwargs)
 
         for i, p in enumerate(InputParameter.objects.all()):
-            self.fields['param_'+p.id] = forms.BooleanField(label=p.name, required=False)
-            self.fields['paramvalue_'+p.id] = forms.IntegerField(label='value', required=False)
+            label = p.name
+            if p.unit != '':
+                label = p.name + " ["+p.unit+"]"
 
-            self.fields['param_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldsettype': 'label'})
-            self.fields['paramvalue_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldsettype': 'value', 'min': p.minval, 'max': p.maxval, 'value': p.default})
+            self.fields['param_'+p.id] = forms.BooleanField(label=label, required=False)
+            if p.datatype == "int":
+                self.fields['paramvalue_'+p.id] = forms.IntegerField(label='value', required=False)
+            elif p.datatype == "float":
+                self.fields['paramvalue_'+p.id] = forms.FloatField(label='value', required=False)
+            elif p.datatype == "char":
+                self.fields['paramvalue_'+p.id] = forms.CharField(label='value', required=False)
+            else:
+                self.fields['paramvalue_'+p.id] = forms.CharField(label='value', required=False)
+
+            self.fields['param_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramlabel'})
+            self.fields['paramvalue_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'min': p.minval, 'max': p.maxval, 'value': p.default})
             # how to access these attributes in form-template???
 
             #print self.fields

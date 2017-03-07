@@ -209,22 +209,11 @@
         default: '1000'
         unit: 'Mpc/h'
 -   model: prov_simdm.inputparameter
-    pk: cs:inparam_foflinklen
-    fields:
-        protocol: 'cs:protocol_fofhf'
-        name: linking length
-        datatype: float
-        description: Relative linking lenth for Friends-of-Friends halo finder
-        minval: '0'
-        maxval: '1.0'
-        default: '0.17'
-        unit: ''
--   model: prov_simdm.inputparameter
     pk: cs:inparam_forceres
     fields:
         protocol: 'cs:protocol_artsimu'
         name: force resolution
-        datatype: string
+        datatype: float
         description: (Average) force resolution of the code
         minval: '0'
         maxval: '100'
@@ -242,21 +231,121 @@
         default: '2048'
         unit: ''
 -   model: prov_simdm.inputparameter
+    pk: cs:inparam_particlemass
+    fields:
+        protocol: 'cs:protocol_artsimu'
+        name: particle mass
+        datatype: float
+        description: 'Mass of one simulation particle (smallest mass)'
+        minval: '1e6'
+        maxval: '1e11'
+        default: '1e8'
+        unit: 'h-1.Msol'
+-   model: prov_simdm.inputparameter
     pk: cs:inparam_zini
     fields:
         protocol: 'cs:protocol_artsimu'
-        name: z_ini
+        name: initial redshift
         datatype: float
         description: 'Initial redshift, at which the simulation was started'
         minval: '0'
         maxval: '200'
         default: '40'
         unit: ''
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_foflinklen
+    fields:
+        protocol: 'cs:protocol_fofhf'
+        name: linking length
+        datatype: float
+        description: Relative linking lenth for Friends-of-Friends halo finder
+        minval: '0'
+        maxval: '1.0'
+        default: '0.17'
+        unit: ''
+
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_gadboxsize
+    fields:
+        protocol: 'cs:protocol_gadgetsimu'
+        name: box size
+        datatype: int
+        description: Side length of simulation box
+        minval: '0'
+        maxval: '1000'
+        default: '64'
+        unit: 'Mpc/h'
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_gadforceres
+    fields:
+        protocol: 'cs:protocol_gadgetsimu'
+        name: force resolution
+        datatype: float
+        description: '(Average/max.) force resolution of the code'
+        minval: '0'
+        maxval: '100'
+        default: '13'
+        unit: 'kpc/h'
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_gadparticleres
+    fields:
+        protocol: 'cs:protocol_gadgetsimu'
+        name: particle resolution
+        datatype: int
+        description: Number of particles per dimension
+        minval: '128'
+        maxval: '4096'
+        default: '4096'
+        unit: ''
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_gadparticlemass
+    fields:
+        protocol: 'cs:protocol_gadgetsimu'
+        name: particle mass
+        datatype: float
+        description: 'Mass of one simulation particle (smallest mass)'
+        minval: '1e5'
+        maxval: '1e8'
+        default: '2e5'
+        unit: 'h-1.Msol'
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_gadzini
+    fields:
+        protocol: 'cs:protocol_gadgetsimu'
+        name: initial redshift
+        datatype: float
+        description: 'Initial redshift, at which the simulation was started'
+        minval: '0'
+        maxval: '200'
+        default: '100'
+        unit: ''
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_gadphysics
+    fields:
+        protocol: 'cs:protocol_gadgetsimu'
+        name: 'Physics (particle types)'
+        datatype: char
+        description: 'Physics included, one or more of [DM, GAS, SFR] (dark matter only, including gas physics, including star formation)'
+        minval: 'DM'
+        maxval: 'DM+GAS+SFR'
+        default: 'DM+Gas+SFR'
+        unit: ''
+-   model: prov_simdm.inputparameter
+    pk: cs:inparam_gadlocal
+    fields:
+        protocol: 'cs:protocol_gadgetsimu'
+        name: Resimulation type
+        datatype: char
+        description: 'Type of simulation: either "Full box" simulation or "Resimulation" of a smaller volume '
+        minval: 'Full box'
+        maxval: 'Resimulation'
+        default: 'Resimulation'
+        unit: ''
 
 # ParameterSetting
 -   model: prov_simdm.parametersetting
     fields:
-        value: 7.0 h-1.kpc
+        value: 7.0
         inputParameter: 'cs:inparam_forceres'
         experiment: 'mdr1:exp_simulation'
 -   model: prov_simdm.parametersetting
@@ -266,8 +355,13 @@
         experiment: 'mdr1:exp_simulation'
 -   model: prov_simdm.parametersetting
     fields:
-        value: 1 h-1.Gpc
+        value: 1000
         inputParameter: 'cs:inparam_boxsize'
+        experiment: 'mdr1:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '8.721e9'
+        inputParameter: 'cs:inparam_particlemass'
         experiment: 'mdr1:exp_simulation'
 -   model: prov_simdm.parametersetting
     fields:
@@ -276,9 +370,10 @@
         experiment: 'mdr1:exp_simulation'
 -   model: prov_simdm.parametersetting
     fields:
-        value: '[5.0,13.0]'
+        value: '13'
         inputParameter: 'cs:inparam_forceres'
         experiment: 'mdpl2:exp_simulation'
+        annotation: '5.0 kpc/h at low redshift, 13 kpc/h at high redshift'
 -   model: prov_simdm.parametersetting
     fields:
         value: '120.0'
@@ -286,12 +381,12 @@
         experiment: 'mdpl2:exp_simulation'
 -   model: prov_simdm.parametersetting
     fields:
-        value: 1 h-1.Gpc
+        value: 1000
         inputParameter: 'cs:inparam_boxsize'
         experiment: 'mdpl2:exp_simulation'
 -   model: prov_simdm.parametersetting
     fields:
-        value: '4096'
+        value: '3840'
         inputParameter: 'cs:inparam_particleres'
         experiment: 'mdpl2:exp_simulation'
 -   model: prov_simdm.parametersetting
@@ -309,6 +404,27 @@
         value: '0.17'
         inputParameter: 'cs:inparam_foflinklen'
         experiment: 'mdpl2:exp_fof'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '1.51e91e9'
+        inputParameter: 'cs:inparam_particlemass'
+        experiment: 'mdpl2:exp_simulation'
+
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '2.2e4'
+        inputParameter: 'cs:inparam_gadparticlemass'
+        experiment: 'clues3_lggas:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: 64
+        inputParameter: 'cs:inparam_gadboxsize'
+        experiment: 'clues3_lggas:exp_simulation'
+-   model: prov_simdm.parametersetting
+    fields:
+        value: '4096'
+        inputParameter: 'cs:inparam_particleres'
+        experiment: 'clues3_lggas:exp_simulation'
 
 
 # Datasets

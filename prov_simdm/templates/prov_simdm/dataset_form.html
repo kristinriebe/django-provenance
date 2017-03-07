@@ -14,11 +14,11 @@
         $.getJSON(url, function(data) {
             // add options via javascript here directly
             opt = $("select"+selector);
-            window.console.log('opt: ', opt);
+            //window.console.log('opt: ', opt);
 
 
             old_val = opt.val();
-            window.console.log('oldval: ', old_val);
+            //window.console.log('oldval: ', old_val);
             // remove all existing options and replace with new
             opt.find('option').remove();
 
@@ -26,7 +26,7 @@
             opt.append($('<option/>').val('any').text('any'));
 
             $.each(data, function () {
-                window.console.log(this.id);
+                //window.console.log(this.id);
                 opt.append($('<option/>').val(this.id).text(this.value));
             });
             opt.val(old_val);
@@ -34,7 +34,7 @@
         });
     }
 
-    function update_parameters(url, selector) {
+    function update_parameters(url, protocol_id, selector) {
         /* Function to update the visible parameters depending on
          * which params are returned from a getJSON call
          */
@@ -46,17 +46,28 @@
                 option_list.push(this.id);
             });
 
+            window.console.log("protocol_id: ", protocol_id);
+
+
             if (option_list.length == 0) {
-              $('div#noparams').show();
+              if (protocol_id == 'any') {
+                $('div#anyparams').show();
+              } else {
+                $('div#noparams').show();
+                $('div#anyparams').hide();
+              }
+            } else {
+                $('div#anyparams').hide();
+                $('div#noparams').hide();
             }
 
-            //window.console.log(option_list);
+            window.console.log(option_list);
             /* search for the corresponding parameters in the hidden fields (display: none) 
              * and show them; hide the ones that don't match */
             $(selector).each( function(){
                 $(this).find('div.paramrow').each( function(){
-                    paramid = $(this).attr('paramfield');
-                    //window.console.log('a: ', a);
+                    paramid = $(this).attr('paramid');
+                    //window.console.log('check param with id: ', paramid);
                     if (option_list.indexOf(paramid) != -1) {
                         $(this).show();
                     } else {
@@ -87,16 +98,25 @@
 
     /* document ready? Go! */
     $(function(){
-        // initially hide the noparams-div
+
+        // initializations
+        // ---------------
         $('div#noparams').hide();
+        $('div#anyparams').hide();
+
+        // also initially set the parameters
+        update_parameters('/simdm/datasetform_parameters?protocol=' + $('#id_protocol').val(), $('#id_protocol').val(), '#parameters');
 
         // update all parameter styles (based on checked or not)
-        $('#parameters').find("input[fieldsettype='label']").each(
+        $('#parameters').find("input[fieldtype='paramlabel']").each(
           function() {
             //window.console.log("switch off "+this.id);
             switch_gray_out(this.id);
         });
 
+
+        // on-change-calls
+        // ---------------
         /* if #id_protocol_type is changing, call the update_protocols-function for
          * updating the protocols-list */
         $('#id_protocol_type').change(function(){
@@ -108,14 +128,26 @@
         /* if the field with id=id_protocol is changing, then call update_parameters-function
          * for updating the visible/hidden params */
         $('#id_protocol').change(function(){
-            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), '#parameters');
+            window.console.log('protocol changed to ' + $(this).val());
+            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), $(this).val(), '#parameters');
         });
 
-        $("input[id='id_param_cs:inparam_forceres']").change( function() { switch_gray_out(this.id); });
-        $("input[id='id_param_cs:inparam_zini']").change( function() { switch_gray_out(this.id); });
-        $("input[id='id_param_cs:inparam_foflinklen']").change( function() { switch_gray_out(this.id); });
-        $("input[id='id_param_cs:inparam_boxsize']").change( function() { switch_gray_out(this.id); });
-        $("input[id='id_param_cs:inparam_particleres']").change( function() { switch_gray_out(this.id); });
+        // TODO: loop below is inefficient, come up with a better way
+        $('#parameters').change(function() { $(this).find("input[fieldtype='paramlabel']").each(
+            function() {
+//              $( this ).click( function() {
+                  //window.console.log("params changed, updating "+this.id);
+                  switch_gray_out(this.id);
+//              });
+            });
+        });
+
+        /*$("input[id='id_param_cs:inparam_forceres']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_zini']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_foflinklen']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_boxsize']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_particleres']").click( function() { switch_gray_out(this.id); });
+        */
 });
 </script>
 
@@ -154,14 +186,21 @@
   <fieldset id="parameters">
     <legend>Parameters</legend>
     <div class="row" id="noparams">
+      <div class="col-md-2"></div>
       <div class="col-md-2">
       No parameters available for this protocol.
+      </div>
+    </div>
+    <div class="row" id="anyparams">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+      Please choose a Protocol to update the available parameters.
       </div>
     </div>
     {% for field in form %}
 
         {% if field.name|startswith:"param_" == True %}
-    <div class="row paramrow" paramfield="{{ field.name | strip_left_of_last:"_" }}">
+    <div class="row paramrow" paramfield="{{ field.name | strip_left_of_last:"_" }}" paramid="{{ field.name| strip_left_of_first:"_" }}">
       <div class="col-md-2">
       </div>
       <div class="col-md-2">

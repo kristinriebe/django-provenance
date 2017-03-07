@@ -193,6 +193,9 @@ class ParameterSetting(models.Model):
     value = models.CharField(max_length=128, blank=True, null=True)
     inputParameter = models.ForeignKey("InputParameter", null=True, on_delete=models.SET_NULL) # not one-to-one, since there can be many instances of an experiment with its params
     experiment = models.ForeignKey("Experiment", null=True, on_delete=models.SET_NULL)
+    # add annotation for being able to give more explanations
+    # (e.g. if force resolution varies for low and high redshift)
+    annotation = models.CharField(max_length=1024, blank=True, null=True)
 
     def __str__(self):
         return self.id

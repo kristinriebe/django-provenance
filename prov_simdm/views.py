@@ -205,9 +205,10 @@ def get_parameters(request): # url: datasetform_parameters
     parameter_list = []
     if protocol:
         if protocol == 'any':
-            # again load all possible parameters, not sure, how to do without:
-            for param in InputParameter.objects.all():
-                parameter_list.append(dict(id=param.id, value=unicode(param.name)))
+            # do load nothing in this case
+            parameter_list = []
+            #for param in InputParameter.objects.all():
+            #    parameter_list.append(dict(id=param.id, value=unicode(param.name)))
         else:
             for param in InputParameter.objects.filter(protocol__id=protocol):
                 parameter_list.append(dict(id=param.id, value=unicode(param.name)))
