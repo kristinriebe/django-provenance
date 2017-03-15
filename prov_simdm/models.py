@@ -156,7 +156,7 @@ class InputParameter(models.Model):
     protocol = models.ForeignKey("Protocol", null=True, on_delete=models.SET_NULL)
     # additional attributes for more usefulness:
     name = models.CharField(max_length=1024, blank=True, null=True)
-    datatype = models.CharField(max_length=128, null=True)
+    datatype = models.CharField(max_length=128, null=True)  # for now: only one of ['int','float','char'] is coded
     #unit = models.CharField(max_length=128, null=True)
     #ucd = models.CharField(max_length=128, null=True)
     #utype = models.CharField(max_length=128, null=True)

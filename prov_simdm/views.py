@@ -10,6 +10,8 @@ from django.views.generic.edit import FormView
 from django.db.models import F  # for renaming fields extracted from database
 
 from rest_framework.renderers import JSONRenderer
+from django.db.models.fields import Field
+from django.db.models import Transform
 
 import json
 
@@ -141,6 +143,31 @@ class AlgorithmFormResultsView(FormView):
 
         return render_to_response('prov_simdm/algorithm_formresults.html', context={'algorithm': algorithm, 'experiment_list': experiment_list})
 
+# helper classes for converting char fields from the database
+# see http://stackoverflow.com/questions/28101580/how-do-i-cast-char-to-integer-while-querying-in-django-orm
+# and https://docs.djangoproject.com/en/1.10/howto/custom-lookups/#custom-lookups
+@Field.register_lookup
+class IntegerValue(Transform):
+    # Register this before you filter things, for example in models.py
+    lookup_name = 'int'  # Used as object.filter(LeftField__int__gte, "777")
+    bilateral = True  # To cast both left and right
+
+    def as_sql(self, compiler, connection):
+        sql, params = compiler.compile(self.lhs)
+        sql = 'CAST(%s AS INTEGER)' % sql
+        return sql, params
+
+@Field.register_lookup
+class FloatValue(Transform):
+    # Register this before you filter things, for example in models.py
+    lookup_name = 'float'  # Used as object.filter(LeftField__float__gte, "1.77")
+    bilateral = True  # To cast both left and right
+
+    def as_sql(self, compiler, connection):
+        sql, params = compiler.compile(self.lhs)
+        sql = 'CAST(%s AS FLOAT)' % sql
+        return sql, params
+
 
 class DatasetFormResultsView(FormView):
     template_name = 'prov_simdm/dataset_form.html'
@@ -151,6 +178,7 @@ class DatasetFormResultsView(FormView):
         protocol_type = form.cleaned_data['protocol_type']
         protocol = form.cleaned_data['protocol']
         #parameters = form.cleaned_data['parameters']
+        #parameters = []
 
         if project_id == 'any':
             experiment_list = Experiment.objects.all()
@@ -159,15 +187,35 @@ class DatasetFormResultsView(FormView):
 
         if protocol_type != 'any':
             experiment_list = experiment_list.filter(protocol__type=protocol_type)
-        
-        # restrict experiment_list further based on chosen protocol:
+
+        # get all possible parameters for the experiments/protocols and check if they were checked in the form or not
+        parameters = InputParameter.objects.filter(protocol=protocol)
+        parametervalues = {}
+        for i, p in enumerate(parameters):
+            parameter_cleaned = form.cleaned_data['param_'+p.id]
+            # print "p: ", p.id
+            # print "parameter clean: ", parameter_cleaned
+            if parameter_cleaned:
+                parametervalues[p.id] = form.cleaned_data['paramvalue_'+p.id]
+                # print 'cleaned val: ', form.cleaned_data['paramvalue_'+p.id]
+
         if protocol != 'any':
             experiment_list = experiment_list.filter(protocol=protocol)
 
-        # restrict experiment_list based on chosen parameters:
-        #if parameters:
-        #    print parameters
-            #experiment_list = experiment_list.filter(inputParameter_protocol=experiment_protocolprotocol_type)
+            # restrict experiment_list based on chosen parameters:
+            parameter_experiment_ids = []
+            for p, value in parametervalues.iteritems():
+
+                # find the experiment ids fitting to the parameter value;
+                # need to cast the value to int or float, depending on the datatype
+                # (otherwise cannot do >, < or range queries)
+                datatype = InputParameter.objects.get(id=p).datatype
+                if datatype == 'int':
+                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value__int__gte=value)
+                elif datatype == 'float':
+                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value__float__gte=value)
+                else:
+                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value=value)
 
         dataset_list = []
         for e in experiment_list:
@@ -178,7 +226,7 @@ class DatasetFormResultsView(FormView):
         return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list})
 
 
-def get_protocols(request): # url: datasetform_protocols
+def get_protocols(request):  # url: datasetform_protocols
     # Get all available protocols for a given protocol_type,
     # will be used by javascript to fill the parameters automatically into the dataset search form
 
@@ -196,7 +244,7 @@ def get_protocols(request): # url: datasetform_protocols
     return HttpResponse(json.dumps(protocol_list), content_type='application/json')
 
 
-def get_parameters(request): # url: datasetform_parameters
+def get_parameters(request):  # url: datasetform_parameters
     # Get all available parameters for a given protocol_id,
     # will be used by javascript to fill the parameters automatically into the dataset search form
 
