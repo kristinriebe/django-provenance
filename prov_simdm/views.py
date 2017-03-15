@@ -177,8 +177,6 @@ class DatasetFormResultsView(FormView):
         project_id = form.cleaned_data['project_id']
         protocol_type = form.cleaned_data['protocol_type']
         protocol = form.cleaned_data['protocol']
-        #parameters = form.cleaned_data['parameters']
-        #parameters = []
 
         if project_id == 'any':
             experiment_list = Experiment.objects.all()
@@ -196,26 +194,43 @@ class DatasetFormResultsView(FormView):
             # print "p: ", p.id
             # print "parameter clean: ", parameter_cleaned
             if parameter_cleaned:
-                parametervalues[p.id] = form.cleaned_data['paramvalue_'+p.id]
-                # print 'cleaned val: ', form.cleaned_data['paramvalue_'+p.id]
+                value_min = -1
+                value_max = -1
+                value_sin = -1
+                if 'paramvalue_min_'+p.id in form.cleaned_data:
+                    value_min = form.cleaned_data['paramvalue_min_'+p.id]
+                if 'paramvalue_max_'+p.id in form.cleaned_data:
+                    value_max = form.cleaned_data['paramvalue_max_'+p.id]
+                if 'paramvalue_sin_'+p.id in form.cleaned_data:
+                    value_sin = form.cleaned_data['paramvalue_sin_'+p.id]
+
+                parametervalues[p.id] = [value_min, value_max, value_sin]
+                print 'cleaned val: ', p.id, value_min, value_max, value_sin
 
         if protocol != 'any':
             experiment_list = experiment_list.filter(protocol=protocol)
 
             # restrict experiment_list based on chosen parameters:
             parameter_experiment_ids = []
-            for p, value in parametervalues.iteritems():
+            for p, values in parametervalues.iteritems():
 
                 # find the experiment ids fitting to the parameter value;
                 # need to cast the value to int or float, depending on the datatype
                 # (otherwise cannot do >, < or range queries)
-                datatype = InputParameter.objects.get(id=p).datatype
+                parameter = InputParameter.objects.get(id=p)
+                datatype = parameter.datatype
+                minval = values[0]
+                maxval = values[1]
+                sinval = values[2]
+
                 if datatype == 'int':
-                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value__int__gte=value)
+                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value__int__range=(minval,maxval))
                 elif datatype == 'float':
-                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value__float__gte=value)
+                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value__float__range=(minval,maxval))
                 else:
-                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value=value)
+                    experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value=sinval)
+
+                print experiment_list.query
 
         dataset_list = []
         for e in experiment_list:

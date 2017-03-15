@@ -41,23 +41,26 @@ class DatasetForm(forms.Form):
 
             self.fields['param_'+p.id] = forms.BooleanField(label=label, required=False)
             if p.datatype == "int":
-                self.fields['paramvalue_'+p.id] = forms.IntegerField(label='value', required=False)
+                self.fields['paramvalue_min_'+p.id] = forms.IntegerField(label='value', required=False)
+                self.fields['paramvalue_max_'+p.id] = forms.IntegerField(label='value', required=False)
+                self.fields['paramvalue_min_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'min': p.minval, 'max': p.maxval, 'value': p.minval})
+                self.fields['paramvalue_max_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'min': p.minval, 'max': p.maxval, 'value': p.maxval})
             elif p.datatype == "float":
-                self.fields['paramvalue_'+p.id] = forms.FloatField(label='value', required=False)
+                self.fields['paramvalue_min_'+p.id] = forms.FloatField(label='value', required=False)
+                self.fields['paramvalue_max_'+p.id] = forms.FloatField(label='value', required=False)
+                self.fields['paramvalue_min_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'min': p.minval, 'max': p.maxval, 'value': p.minval})
+                self.fields['paramvalue_max_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'min': p.minval, 'max': p.maxval, 'value': p.maxval})
             elif p.datatype == "char":
-                self.fields['paramvalue_'+p.id] = forms.CharField(label='value', required=False)
+                self.fields['paramvalue_sin_'+p.id] = forms.CharField(label='value', required=False)
+                self.fields['paramvalue_sin_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'value': p.default})
             else:
-                self.fields['paramvalue_'+p.id] = forms.CharField(label='value', required=False)
+                self.fields['paramvalue_sin_'+p.id] = forms.CharField(label='value', required=False)
+                self.fields['paramvalue_sin_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'value': p.default})
 
             self.fields['param_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramlabel'})
-            self.fields['paramvalue_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'min': p.minval, 'max': p.maxval, 'value': p.default})
-            # how to access these attributes in form-template???
-
-            #print self.fields
-
 
     # Initialize the displayed parameters based on pre-selected protocol
-    # skipped this here, because want to display all params anyway and show/hide them using javascript
+    # skipped this here, because want to include all params anyway in form, and show/hide them using javascript
     #
     # def __init__(self, *args, **kwargs):
     #     forms.Form.__init__(self, *args, **kwargs)

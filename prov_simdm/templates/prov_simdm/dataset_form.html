@@ -52,6 +52,7 @@
             if (option_list.length == 0) {
               if (protocol_id == 'any') {
                 $('div#anyparams').show();
+                $('div#noparams').hide();
               } else {
                 $('div#noparams').show();
                 $('div#anyparams').hide();
@@ -81,14 +82,16 @@
     function switch_gray_out(objid) {
         /* Function to gray out not-needed areas */
 
+      paramid = objid.replace('id_param_', '');
+
       if ( $("input[id='"+objid+"']").is(":checked")  ) {
-          //window.console.log('checked!');
-          $("div[paramid='"+objid+"']").each( function(){
+          //window.console.log('checked! id: '+ paramid);
+          $("div[paramid='"+paramid+"']").each( function(){
             $(this).removeClass("gray");
           });
       } else {
-          //window.console.log('not checked!');
-          $("div[paramid='"+objid+"']").each( function(){
+          //window.console.log('not checked! id: ' + paramid);
+          $("div[paramid='"+paramid+"']").each( function(){
             $(this).addClass("gray");
           });
       }
@@ -104,7 +107,9 @@
         $('div#noparams').hide();
         $('div#anyparams').hide();
 
-        // also initially set the parameters
+        // also initially set the protocols and parameters
+        var selectedvalue = $('#id_protocol_type input:checked').val();
+        update_protocols('/simdm/datasetform_protocols?protocol_type=' + selectedvalue, '#id_protocol');
         update_parameters('/simdm/datasetform_parameters?protocol=' + $('#id_protocol').val(), $('#id_protocol').val(), '#parameters');
 
         // update all parameter styles (based on checked or not)
@@ -132,7 +137,7 @@
             update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), $(this).val(), '#parameters');
         });
 
-        // TODO: loop below is inefficient, come up with a better way
+        // TODO: loop below is inefficient, (because it always checks all parameters), come up with a better way
         $('#parameters').change(function() { $(this).find("input[fieldtype='paramlabel']").each(
             function() {
 //              $( this ).click( function() {
@@ -200,7 +205,7 @@
     {% for field in form %}
 
         {% if field.name|startswith:"param_" == True %}
-    <div class="row paramrow" paramfield="{{ field.name | strip_left_of_last:"_" }}" paramid="{{ field.name| strip_left_of_first:"_" }}">
+    <div class="row paramrow" style="display: none" paramfield="{{ field.name | strip_left_of_last:"_" }}" paramid="{{ field.name | strip_left_of_first:"_" }}">
       <div class="col-md-2">
       </div>
       <div class="col-md-2">
@@ -211,8 +216,17 @@
             {{ field.errors }}
         </div>
       </div>
-          {% elif field.name|startswith:"paramvalue_" == True %}
-      <div class="col-md-4" paramid="id_{{ field.name|cut:"value" }}">
+        {% elif field.name|startswith:"paramvalue_min_" == True %}
+      <div class="col-md-2" paramid="id_{{ field.name|cut:"value_min" }}">
+          {{ field }}
+        <div style="clear: both"></div>
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
+      </div>
+        {% elif field.name|startswith:"paramvalue_max_" == True or field.name|startswith:"paramvalue_sin_" == True %}
+      <div class="col-md-2" paramid="id_{{ field.name|cut:"value_max" }}">
           {{ field }}
         <div style="clear: both"></div>
         <div>
