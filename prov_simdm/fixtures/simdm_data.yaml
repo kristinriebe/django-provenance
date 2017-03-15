@@ -406,7 +406,7 @@
         experiment: 'mdpl2:exp_fof'
 -   model: prov_simdm.parametersetting
     fields:
-        value: '1.51e91e9'
+        value: '1.51e9'
         inputParameter: 'cs:inparam_particlemass'
         experiment: 'mdpl2:exp_simulation'
 
