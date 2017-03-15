@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^parametersettings/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ParameterSettingDetailView.as_view(), name='parametersetting_detail'),
     url(r'^alorithms/$', views.AlgorithmsView.as_view(), name='algorithms'),
     url(r'^algorithms/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.AlgorithmDetailView.as_view(), name='algorithm_detail'),
-    url(r'^form/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
+    url(r'^algoform/$', views.AlgorithmFormResultsView.as_view(), name='algo_form'),
     #url(r'^form/$', views.get_algorithmId, name='get_algorithmId'), # also works!
     #url(r'^form/results/$', views.AlgorithmFormResultsView.as_view(), name='algorithm_form'),
 

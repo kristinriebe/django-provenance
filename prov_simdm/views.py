@@ -233,12 +233,17 @@ class DatasetFormResultsView(FormView):
                 print experiment_list.query
 
         dataset_list = []
+        parametervalue_lists = {}
         for e in experiment_list:
             olist = OutputDataset.objects.filter(experiment_id=e.id)
             for o in olist:
                 dataset_list.append(o)
+                print "id: ", o
+                parametervalue_lists[str(o.id)] = ParameterSetting.objects.filter(experiment_id=e.id)
+                #parametervalue_lists['yes'] = ParameterSetting.objects.filter(experiment_id=e.id)
+                
 
-        return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list})
+        return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list, 'parametervalue_lists': parametervalue_lists})
 
 
 def get_protocols(request):  # url: datasetform_protocols

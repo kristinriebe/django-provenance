@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load form_extras %}
 
 {% block title %}IVOA SimDM - Datasets{% endblock %}
 
@@ -32,9 +33,9 @@ Following datasets are recorded</b>.
         </td><td>
             {{ dataset.experiment.protocol.name }}
         </td><td>
-    {% if dataset.experiment.parametervalue_list %}
+    {% if dataset.id in parametervalue_lists %}
         <ul class="list-unstyled">
-    {% for p in dataset.experiment.parametervalue_list %}
+    {% for p in parametervalue_lists|getdictentry:dataset.id %}
         <li style="margin-bottom: 10px;">
             <span class="key">
                 <a href="{% url 'prov_simdm:inputparameter_detail' p.inputParameter.id %}">
