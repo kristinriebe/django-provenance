@@ -258,7 +258,7 @@
         protocol: 'cs:protocol_fofhf'
         name: linking length
         datatype: float
-        description: Relative linking lenth for Friends-of-Friends halo finder
+        description: Relative linking length for Friends-of-Friends halo finder
         minval: '0'
         maxval: '1.0'
         default: '0.17'
@@ -326,8 +326,8 @@
         name: 'Physics (particle types)'
         datatype: char
         description: 'Physics included, one or more of [DM, GAS, SFR] (dark matter only, including gas physics, including star formation)'
-        minval: 'DM'
-        maxval: 'DM+GAS+SFR'
+        minval: ''
+        maxval: ''
         default: 'DM+Gas+SFR'
         unit: ''
 -   model: prov_simdm.inputparameter
@@ -337,8 +337,8 @@
         name: Resimulation type
         datatype: char
         description: 'Type of simulation: either "Full box" simulation or "Resimulation" of a smaller volume '
-        minval: 'Full box'
-        maxval: 'Resimulation'
+        minval: ''
+        maxval: ''
         default: 'Resimulation'
         unit: ''
 

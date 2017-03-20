@@ -58,6 +58,8 @@ class DatasetForm(forms.Form):
                 self.fields['paramvalue_sin_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramvalue', 'value': p.default})
 
             self.fields['param_'+p.id].widget.attrs.update({'fieldset': 'param', 'fieldtype': 'paramlabel'})
+            # add help_text as well
+            self.fields['param_'+p.id].help_text = p.description
 
     # Initialize the displayed parameters based on pre-selected protocol
     # skipped this here, because want to include all params anyway in form, and show/hide them using javascript

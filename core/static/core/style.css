@@ -103,6 +103,9 @@ form ul#id_parameters li {
   color: #aaa;
 }
 
+.gray .helptext {
+  color: #999;
+}
 
 
 /* detail list of attributes */

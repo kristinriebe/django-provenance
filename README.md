@@ -32,6 +32,21 @@ python manage.py test
 
 This executes all tests in the subdirectories as well. Currently, there are only a few tests available, but this will hopefully improve in the future.
 
+## Loading data
+There are different possibilities to load data into a Django web application.
+For the apps `prov_vo` and `prov_w3c`, the data is loaded directly into the SQlite database with `INSERT` statements from the corresponding files in the `data/` directory. These can be executed using:
+
+```bash
+cat data/insert_data_w3c.sql | sqlite3 db.sqlite3
+cat data/insert_data_vo.sql | sqlite3 db.sqlite3
+```
+
+For the `prov_simdm` app, I wrote a data fixture. If necessary, first clean up all simdm-related data and then reingest using `manage.py loaddata`:
+
+```bash
+cat data/delete_data_simdm.sql | sqlite3 db.sqlite3 
+python manage.py loaddata prov_simdm/fixtures/simdm_data.yaml
+```
 
 ## Starting the webapp locally
 When everything is installed, start django's test server in the usual way:
