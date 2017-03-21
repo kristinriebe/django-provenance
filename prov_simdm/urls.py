@@ -28,8 +28,8 @@ urlpatterns = [
     url(r'^datasetform_parameters/$', views.get_parameters, name='datasetform_parameters'),
     # provenancedm urls
     url(r'^voprov/entities/$', views.voprov_entities, name='voprov_entities'),
-
-
+    url(r'^voprov/activities/$', views.voprov_activities, name='voprov_activities'),
+    url(r'^voprov/activitydescriptions/$', views.voprov_activitydescriptions, name='voprov_activitydescriptions'),
     # simdal urls
     url(r'^simdal/protocols/$', views.simdal_protocols, name='simdal_protocols'),
     url(r'^simdal/projects/$', views.simdal_projects, name='simdal_projects'),

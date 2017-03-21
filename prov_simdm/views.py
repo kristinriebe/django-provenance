@@ -287,16 +287,46 @@ def get_parameters(request):  # url: datasetform_parameters
     return HttpResponse(json.dumps(parameter_list), content_type='application/json')
 
 
-# ProvenanceDM views
-# ==================
+# ProvenanceDM views of simulation data
+# =====================================
 
 def voprov_entities(request):
     # get datasets and rename fields from database, so they fit to provenancedm-attributes of Entity
-    data = OutputDataset.objects.order_by('id').annotate(location=F('accessURL'), type=F('objectType_id')).values('id','name','type','location')
+    data = OutputDataset.objects.order_by('id').annotate(
+            location=F('accessURL'),
+            type=F('objectType_id'),
+            label=F('name')
+           ).values('id','label','type','location')
+
     votable = VOTableRenderer().render(data, prettyprint=False)
     response = HttpResponse(votable, content_type="application/xml")
     return response
 
+def voprov_activities(request):
+    # get datasets and rename fields from database, so they fit to provenancedm-attributes of Entity
+    data = Experiment.objects.order_by('id').annotate(
+            label=F('name'),
+            endTime=F('executionTime'),
+            annotation=F('description'),
+            description_ref=F('protocol_id')
+           ).values('id','label','endTime','description_ref','annotation')
+
+    votable = VOTableRenderer().render(data, prettyprint=False)
+    response = HttpResponse(votable, content_type="application/xml")
+    return response
+
+def voprov_activitydescriptions(request):
+    # get datasets and rename fields from database, so they fit to provenancedm-attributes of Entity
+    data = Protocol.objects.order_by('id').annotate(
+            label=F('name'),
+            #type=F('ptype'),
+            annotation=F('description'),
+            doculink=F('referenceURL')
+           ).values('id','label','type','annotation','doculink')
+
+    votable = VOTableRenderer().render(data, prettyprint=False)
+    response = HttpResponse(votable, content_type="application/xml")
+    return response
 
 # SimDAL views
 # ============

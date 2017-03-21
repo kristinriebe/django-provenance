@@ -57,7 +57,7 @@ class Experiment(models.Model):
     protocol = models.ForeignKey("Protocol", null=True, on_delete=models.SET_NULL) # == voprov:activitydescription
     # inherited attributes from resource
     name = models.CharField(max_length=1024, blank=True, null=True)
-    #description = 
+    description = models.CharField(max_length=1024, blank=True, null=True)
     #referenceURL = 
     #created = 
     # collections: appliedAlgorithm (AppliedAlgorithm), inputData (InputDataset), outputData (OutputDataset), parameter (ParameterSetting)
