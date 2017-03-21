@@ -157,7 +157,7 @@ class InputParameter(models.Model):
     # additional attributes for more usefulness:
     name = models.CharField(max_length=1024, blank=True, null=True)
     datatype = models.CharField(max_length=128, null=True)  # for now: only one of ['int','float','char'] is coded
-    #unit = models.CharField(max_length=128, null=True)
+    unit = models.CharField(max_length=128, null=True)
     #ucd = models.CharField(max_length=128, null=True)
     #utype = models.CharField(max_length=128, null=True)
     #arraysize = models.CharField(max_length=128, null=True)
@@ -166,7 +166,6 @@ class InputParameter(models.Model):
     minval = models.CharField(max_length=128, blank=True, null=True)
     maxval = models.CharField(max_length=128, blank=True, null=True)
     default = models.CharField(max_length=128, blank=True, null=True)
-    unit = models.CharField(max_length=128, blank=True, null=True)
 
 
     def __str__(self):
@@ -316,12 +315,54 @@ class DataObject(models.Model):
     def __str__(self):
         return self.id
 
+class Property(models.Model):
+    id = models.CharField(primary_key=True, max_length=128)
+    dataObjectType = models.ForeignKey("OutputDataObjectType", null=True, on_delete=models.SET_NULL) # many can refer to the same outputdataset
+    name = models.CharField(max_length=1024, blank=True, null=True)
+    datatype = models.CharField(max_length=1024, blank=True, null=True)
+    unit = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.CharField(max_length=1024, blank=True, null=True)
+
+    #inputDataObject = models.ForeignKey("InputDataObject", null=True, on_delete=models.SET_NULL) # only 1-1
+
+    def __str__(self):
+        return self.id
+
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'dataObjectType',
+            'name',
+            'datatype',
+            'unit',
+            'description'
+        ]
+        return attributes
+
+class PropertyValue(models.Model):
+    id = models.AutoField(primary_key=True)
+    value = models.CharField(max_length=128, blank=True, null=True)
+    property = models.ForeignKey("Property", null=True, on_delete=models.SET_NULL) # not one-to-one, since there can be many instances of an experiment with its params
+    dataObject = models.ForeignKey("DataObject", null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.id
+
+    def get_viewattributes(self):
+        attributes = [
+            'id',
+            'value',
+            'property',
+            'dataObject'
+        ]
+        return attributes
+
 
 @python_2_unicode_compatible
 class InputDataObject(models.Model):
     # This class connects InputDataset and DataObject. 
-    # It allows to specify onlya subset of an outputDataset that was actually 
-    # used as input for something else, by providing a link to dataObject.
+    # It allows to specify only a subset of an outputDataset that was actually 
+    # used as input for something else, by providing a link to DataObject.
     # An OutputDataset consists of DataObject, an InputDataset consists of InputDataObjects that refer to DataObjects.
     # 
     # Thus it serves as a protection 

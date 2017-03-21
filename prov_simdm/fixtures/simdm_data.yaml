@@ -696,6 +696,38 @@
     fields:
         outputDataset: 'mdr1:out_snapshots'
 
+# -- Property
+-   model: prov_simdm.property  
+    pk: cs:snapnum
+    fields:
+        dataObjectType: cs:outputtype_snaps
+        name: snapshot number
+        datatype: int
+        unit : ''
+        description: Number of the snapshot from the simulation
+
+# -- PropertyValue
+-   model: prov_simdm.propertyvalue
+    fields:
+        value: 1
+        property: cs:snapnum
+        dataObject: mdr1:snapshot_1
+
+-   model: prov_simdm.propertyvalue
+    fields:
+        value: 2
+        property: cs:snapnum
+        dataObject: mdr1:snapshot_2
+-   model: prov_simdm.propertyvalue
+    fields:
+        value: 5
+        property: cs:snapnum
+        dataObject: mdr1:snapshot_5
+-   model: prov_simdm.propertyvalue
+    fields:
+        value: 85
+        property: cs:snapnum
+        dataObject: mdr1:snapshot_85
 
 # -- Party
 -   model: prov_simdm.party

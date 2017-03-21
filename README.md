@@ -21,6 +21,7 @@ markdown
 mod_wsgi -- wsgi-module for apache2, needed on the server on which the webapp shall be deployed 
 BeautifulSoup -- xml parsing  
 logger -- write proper log and error messages
+pyyaml -- for loading data (fixtures) from yaml representation
 
 
 ## Testing
