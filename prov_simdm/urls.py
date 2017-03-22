@@ -26,10 +26,13 @@ urlpatterns = [
     url(r'^datasetform/$', views.DatasetFormResultsView.as_view(), name='dataset_form'),
     url(r'^datasetform_protocols/$', views.get_protocols, name='datasetform_protocols'),
     url(r'^datasetform_parameters/$', views.get_parameters, name='datasetform_parameters'),
+
     # provenancedm urls
     url(r'^voprov/entities/$', views.voprov_entities, name='voprov_entities'),
     url(r'^voprov/activities/$', views.voprov_activities, name='voprov_activities'),
     url(r'^voprov/activitydescriptions/$', views.voprov_activitydescriptions, name='voprov_activitydescriptions'),
+    url(r'^voprov/provn/$', views.voprov_provn, name='voprov_provn'),
+
     # simdal urls
     url(r'^simdal/protocols/$', views.simdal_protocols, name='simdal_protocols'),
     url(r'^simdal/projects/$', views.simdal_projects, name='simdal_projects'),

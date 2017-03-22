@@ -16,7 +16,7 @@ from django.db.models import Transform
 import json
 
 
-from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project, OutputDataset
+from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project, OutputDataset, Party, Contact, InputDataset
 from .forms import AlgorithmForm, DatasetForm
 from .serializers import ProtocolSerializer
 from .renderers import VOTableRenderer
@@ -298,7 +298,38 @@ def voprov_entities(request):
             label=F('name')
            ).values('id','label','type','location')
 
-    votable = VOTableRenderer().render(data, prettyprint=False)
+    tabledescription = "ProvenanceDM list of entitites, extracted from SimDM"
+    tableattrs = {'utype': 'prov:Entity'}
+    utypes = {}
+    utypes['type'] = 'voprov:type'
+    utypes['id'] = 'prov:id'
+    utypes['label'] = 'prov:label'
+
+    fields = []
+    for fieldname in utypes.keys():
+        fields.append(
+                {'FIELD': {
+                    'attrs': {'name': fieldname, 'utype': utypes[fieldname]}
+                    }
+                }
+        )
+
+    votable_meta = {
+                    'VOTABLE': {
+                        'RESOURCE': {
+                            #'attrs': {'type': 'results'},
+                            'TABLE': {
+                                'attrs': tableattrs,
+                                'DESCRIPTION': tabledescription,
+                                'FIELDS': fields,
+                            }
+                        }
+                    }
+                }
+
+    # ... then render as xml VOTable using VOTableRenderer,
+    # (missing field definitions will be added automatically)
+    votable = VOTableRenderer().render(data, votable_meta=votable_meta, prettyprint=False)
     response = HttpResponse(votable, content_type="application/xml")
     return response
 
@@ -327,6 +358,69 @@ def voprov_activitydescriptions(request):
     votable = VOTableRenderer().render(data, prettyprint=False)
     response = HttpResponse(votable, content_type="application/xml")
     return response
+
+def voprov_provn(request):
+    experiments = Experiment.objects.order_by('id')#.annotate(
+#            label=F('name'),
+#            endTime=F('executionTime'),
+#            annotation=F('description'),
+#            description_ref=F('protocol_id')
+#           ).values('id','label','endTime','description_ref','annotation')
+
+    outputdatasets = OutputDataset.objects.order_by('id')#.annotate(
+#            label=F('name'),
+#            activity=F('experiment'),
+#           ).values('id','label','activity')
+
+    inputdatasets = InputDataset.objects.order_by('id')#.annotate(
+#            label=F('name'),
+#            activity=F('experiment'),
+#            product=F('product'),
+#           ).values('id','label','activity', 'product')
+    parties = Party.objects.order_by('id')
+    projects = Project.objects.order_by('id')
+    contacts = Contact.objects.order_by('id')
+    parametersettings = ParameterSetting.objects.order_by('id')
+
+    # TODO: also construct wasDerivedFrom relations
+
+    provstr = "document\n"
+    for e in experiments:
+        provstr = provstr + "activity(" + e.id + ", "", " + str(e.executionTime) + ", [prov:label = '" + e.name + "', voprov:annotation = '" + str(e.description) + "', voprov:type = '" + str(e.protocol.type) + "']),\n"
+    
+    for o in outputdatasets:
+        # TODO: inputdatasets that are not refering to an outputdataset are still missing
+        provstr = provstr + "entity(" + o.id + ", [prov:type = 'entity', prov:label = '" + o.name + "', voprov:accessLink = '" + str(o.accessURL) + "', voprov:dataproduct_type = '" + str(o.objectType.name) + "']),\n"
+ 
+    for ag in parties:
+        agtype = 'Person' # or can it be something else as well?
+        provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + agtype + "', voprov:name = '" + ag.name + "', voprov:affiliation = '" + ag.affiliation + "']),\n"
+
+    for ag in projects:
+        agtype = 'Project' # or can it be something else as well?
+        provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + agtype + "', voprov:name = '" + ag.name + "', voprov:link = '" + ag.referenceURL + "']),\n"
+
+    for u in inputdatasets:
+        provstr = provstr + "used(" + u.experiment.id + ", " + u.id + ", [prov:role = '" + u.description + "']),\n"
+
+    for wg in outputdatasets:
+        # no role in SimDM for outputs?
+        wgrole = "result"
+        provstr = provstr + "wasGeneratedBy(" + wg.id + ", " + wg.experiment.id + ", [prov:role = '" + wgrole + "']),\n"
+
+    for wa in contacts:
+        provstr = provstr + "wasAssociatedWith(" + wa.experiment.id + ", " + wa.party.id + ", [prov:role = '" + wa.role + "']),\n"
+
+    for wa in outputdatasets:
+        provstr = provstr + "wasAttributedTo(" + wa.id + ", " + wa.experiment.project.id + "),\n"
+
+    for p in parametersettings:
+        provstr = provstr + "entity(" + str(p.id) + ", [prov:type = 'parameter', prov:label = '" + p.inputParameter.name + "', prov:value = '" + str(p.value) + "', voprov:datatype = '" + str(p.inputParameter.datatype) + "', voprov:unit = '" + str(p.inputParameter.unit) + "']),\n"  #, voprov:ucd = '" + str(p.description.ucd) + "', voprov:utype = '" + str(p.description.utype) + "', voprov:arraysize = '" + str(p.description.arraysize) + "', voprov:annotation = '" + str(p.description.annotation) + "']),\n"
+
+    provstr += "endDocument"
+
+    return HttpResponse(provstr, content_type='text/plain')
+    
 
 # SimDAL views
 # ============
@@ -369,7 +463,7 @@ def simdal_protocols(request):
     tableattrs = {'utype': 'SimDM:/resource/protocol/Protocol'}
     fields = [
                 {'FIELD': {
-                    'attrs': {'name': 'code'},
+                    'attrs': {'name': 'code', 'utype': 'SimDM:/resource/protocol/Protocol.code'},
                     'DESCRIPTION': 'url for source code or code description'
                     }
                 }
@@ -378,7 +472,7 @@ def simdal_protocols(request):
     votable_meta = {
                     'VOTABLE': {
                         'RESOURCE': {
-                            'attrs': {'type': 'results'},
+                            #'attrs': {'type': 'results'},
                             'TABLE': {
                                 'attrs': tableattrs,
                                 'DESCRIPTION': tabledescription,
