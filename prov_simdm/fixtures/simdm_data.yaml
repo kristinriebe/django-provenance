@@ -207,7 +207,7 @@
         minval: '0'
         maxval: '10000'
         default: '1000'
-        unit: 'Mpc/h'
+        unit: 'h-1.Mpc'
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_forceres
     fields:
@@ -218,7 +218,7 @@
         minval: '0'
         maxval: '100'
         default: '13'
-        unit: 'kpc/h'
+        unit: 'h-1.kpc'
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_particleres
     fields:
@@ -274,7 +274,7 @@
         minval: '0'
         maxval: '1000'
         default: '64'
-        unit: 'Mpc/h'
+        unit: 'h-1.Mpc'
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_gadforceres
     fields:
@@ -285,7 +285,7 @@
         minval: '0'
         maxval: '100'
         default: '13'
-        unit: 'kpc/h'
+        unit: 'h-1.kpc'
 -   model: prov_simdm.inputparameter
     pk: cs:inparam_gadparticleres
     fields:
