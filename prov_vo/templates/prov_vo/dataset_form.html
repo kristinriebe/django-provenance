@@ -1,0 +1,259 @@
+{% extends "core/base.html" %}
+{% load form_extras %}
+
+{% block title %}ProvenanceDM Search for Datasets{% endblock %}
+
+{% block content %}
+
+<script>
+    function update_activitydescriptions(url, selector) {
+        /* Function to update the protocols in drop-down list,
+         * depending on protocol-list returned from url
+         */
+
+        $.getJSON(url, function(data) {
+            // add options via javascript here directly
+            opt = $("select"+selector);
+            //window.console.log('opt: ', opt);
+
+
+            old_val = opt.val();
+            //window.console.log('oldval: ', old_val);
+            // remove all existing options and replace with new
+            opt.find('option').remove();
+
+            // add 'any' option again
+            opt.append($('<option/>').val('any').text('any'));
+
+            $.each(data, function () {
+                //window.console.log(this.id);
+                opt.append($('<option/>').val(this.id).text(this.value));
+                // check, if old_val is still in the option list, set to this value
+                if (old_val == this.id) {
+                  opt.val(old_val);
+                  opt.change();
+                }
+            });
+        });
+    }
+
+    function update_parameters(url, activitydescription_id, selector) {
+        /* Function to update the visible parameters depending on
+         * which params are returned from a getJSON call
+         */
+
+        $.getJSON(url, function(data) {
+            /* store all desired parameters (id) in an array */
+            var option_list = [];
+            $.each(data, function() {
+                option_list.push(this.id);
+            });
+
+            window.console.log("activitydescription_id: ", activitydescription_id);
+
+            if (option_list.length == 0) {
+              if (activitydescription_id == 'any') {
+                $('div#anyparams').show();
+                $('div#noparams').hide();
+              } else {
+                $('div#noparams').show();
+                $('div#anyparams').hide();
+              }
+            } else {
+                $('div#anyparams').hide();
+                $('div#noparams').hide();
+            }
+
+            window.console.log(option_list);
+            /* search for the corresponding parameters in the hidden fields (display: none)
+             * and show them; hide the ones that don't match */
+            $(selector).each( function(){
+                $(this).find('div.paramrow').each( function(){
+                    paramid = $(this).attr('paramid');
+                    //window.console.log('check param with id: ', paramid);
+                    if (option_list.indexOf(paramid) != -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    }
+
+    function switch_gray_out(objid) {
+        /* Function to gray out not-needed areas */
+
+      paramid = objid.replace('id_param_', '');
+
+      if ( $("input[id='"+objid+"']").is(":checked")  ) {
+          //window.console.log('checked! id: '+ paramid);
+          $("div[paramid='"+paramid+"']").each( function(){
+            $(this).removeClass("gray");
+          });
+      } else {
+          //window.console.log('not checked! id: ' + paramid);
+          $("div[paramid='"+paramid+"']").each( function(){
+            $(this).addClass("gray");
+          });
+      }
+
+    }
+
+
+    /* document ready? Go! */
+    $(function(){
+
+        // initializations
+        // ---------------
+        $('div#noparams').hide();
+        $('div#anyparams').hide();
+
+        // also initially set the protocols and parameters
+        var selectedvalue = $('#id_activitydescription_type input:checked').val();
+        update_activitydescriptions('/vo/datasetform_activitydescriptions?activitydescription_type=' + selectedvalue, '#id_activitydescription');
+        update_parameters('/vo/datasetform_parameters?activitydescription=' + $('#id_activitydescription').val(), $('#id_activitydescription').val(), '#parameters');
+
+        // update all parameter styles (based on checked or not)
+        $('#parameters').find("input[fieldtype='paramlabel']").each(
+          function() {
+            //window.console.log("switch off "+this.id);
+            switch_gray_out(this.id);
+        });
+
+
+        // on-change-calls
+        // ---------------
+        /* if #id_protocol_type is changing, call the update_protocols-function for
+         * updating the protocols-list */
+        $('#id_activitydescription_type').change(function(){
+            var selectedvalue = $('#id_activitydescription_type input:checked').val();
+            window.console.log('activitydescription_type changed to ' + selectedvalue);
+            update_activitydescriptions('/vo/datasetform_activitydescriptions?activitydescription_type=' + selectedvalue, '#id_activitydescription');
+        });
+
+        /* if the field with id=id_activitydescription is changing, then call update_parameters-function
+         * for updating the visible/hidden params */
+        $('#id_activitydescription').change(function(){
+            window.console.log('activitydescription changed to ' + $(this).val());
+            update_parameters('/vo/datasetform_parameters?activitydescription=' + $(this).val(), $(this).val(), '#parameters');
+        });
+
+        // TODO: loop below is inefficient, (because it always checks all parameters), come up with a better way
+        $('#parameters').change(function() { $(this).find("input[fieldtype='paramlabel']").each(
+            function() {
+//              $( this ).click( function() {
+                  //window.console.log("params changed, updating "+this.id);
+                  switch_gray_out(this.id);
+//              });
+            });
+        });
+
+        /*$("input[id='id_param_cs:inparam_forceres']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_zini']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_foflinklen']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_boxsize']").click( function() { switch_gray_out(this.id); });
+        $("input[id='id_param_cs:inparam_particleres']").click( function() { switch_gray_out(this.id); });
+        */
+});
+</script>
+
+
+<h2>ProvenanceDM Search for (Simulation) Datasets</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    Search for datasets using the specified properties.
+  </div>
+</div>
+<form action="/vo/datasetform/" method="post">
+    {% csrf_token %}
+
+  <fieldset id="main">
+    <legend>Main properties</legend>
+    {% for field in form.visible_fields %}
+      {% if field.name|startswith:"param" == False %}
+    <div class="row">
+      <div class="col-md-2">
+          {{ field.label }}:
+      </div>
+      <div class="col-md-4">
+          {{ field }}
+        <div style="clear: both"></div>
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
+      </div>
+    </div>
+      {% endif %}
+    {% endfor %}
+  </fieldset>
+
+  <fieldset id="parameters">
+    <legend>Parameters</legend>
+    <div class="row" id="noparams">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+      No parameters available for this ActivityDescription.
+      </div>
+    </div>
+    <div class="row" id="anyparams">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+      Please choose an ActivityDescription (Code) to update the available parameters.
+      </div>
+    </div>
+    {% for field in form %}
+
+        {% if field.name|startswith:"param_" == True %}
+    <div class="row paramrow" style="display: none" paramfield="{{ field.name | strip_left_of_last:"_" }}" paramid="{{ field.name | strip_left_of_first:"_" }}">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-2">
+          {{ field }}&nbsp;&nbsp;{{ field.label }}
+        <div style="clear: both"></div>
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
+      </div>
+        {% elif field.name|startswith:"paramvalue_min_" == True %}
+      <div class="col-md-2" paramid="id_{{ field.name|cut:"value_min" }}">
+          {{ field }}
+        <div style="clear: both"></div>
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
+      </div>
+        {% elif field.name|startswith:"paramvalue_max_" == True or field.name|startswith:"paramvalue_sin_" == True %}
+      <div class="col-md-2" paramid="id_{{ field.name|cut:"value_max" }}">
+          {{ field }}
+        <div style="clear: both"></div>
+        <div>
+          <span class="helptext">{{ field.help_text }}</span>
+            {{ field.errors }}
+        </div>
+      </div>
+    </div> <!-- row -->
+        {% endif %}
+
+
+    {% endfor %}
+
+  </fieldset>
+
+  <fieldset id="submit">
+    <hr>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <input type="submit" name="submit" value="Submit"/>
+      </div>
+    </div>
+  </fieldset>
+
+</form>
+
+{% endblock %}

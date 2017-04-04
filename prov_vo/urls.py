@@ -36,6 +36,10 @@ urlpatterns = [
     url(r'^activityflows/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ActivityFlowDetailView.as_view(), name='activityflow_detail'),
     url(r'^activityflows/(?P<pk>[0-9a-zA-Z.:_-]+)/more$', views.ActivityFlowDetailMoreView.as_view(), name='activityflow_detailmore'),
 
+    # dataset (entity) search form, similar to SimDM search form
+    url(r'^datasetform/$', views.DatasetFormResultsView.as_view(), name='dataset_form'),
+    url(r'^datasetform_activitydescriptions/$', views.get_activitydescriptions, name='datasetform_activitydescriptions'),
+    url(r'^datasetform_parameters/$', views.get_parameters, name='datasetform_parameters'),
 
     # graphs
     url(r'^graph/$', views.graph, name='graph'),

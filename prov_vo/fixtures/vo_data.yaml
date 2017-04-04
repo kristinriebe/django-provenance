@@ -1,0 +1,867 @@
+# Activities
+-   model: prov_vo.activity
+    pk: mdpl2:act_fof
+    fields:
+        label: MDPL2 FOF halo finding
+        description: 'cs:actdesc_fof'
+        annotation: 'Running the FOF halo finder, basic linking length 0.17'
+        startTime: 2014-08-20
+        endTime: 2014-09-13
+        doculink: 'Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R'
+-   model: prov_vo.activity
+    pk: mdpl2:act_galacticus
+    fields:
+        label: Running Galacticus on MDPL2
+        description: 'cs:actdesc_sam'
+        annotation: Building the Galacticus galaxy catalog
+        startTime: 2015-09-30
+        endTime: 2015-10-01
+        doculink: Benson et al.
+-   model: prov_vo.activity
+    pk: mdpl2:act_rockstar
+    fields:
+        label: MDPL2 Rockstar building
+        description: 'cs:actdesc_mergertree'
+        annotation: Building the Rockstar catalog + merger tree
+        startTime: 2015-02-09
+        endTime: 2015-09-01
+        doculink: 'Behroozi, Wechsler and Wu 2013, APJ 762, 109'
+-   model: prov_vo.activity
+    pk: mdpl2:act_samflow
+    fields:
+        label: MDPL2 SAM Generation
+        description: 'cs:actdesc_samflow'
+        annotation: ''
+        startTime: null
+        endTime: null
+        doculink: ''
+-   model: prov_vo.activity
+    pk: mdpl2:act_simulation
+    fields:
+        label: MDPL2 simulation
+        description: 'cs:actdesc_cosmosimulation'
+        annotation: The MDPL2 simulation
+        startTime: 2014-01-01
+        endTime: 2014-01-01
+        doculink: "Klypin, Yepes Gottl\xF6ber, Prada (2016) MNRAS 457, 4340"
+-   model: prov_vo.activity
+    pk: mdr1:act_fof
+    fields:
+        label: MDR1 FOF halo finding
+        description: 'cs:actdesc_fof'
+        annotation: 'Running the FOF halo finder, basic linking length 0.17'
+        startTime: 2010-08-22
+        endTime: 2010-11-09
+        doculink: 'Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R'
+-   model: prov_vo.activity
+    pk: mdr1:act_fofc
+    fields:
+        label: 'MDR1 FOFc halo finding, c-version'
+        description: 'cs:actdesc_fof'
+        annotation: 'Running the FOF halo finder, basic linking length 0.2'
+        startTime: 2010-08-23
+        endTime: 2010-08-29
+        doculink: 'Riebe et al. (2013), AN, 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R'
+-   model: prov_vo.activity
+    pk: mdr1:act_fofmtree
+    fields:
+        label: MDR1 FOFMtree building
+        description: 'cs:actdesc_mergertree'
+        annotation: Building the merger tree for a FOF halo finder
+        startTime: 2011-01-01
+        endTime: 2011-03-01
+        doculink: '-'
+-   model: prov_vo.activity
+    pk: mdr1:act_rockstar
+    fields:
+        label: MDR1 Rockstar building
+        description: 'cs:actdesc_mergertree'
+        annotation: Building the Rockstar catalog + merger tree
+        startTime: 2015-04-19
+        endTime: 2015-06-20
+        doculink: 'Behroozi, Wechsler and Wu 2013, APJ 762, 109'
+-   model: prov_vo.activity
+    pk: mdr1:act_simulation
+    fields:
+        label: MDR1 simulation
+        description: 'cs:actdesc_cosmosimulation'
+        annotation: The simulation MultiDark Run 1
+        startTime: 2010-03-01
+        endTime: 2010-08-20
+        doculink: 'Prada et al. (2012), MNRAS 423, 3018, http://adsabs.harvard.edu/abs/2012MNRAS.423.3018P'
+-   model: prov_vo.activity
+    pk: clues3_lggas:act_simulation
+    fields:
+        endTime: 2008-11-29
+        description: 'cs:actdesc_gadgetsimu'
+        label: CLUES WM3 LG Gas simulation
+
+
+# ActivityFlow
+-   model: prov_vo.activityflow
+    pk: mdpl2:act_samflow
+    fields:
+        activity_ptr: mdpl2:act_samflow
+
+
+# ActivityDescriptions
+-   model: prov_vo.activitydescription
+    pk: cs:actdesc_cosmosimulation
+    fields:
+        label: Cosmological simulation
+        type: 'cs:simulation'
+        subtype: null
+        annotation: A cosmological simulation
+        doculink: ''
+-   model: prov_vo.activitydescription
+    pk: cs:actdesc_fof
+    fields:
+        label: FOF halo finding
+        type: 'cs:post-processing'
+        subtype: 'cs:halofinder'
+        annotation: Running the FOF halo finder
+        doculink: 'Riebe et al. (2013), AN 334, 691, http://adsabs.harvard.edu/abs/2013AN....334..691R'
+-   model: prov_vo.activitydescription
+    pk: cs:actdesc_mergertree
+    fields:
+        label: Merger tree building
+        type: 'cs:post-processing'
+        subtype: 'cs:mergertreebuilding'
+        annotation: Building the merger tree
+        doculink: ''
+-   model: prov_vo.activitydescription
+    pk: cs:actdesc_sam
+    fields:
+        label: SAM galaxy building
+        type: 'cs:post-processing'
+        subtype: 'cs:galaxybuilding'
+        annotation: Using a semi-analytical model (SAM) for producing galaxy information for dark matter halos
+        doculink: ''
+-   model: prov_vo.activitydescription
+    pk: cs:actdesc_samflow
+    fields:
+        label: SAM Generation
+        type: 'voprov:activityflow'
+        subtype: ''
+        annotation: 'An activityflow shortcut for generating semi-analytical galaxies'
+        doculink: ''
+
+-   model: prov_vo.activitydescription
+    pk: cs:actdesc_gadgetsimu
+    fields:
+        label: Gadget 2 simulation
+        #code: 'http://wwwmpa.mpa-garching.mpg.de/galform/gadget/#download'
+        #version: '2'
+        type: 'cs:simulation'
+        annotation: 'Gadget code for cosmological simulations of structure formation'
+        doculink: 'http://wwwmpa.mpa-garching.mpg.de/galform/gadget/'
+
+
+# Entities
+-   model: prov_vo.entity
+    pk: mdpl2:fof
+    fields:
+        label: MDPL2 FOF catalog
+        type: 'prov:entity'
+        location: 'https://www.cosmosim.org/'
+        access: public
+        size: some GB
+        format: database-table
+        annotation: 'FOF tables (FOF, FOF1, ... FOF5) with object properties for different times and linking lengths'
+        description: 'cs:edesc_halocatalog'
+-   model: prov_vo.entity
+    pk: mdpl2:galacticus
+    fields:
+        label: MDPL2 Galacticus catalog
+        type: 'prov:entity'
+        location: 'https://www.cosmosim.org/'
+        access: public
+        size: some GB
+        format: database-table
+        annotation: 'Galacticus galaxy catalog SAM'
+        description: 'cs:edesc_samgalaxycatalog'
+-   model: prov_vo.entity
+    pk: mdpl2:rockstar
+    fields:
+        label: MDPL2 Rockstar catalog+trees
+        type: 'prov:entity'
+        location: 'https://www.cosmosim.org/'
+        access: public
+        size: some GB
+        format: database-table
+        annotation: Rockstar table including merger trees
+        description: 'cs:edesc_halocatalog_mergertree'
+-   model: prov_vo.entity
+    pk: mdpl2:snapshots
+    fields:
+        label: MDPL2 simulation snapshots
+        type: 'prov:entity'
+        location: erebos.aip.de
+        access: internal
+        size: some GB
+        format: binary-files
+        annotation: 'The raw files in original format partially also uploaded to the database'
+        description: 'cs:edesc_snapshots'
+-   model: prov_vo.entity
+    pk: mdr1:fof
+    fields:
+        label: MDR1 FOF catalog
+        type: 'prov:entity'
+        location: 'https://www.cosmosim.org/'
+        access: public
+        size: some GB
+        format: database-table
+        annotation: 'FOF tables (FOF, FOF1, ... FOF4) with object properties for different times and linking lengths'
+        description: 'cs:edesc_halocatalog'
+-   model: prov_vo.entity
+    pk: mdr1:fofc
+    fields:
+        label: MDR1 FOFc catalog
+        type: 'prov:entity'
+        location: 'https://www.cosmosim.org/'
+        access: public
+        size: some GB
+        format: database-table
+        annotation: FOFc table with object properties for different times
+        description: 'cs:edesc_halocatalog'
+-   model: prov_vo.entity
+    pk: mdr1:fofmtree
+    fields:
+        label: MDR1 FOF mtree
+        type: 'prov:entity'
+        location: 'https://www.cosmosim.org/'
+        access: public
+        size: some GB
+        format: database-table
+        annotation: FOF merger tree
+        description: 'cs:edesc_mergertree'
+-   model: prov_vo.entity
+    pk: mdr1:rockstar
+    fields:
+        label: MDR1 Rockstar catalog+trees
+        type: 'prov:entity'
+        location: 'https://www.cosmosim.org/'
+        access: public
+        size: some GB
+        format: database-table
+        annotation: Rockstar table including merger trees
+        description: 'cs:edesc_halocatalog_mergertree'
+-   model: prov_vo.entity
+    pk: mdr1:snapshots
+    fields:
+        label: MDR1 simulation snapshots
+        type: 'prov:entity'
+        location: erebos.aip.de
+        access: internal
+        size: some GB
+        format: binary-files
+        annotation: 'The raw files in original format partially also uploaded to the database'
+        description: 'cs:edesc_snapshots'
+-   model: prov_vo.entity
+    pk: clues3_lggas:snapshots
+    fields:
+        label: CLUES WM3 LGGas simulation snapshots
+        type: 'prov:entity'
+        location: LRZ
+        access: internal
+        format: binary-files
+        annotation: 'The raw files in original format partially also uploaded to the database'
+#        numberOfObjects: 85
+#        accessURL: ''
+#        experiment: 'clues3_lggas:exp_simulation'
+        description: 'cs:edesc_snapshots'
+
+
+
+# EntityDescription
+-   model: prov_vo.entitydescription
+    pk: cs:edesc_halocatalog
+    fields:
+        label: Halo catalog
+        annotation: 'A catalog of dark matter objects and their properties possibly for different snapshot numbers
+        param: snapnums'
+        doculink: ''
+        dataproduct_type: 'ds:catalog'
+        dataproduct_subtype: ''
+        level: 1
+-   model: prov_vo.entitydescription
+    pk: cs:edesc_halocatalog_mergertree
+    fields:
+        label: Halo catalog with merger tree links
+        annotation: A combination of halo catalog and merger tree information
+        doculink: ''
+        dataproduct_type: 'ds:catalog'
+        dataproduct_subtype: ''
+        level: 2
+-   model: prov_vo.entitydescription
+    pk: cs:edesc_mergertree
+    fields:
+        label: Merger trees
+        annotation: Merger trees that contain the merging history of dark matter objects
+        doculink: ''
+        dataproduct_type: 'ds:catalog'
+        dataproduct_subtype: ''
+        level: 2
+-   model: prov_vo.entitydescription
+    pk: cs:edesc_samgalaxycatalog
+    fields:
+        label: SAM galaxies
+        annotation: Semi-analytical galaxy catalog
+        doculink: ''
+        dataproduct_type: 'ds:catalog'
+        dataproduct_subtype: ''
+        level: 4
+-   model: prov_vo.entitydescription
+    pk: cs:edesc_snapshots
+    fields:
+        label: Simulation snapshots
+        annotation: 'snapshots for different times of the simulation usually containing enough information to restart the simulation param: snapnums'
+        doculink: ''
+        dataproduct_type: 'ds:catalog'
+        dataproduct_subtype: ''
+        level: 0
+
+# Parameters
+-   model: prov_vo.parameter
+    pk: 85
+    fields:
+        description: 'cs:paramdesc_simucode'
+        value: ART
+        activity: 'mdr1:act_simulation'
+-   model: prov_vo.parameter
+    pk: 86
+    fields:
+        description: 'cs:paramdesc_forceres'
+        value: '7.0'
+        activity: 'mdr1:act_simulation'
+-   model: prov_vo.parameter
+    pk: 87
+    fields:
+        description: 'cs:paramdesc_zini'
+        value: '65.0'
+        activity: 'mdr1:act_simulation'
+-   model: prov_vo.parameter
+    pk: 88
+    fields:
+        description: 'cs:paramdesc_simucode'
+        value: ART
+        activity: 'mdpl2:act_simulation'
+-   model: prov_vo.parameter
+    pk: 89
+    fields:
+        description: 'cs:paramdesc_forceres'
+        value: '13.0'
+        activity: 'mdpl2:act_simulation'
+        annotation: '5.0 kpc/h at low redshift, 13 kpc/h at high redshift'
+
+-   model: prov_vo.parameter
+    pk: 90
+    fields:
+        description: 'cs:paramdesc_zini'
+        value: '120.0'
+        activity: 'mdpl2:act_simulation'
+-   model: prov_vo.parameter
+    pk: 91
+    fields:
+        description: 'cs:paramdesc_foflinklen'
+        value: '0.17'
+        activity: 'mdr1:act_fof'
+-   model: prov_vo.parameter
+    pk: 92
+    fields:
+        description: 'cs:paramdesc_foflinklen'
+        value: '0.2'
+        activity: 'mdr1:act_fofc'
+-   model: prov_vo.parameter
+    pk: 93
+    fields:
+        description: 'cs:paramdesc_mtreecode'
+        value: Rockstar
+        activity: 'mdr1:act_rockstar'
+-   model: prov_vo.parameter
+    pk: 94
+    fields:
+        description: 'cs:paramdesc_foflinklen'
+        value: '0.17'
+        activity: 'mdpl2:act_fof'
+-   model: prov_vo.parameter
+    pk: 95
+    fields:
+        description: 'cs:paramdesc_mtreecode'
+        value: Rockstar
+        activity: 'mdpl2:act_rockstar'
+-   model: prov_vo.parameter
+    pk: 96
+    fields:
+        description: 'cs:paramdesc_samcode'
+        value: Galacticus
+        activity: 'mdpl2:act_galacticus'
+
+# ParameterDescriptions
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_boxsize
+    fields:
+        activitydescription: 'cs:actdesc_cosmosimulation'
+        label: box size
+        datatype: int
+        annotation: Side length of simulation box
+        minval: '0'
+        maxval: '10000'
+        default: '1000'
+        unit: 'h-1.Mpc'
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_fofcode
+    fields:
+        label: FOF code
+        activitydescription: 'cs:actdesc_fof'
+        datatype: string
+        unit: ''
+        ucd: null
+        utype: null
+        arraysize: '1'
+        annotation: Code/version for Friends-of-Friends halo finding
+        minval: null
+        maxval: null
+        default: null
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_foflinklen
+    fields:
+        label: linking length
+        activitydescription: 'cs:actdesc_fof'
+        datatype: float
+        unit: 'h-1.kpc'
+        ucd: meta.code.qual
+        utype: null
+        arraysize: '1'
+        annotation: Relative linking length for Friends-of-Friends halo finder
+        minval: 0
+        maxval: 1.0
+        default: 0.17
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_forceres
+    fields:
+        label: force resolution
+        activitydescription: 'cs:actdesc_cosmosimulation'
+        datatype: float
+        unit: h-1.kpc
+        ucd: null
+        utype: null
+        arraysize: '*'
+        annotation: (Average) force resolution of the code
+        minval: 0
+        maxval: 100
+        default: 13
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_mtreecode
+    fields:
+        label: Merger tree code
+        activitydescription: 'cs:actdesc_mergertree'
+        datatype: string
+        unit: null
+        ucd: null
+        utype: null
+        arraysize: '1'
+        annotation: Code/version for merger tree building
+        minval: null
+        maxval: null
+        default: Rockstar
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_samcode
+    fields:
+        label: SAM code
+        activitydescription: 'cs:actdesc_sam'
+        datatype: string
+        unit: null
+        ucd: null
+        utype: null
+        arraysize: '1'
+        annotation: Code/version for creating semi-analytical galaxy catalogues
+        minval: null
+        maxval: null
+        default: Galacticus
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_simucode
+    fields:
+        label: simulation code
+        activitydescription: 'cs:actdesc_cosmosimulation'
+        datatype: string
+        unit: null
+        ucd: null
+        utype: null
+        arraysize: '1'
+        annotation: Code for a cosmological simulation
+        minval: null
+        maxval: null
+        default: ART
+-   model: prov_vo.parameterdescription
+    pk: cs:paramdesc_zini
+    fields:
+        label: z_ini
+        activitydescription: 'cs:actdesc_cosmosimulation'
+        datatype: float
+        unit: null
+        ucd: time.epoch
+        utype: null
+        arraysize: '1'
+        annotation: 'Initial redshift at which the simulation was started'
+        minval: 0
+        maxval: 200
+        default: 100
+
+# Agents
+-   model: prov_vo.agent
+    pk: cs:Christoph_Behrens
+    fields:
+        label: Christoph Behrens
+        type: 'prov:Person'
+        affiliation: "Georg-August-Universit\xE4t G\xF6ttingen, G\xF6ttingen, Germany"
+-   model: prov_vo.agent
+    pk: cs:Gustavo_Yepes
+    fields:
+        label: Gustavo Yepes
+        type: 'prov:Person'
+        affiliation: 'UAM, Madrid, Spain'
+-   model: prov_vo.agent
+    pk: cs:Jaime_Forero_Romero
+    fields:
+        label: Jaime Forero-Romero
+        type: 'prov:Person'
+        affiliation: 'AIP, Potsdam, Germany'
+-   model: prov_vo.agent
+    pk: cs:MultiDark
+    fields:
+        label: MultiDark project
+        type: 'prov:Organization'
+        affiliation: Spain+Germany+USA
+-   model: prov_vo.agent
+    pk: cs:Peter_Behroozi
+    fields:
+        label: Peter Behroozi
+        type: 'prov:Person'
+        affiliation: 'UC Berkeley, Berkeley, USA'
+-   model: prov_vo.agent
+    pk: cs:Stefan_Gottloeber
+    fields:
+        label: "Stefan Gottl\xF6ber"
+        type: 'prov:Person'
+        affiliation: 'AIP, Potsdam, Germany'
+
+# -- Project agents
+-   model: prov_vo.agent
+    pk: cs:MultiDark
+    fields:
+        label: MultiDark
+        type: 'prov:Organization'
+        webpage: https://www.cosmosim.org/
+        annotation: The MultiDark collaboration
+        affiliation: Spain+Germany+USA
+
+-   model: prov_vo.agent
+    pk: cs:clues
+    fields:
+        label: CLUES
+        type: 'prov:Organization'
+        webpage: https://www.clues-project.org/
+        annotation: Constrained Local UniversE Simulations
+        affiliation: Germany+Spain+Israel+USA+France
+
+# Used
+-   model: prov_vo.used
+    fields:
+        activity: 'mdr1:act_fof'
+        entity: 'mdr1:snapshots'
+        description: 'cs:usedesc_fof_snapshots'
+-   model: prov_vo.used
+    fields:
+        activity: 'mdr1:act_fofc'
+        entity: 'mdr1:snapshots'
+        description: 'cs:usedesc_fof_snapshots'
+-   model: prov_vo.used
+    fields:
+        activity: 'mdr1:act_rockstar'
+        entity: 'mdr1:snapshots'
+        description: 'cs:usedesc_mergertree_snapshots'
+-   model: prov_vo.used
+    fields:
+        activity: 'mdr1:act_fofmtree'
+        entity: 'mdr1:fof'
+        description: 'cs:usedesc_mergertree_halocatalog'
+-   model: prov_vo.used
+    fields:
+        activity: 'mdpl2:act_fof'
+        entity: 'mdpl2:snapshots'
+        description: 'cs:usedesc_fof_snapshots'
+-   model: prov_vo.used
+    fields:
+        activity: 'mdpl2:act_rockstar'
+        entity: 'mdpl2:snapshots'
+        description: 'cs:usedesc_mergertree_snapshots'
+-   model: prov_vo.used
+    fields:
+        activity: 'mdpl2:act_galacticus'
+        entity: 'mdpl2:rockstar'
+        description: 'cs:usedesc_sam_halocatalog_mergertree'
+
+
+# Useddescription
+-   model: prov_vo.useddescription
+    pk: cs:usedesc_fof_snapshots
+    fields:
+        activitydescription: 'cs:actdesc_fof'
+        entitydescription: 'cs:edesc_snapshots'
+        role: simulation raw data
+-   model: prov_vo.useddescription
+    pk: cs:usedesc_mergertree_halocatalog
+    fields:
+        activitydescription: 'cs:actdesc_mergertree'
+        entitydescription: 'cs:edesc_halocatalog'
+        role: halo catalogue
+-   model: prov_vo.useddescription
+    pk: cs:usedesc_mergertree_snapshots
+    fields:
+        activitydescription: 'cs:actdesc_mergertree'
+        entitydescription: 'cs:edesc_snapshots'
+        role: simulation raw data
+-   model: prov_vo.useddescription
+    pk: cs:usedesc_sam_halocatalog_mergertree
+    fields:
+        activitydescription: 'cs:actdesc_sam'
+        entitydescription: 'cs:edesc_halocatalog_mergertree'
+        role: merger tree
+-   model: prov_vo.useddescription
+    pk: cs:usedesc_sam_mergertree
+    fields:
+        activitydescription: 'cs:actdesc_sam'
+        entitydescription: 'cs:edesc_mergertree'
+        role: merger tree
+
+
+# WasGeneratedBy
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdr1:snapshots'
+        activity: 'mdr1:act_simulation'
+        description: 'cs:wgdesc_snapshots_cosmosimulation'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdr1:fof'
+        activity: 'mdr1:act_fof'
+        description: 'cs:wgdesc_halocatalog_fof'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdr1:fofc'
+        activity: 'mdr1:act_fofc'
+        description: 'cs:wgdesc_halocatalog_fof'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdr1:rockstar'
+        activity: 'mdr1:act_rockstar'
+        description: 'cs:wgdesc_halocatalog_mergertree_mergertree'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdr1:fofmtree'
+        activity: 'mdr1:act_fofmtree'
+        description: 'cs:wgdesc_mergertree_mergertree'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdpl2:snapshots'
+        activity: 'mdpl2:act_simulation'
+        description: 'cs:wgdesc_snapshots_cosmosimulation'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdpl2:fof'
+        activity: 'mdpl2:act_fof'
+        description: 'cs:wgdesc_halocatalog_fof'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdpl2:rockstar'
+        activity: 'mdpl2:act_rockstar'
+        description: 'cs:wgdesc_halocatalog_mergertree_mergertree'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'mdpl2:galacticus'
+        activity: 'mdpl2:act_galacticus'
+        description: 'cs:wgdesc_samgalaxycatalog_sam'
+-   model: prov_vo.wasgeneratedby
+    fields:
+        entity: 'clues3_lggas:snapshots'
+        activity: 'clues3_lggas:act_simulation'
+        description: 'cs:wgdesc_snapshots_cosmosimulation'
+
+
+# WasGeneratedByDescription
+-   model: prov_vo.wasgeneratedbydescription
+    pk: cs:wgdesc_halocatalog_fof
+    fields:
+        entitydescription: 'cs:edesc_halocatalog'
+        activitydescription: 'cs:actdesc_fof'
+        role: halo catalogue
+-   model: prov_vo.wasgeneratedbydescription
+    pk: cs:wgdesc_halocatalog_mergertree_mergertree
+    fields:
+        entitydescription: 'cs:edesc_halocatalog_mergertree'
+        activitydescription: 'cs:actdesc_mergertree'
+        role: halo catalogue+merger tree
+-   model: prov_vo.wasgeneratedbydescription
+    pk: cs:wgdesc_mergertree_mergertree
+    fields:
+        entitydescription: 'cs:edesc_mergertree'
+        activitydescription: 'cs:actdesc_mergertree'
+        role: merger tree
+-   model: prov_vo.wasgeneratedbydescription
+    pk: cs:wgdesc_samgalaxycatalog_sam
+    fields:
+        entitydescription: 'cs:edesc_samgalaxycatalog'
+        activitydescription: 'cs:actdesc_sam'
+        role: galaxy catalogue
+-   model: prov_vo.wasgeneratedbydescription
+    pk: cs:wgdesc_snapshots_cosmosimulation
+    fields:
+        entitydescription: 'cs:edesc_snapshots'
+        activitydescription: 'cs:actdesc_cosmosimulation'
+        role: simulation raw data
+
+
+# WasAssociatedWith
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdr1:act_simulation'
+        agent: 'cs:Gustavo_Yepes'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdpl2:act_simulation'
+        agent: 'cs:Gustavo_Yepes'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdr1:act_fof'
+        agent: 'cs:Stefan_Gottloeber'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdr1:act_fofc'
+        agent: 'cs:Stefan_Gottloeber'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdr1:act_fofmtree'
+        agent: 'cs:Jaime_Forero_Romero'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdr1:act_rockstar'
+        agent: 'cs:Peter_Behroozi'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdpl2:act_fof'
+        agent: 'cs:Stefan_Gottloeber'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdpl2:act_rockstar'
+        agent: 'cs:Peter_Behroozi'
+        role: operator
+-   model: prov_vo.wasassociatedwith
+    fields:
+        activity: 'mdpl2:act_galacticus'
+        agent: 'cs:Christoph_Behrens'
+        role: operator
+
+
+# WasAttributedTo
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdr1:snapshots'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdr1:fof'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdr1:fofc'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdr1:rockstar'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdr1:fofmtree'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdpl2:snapshots'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdpl2:fof'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdpl2:rockstar'
+        agent: 'cs:MultiDark'
+        role: publisher
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'mdpl2:galacticus'
+        agent: 'cs:MultiDark'
+        role: publisher
+
+-   model: prov_vo.wasattributedto
+    fields:
+        entity: 'clues3_lggas:snapshots'
+        agent: 'cs:clues'
+        role: publisher
+
+
+
+# WasDerivedFrom
+-   model: prov_vo.wasderivedfrom
+    fields:
+        entity: 'mdr1:fof'
+        progenitor: 'mdr1:snapshots'
+-   model: prov_vo.wasderivedfrom
+    fields:
+        entity: 'mdr1:fofc'
+        progenitor: 'mdr1:snapshots'
+-   model: prov_vo.wasderivedfrom
+    fields:
+        entity: 'mdr1:rockstar'
+        progenitor: 'mdr1:snapshots'
+-   model: prov_vo.wasderivedfrom
+    fields:
+        entity: 'mdr1:fofmtree'
+        progenitor: 'mdr1:fof'
+-   model: prov_vo.wasderivedfrom
+    fields:
+        entity: 'mdpl2:fof'
+        progenitor: 'mdpl2:snapshots'
+-   model: prov_vo.wasderivedfrom
+    fields:
+        entity: 'mdpl2:rockstar'
+        progenitor: 'mdpl2:snapshots'
+-   model: prov_vo.wasderivedfrom
+    fields:
+        entity: 'mdpl2:galacticus'
+        progenitor: 'mdpl2:rockstar'
+
+
+# HadStep
+-   model: prov_vo.hadstep
+    fields:
+        activityflow: 'mdpl2:act_samflow'
+        activity: 'mdpl2:act_rockstar'
+-   model: prov_vo.hadstep
+    fields:
+        activityflow: 'mdpl2:act_samflow'
+        activity: 'mdpl2:act_galacticus'

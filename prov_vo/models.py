@@ -71,6 +71,10 @@ class Activity(models.Model):
         print self.startTime
         return obj_dict
 
+    def get_agents(self):
+        agent_dict = Agent.objects.filter(wasassociatedwith__activity_id = self.id)
+        return agent_dict
+
 
 @python_2_unicode_compatible
 class ActivityFlow(Activity):
@@ -153,6 +157,10 @@ class Entity(models.Model):
         }
         return obj_dict
 
+    def get_agents(self):
+        agent_dict = Agent.objects.filter(wasattributedto__entity_id = self.id)
+        return agent_dict
+
 
 @python_2_unicode_compatible
 class EntityDescription(models.Model):
@@ -189,6 +197,7 @@ class Parameter(models.Model):
     # = "label" in current working draft (21-11-2016)!!
     value = models.CharField(max_length=128, null=True)
     activity = models.ForeignKey("Activity", null=True, on_delete=models.SET_NULL)
+    annotation = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
         return self.value
@@ -231,6 +240,13 @@ class ParameterDescription(models.Model):
     arraysize = models.CharField(max_length=128, null=True)
     annotation = models.CharField(max_length=1024, blank=True, null=True)
 
+    # add min, max and default value, for nicer search forms
+    minval = models.CharField(max_length=128, blank=True, null=True)
+    maxval = models.CharField(max_length=128, blank=True, null=True)
+    default = models.CharField(max_length=128, blank=True, null=True)
+
+
+
     def __str__(self):
         return self.id
 
@@ -254,9 +270,12 @@ class ParameterDescription(models.Model):
 @python_2_unicode_compatible
 class Agent(models.Model):
     id = models.CharField(primary_key=True, max_length=128)
-    label = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname
+    label = models.CharField(max_length=128, null=True) # human readable label, firstname + lastname or project name
     type = models.CharField(max_length=128, null=True, choices=AGENT_TYPE_CHOICES) # types of agent
-    affiliation = models.CharField(max_length=1024, null=True)
+    affiliation = models.CharField(max_length=1024, blank=True, null=True)
+    annotation = models.CharField(max_length=1024, blank=True, null=True)
+    webpage = models.CharField(max_length=1024, blank=True, null=True)
+
 
     def __str__(self):
         return self.label
@@ -371,7 +390,7 @@ class WasAssociatedWith(models.Model):
 @python_2_unicode_compatible
 class WasAttributedTo(models.Model):
     id = models.AutoField(primary_key=True)
-    entity = models.ForeignKey(Entity, null=True, on_delete=models.CASCADE) 
+    entity = models.ForeignKey(Entity, null=True, on_delete=models.CASCADE) #, related_name='ws') 
     agent = models.ForeignKey(Agent, null=True, on_delete=models.CASCADE)
     role = models.CharField(max_length=128, blank=True, null=True, choices=AGENT_ROLE_CHOICES)
 

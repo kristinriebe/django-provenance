@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.views.generic.edit import FormView
 import json
 from django.http import JsonResponse
 from django.db.models.fields.related import ManyToManyField
@@ -11,6 +12,8 @@ from rest_framework.renderers import JSONRenderer
 
 from .models import Activity, ActivityDescription, Entity, EntityDescription, Used, UsedDescription, WasGeneratedBy, Agent, WasAssociatedWith, WasAttributedTo
 from .models import Parameter, ParameterDescription, ActivityFlow, HadStep, WasDerivedFrom
+
+from .forms import DatasetForm
 
 # use a custom details-class that does everything the way I want it;
 # uses one template for all and sets the necessary context-variables
@@ -183,6 +186,134 @@ class ActivityDescriptionsView(generic.ListView):
     def get_queryset(self):
         """Return the activitydescriptions (at most 1000, ordered by label)."""
         return ActivityDescription.objects.order_by('label')[:1000]
+
+
+# form  view
+class DatasetFormResultsView(FormView):
+    template_name = 'prov_vo/dataset_form.html'
+    form_class = DatasetForm
+
+    def form_valid(self, form):
+        project_id = form.cleaned_data['project']
+        activitydescription_type = form.cleaned_data['activitydescription_type']
+        activitydescription_id = form.cleaned_data['activitydescription']
+
+        if project_id == 'any':
+            activity_list = Activity.objects.all()
+        else:
+            # in Provenance, project is rather an agent connected with the entities or the activities, thus combine both:
+            activity_list = Activity.objects.filter(wasassociatedwith__agent_id=project_id) | Activity.objects.filter(wasgeneratedby__entity__wasattributedto__agent_id=project_id)
+            print activity_list
+
+
+        if activitydescription_type != 'any':
+            activity_list = activity_list.filter(description__type=activitydescription_type)
+
+        # get all possible parameters for the experiments/protocols and check if they were checked in the form or not
+        parameters = ParameterDescription.objects.filter(activitydescription=activitydescription_id)
+        parametervalues = {}
+        for i, p in enumerate(parameters):
+            parameter_cleaned = form.cleaned_data['param_'+p.id]
+            # print "p: ", p.id
+            # print "parameter clean: ", parameter_cleaned
+            if parameter_cleaned:
+                value_min = -1
+                value_max = -1
+                value_sin = -1
+                if 'paramvalue_min_'+p.id in form.cleaned_data:
+                    value_min = form.cleaned_data['paramvalue_min_'+p.id]
+                if 'paramvalue_max_'+p.id in form.cleaned_data:
+                    value_max = form.cleaned_data['paramvalue_max_'+p.id]
+                if 'paramvalue_sin_'+p.id in form.cleaned_data:
+                    value_sin = form.cleaned_data['paramvalue_sin_'+p.id]
+
+                parametervalues[p.id] = [value_min, value_max, value_sin]
+                #print 'cleaned val: ', p.id, value_min, value_max, value_sin
+
+        if activitydescription_id != 'any':
+            activity_list = activity_list.filter(description=activitydescription_id)
+
+            # restrict activity_list based on chosen parameters:
+            parameter_activity_ids = []
+            for p, values in parametervalues.iteritems():
+
+                # find the experiment ids fitting to the parameter value;
+                # need to cast the value to int or float, depending on the datatype
+                # (otherwise cannot do >, < or range queries)
+                parameter = ParameterDescription.objects.get(id=p)
+                datatype = parameter.datatype
+                minval = values[0]
+                maxval = values[1]
+                sinval = values[2]
+
+                if datatype == 'int':
+                    activity_list = activity_list.filter(parameter__description_id=p, parameter__value__int__range=(minval,maxval))
+                elif datatype == 'float':
+                    activity_list = activity_list.filter(parameter__description_id=p, parameter__value__float__range=(minval,maxval))
+                else:
+                    activity_list = activity_list.filter(parameter__description_id=p, parameter__value=sinval)
+                print activity_list.query                
+
+        dataset_list = []
+        agent_list = {}
+        activities = {}
+        parametervalue_lists = {}
+        for a in activity_list:
+            elist = Entity.objects.filter(wasgeneratedby__activity_id=a.id)
+            for e in elist:
+                dataset_list.append(e)
+                # print "id: ", e
+                parametervalue_lists[str(e.id)] = Parameter.objects.filter(activity_id=a.id)
+        
+        # TODO: create a custom list of datasets, with agents, activities and -descriptions already included as
+        # direct attributes. (Avoid many reverse lookups in the template!)
+        return render_to_response('prov_vo/dataset_formresults.html', context={'dataset_list': dataset_list, 'parametervalue_lists': parametervalue_lists})
+
+
+def get_activitydescriptions(request):  # url: datasetform_activitydescriptions
+    # Get all available protocols for a given protocol_type,
+    # will be used by javascript to fill the parameters automatically into the dataset search form
+
+    activitydescription_type = request.GET.get('activitydescription_type')
+    print 'actdesctype: ', activitydescription_type
+    actdesc_list = []
+    if activitydescription_type:
+        if activitydescription_type == 'any':
+            # again load all possible parameters, not sure, how to do without:
+            for p in ActivityDescription.objects.all():
+                actdesc_list.append(dict(id=p.id, value=unicode(p.label)))
+        else:
+            for p in ActivityDescription.objects.filter(type=activitydescription_type):
+                actdesc_list.append(dict(id=p.id, value=unicode(p.label)))
+
+    return HttpResponse(json.dumps(actdesc_list), content_type='application/json')
+
+
+def get_parameters(request):  # url: datasetform_parameters
+    # Get all available parameters for a given protocol_id,
+    # will be used by javascript to fill the parameters automatically into the dataset search form
+    
+    activitydescription_id = request.GET.get('activitydescription')
+    print 'id: ', activitydescription_id
+    a  = ParameterDescription.objects.filter(activitydescription=activitydescription_id)
+    print a.query
+    print a
+    #print "parent: ", protocol
+    parameter_list = []
+    if activitydescription_id:
+        if activitydescription_id == 'any':
+            # do load nothing in this case
+            parameter_list = []
+            #for param in InputParameter.objects.all():
+            #    parameter_list.append(dict(id=param.id, value=unicode(param.name)))
+        else:
+            for param in ParameterDescription.objects.filter(activitydescription=activitydescription_id):
+                parameter_list.append(dict(id=param.id, value=unicode(param.label)))
+
+        # whatever happens, add option 'any' as well -- not really needed
+        # ret.insert(0, dict(id='', value='any'))
+
+    return HttpResponse(json.dumps(parameter_list), content_type='application/json')
 
 
 

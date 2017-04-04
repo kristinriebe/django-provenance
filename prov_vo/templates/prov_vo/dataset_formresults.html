@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}
+{% load form_extras %}
+
+{% block title %}IVOA ProvenanceDM - Dataset results{% endblock %}
+
+{% block content %}
+<h1>Search results</h1>
+
+<p>
+Following datasets are recorded</b>.
+</p>
+{% if dataset_list %}
+    <table class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>Project</th>
+            <th>Access</th>
+            <th>Location</th>
+            <th>Activity</th>
+            <th>ActivityDescription</th>
+            <th>Parameters</th>
+        </thead>
+        <tbody>
+    {% for dataset in dataset_list %}
+        <tr><td>
+            {{ dataset.label }}
+        </td><td>
+            {% for w in dataset.wasattributedto_set.all %}
+                {{ w.agent }}
+            {% endfor %}
+        </td><td>
+            {{ dataset.access }}
+         </td><td>
+            {{ dataset.location }}
+       </td><td>       
+            {% for w in dataset.wasgeneratedby_set.all %}
+                {{ w.activity }}
+            {% endfor %}
+        </td><td>
+            {% for w in dataset.wasgeneratedby_set.all %}
+                {{ w.activity.description.label }}
+            {% endfor %}
+        </td><td>
+    {% if dataset.id in parametervalue_lists %}
+        <ul class="list-unstyled">
+    {% for p in parametervalue_lists|getdictentry:dataset.id %}
+        <li style="margin-bottom: 10px;">
+            <a href="{% url 'prov_vo:parameterdescription_detail' p.description.id %}">
+            <span class="key">
+                {{ p.description.label }}</a>:
+            </span>
+            <a href="{% url 'prov_vo:parameter_detail' p.id %}">
+                {{ p.value }}</a>
+            <br>
+            <em>{{ p.description.annotation }}</em><br>
+            <b>datatype:</b> {{ p.description.datatype }}
+            </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+        </td></tr>
+
+    {% endfor %}
+
+        </tbody>
+    </table>
+{% else %}
+    <p class="notfound">No datasets found.</p>
+{% endif %}
+
+
+{% endblock %}
