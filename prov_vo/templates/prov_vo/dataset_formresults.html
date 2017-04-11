@@ -16,8 +16,10 @@ Following datasets are recorded</b>.
             <th>Project</th>
             <th>Access</th>
             <th>Location</th>
-            <th>Activity</th>
+            <th>Activity (generation)</th>
             <th>ActivityDescription</th>
+            <th>Progenitors</th>
+            <th>Used for</th>
             <th>Parameters</th>
         </thead>
         <tbody>
@@ -25,20 +27,28 @@ Following datasets are recorded</b>.
         <tr><td>
             {{ dataset.label }}
         </td><td>
-            {% for w in dataset.wasattributedto_set.all %}
-                {{ w.agent }}
+            {% for ag in dataset.agents.all %}
+                {{ ag }}
             {% endfor %}
         </td><td>
             {{ dataset.access }}
          </td><td>
             {{ dataset.location }}
        </td><td>       
-            {% for w in dataset.wasgeneratedby_set.all %}
-                {{ w.activity }}
+            {% for a in dataset.generationActivities.all %}
+                {{ a }}
             {% endfor %}
         </td><td>
-            {% for w in dataset.wasgeneratedby_set.all %}
-                {{ w.activity.description.label }}
+            {% for a in dataset.generationActivities.all %}
+                {{ a.description.label }}
+            {% endfor %}
+        </td><td>
+            {% for p in dataset.progenitors.all %}
+                {{ p.label }}
+            {% endfor %}
+        </td><td>
+            {% for a in dataset.usedForActivities.all %}
+                {{ a.label }};
             {% endfor %}
         </td><td>
     {% if dataset.id in parametervalue_lists %}
