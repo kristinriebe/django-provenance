@@ -1,0 +1,3745 @@
+#     TAP_SCHEMA_schemas
+-   model: core.TAP_SCHEMA_schemas
+    fields:
+        schema_name: db
+        description: 'standard database'
+
+#     TAP_SCHEMA_tables
+-   model: core.TAP_SCHEMA_tables
+    fields:
+        schema_name: db
+        table_name: core_tap_schema_columns
+        description: columns table of TAP_SCHEMA
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: core_tap_schema_key_columns
+       description: key_columns table of TAP_SCHEMA
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: core_tap_schema_keys
+       description: keys table of TAP_SCHEMA
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: core_tap_schema_schemas
+       description: schemas table of TAP_SCHEMA
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: core_tap_schema_tables
+       description: tables metadata from TAP_SCHEMA
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_algorithm
+       utype: SimDM:/resource/protocol/Algorithm
+       description: table with simulation algorithms
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_appliedalgorithm
+       utype: SimDM:/resource/experiment/AppliedAlgorithm
+       description: mapping table for connecting algorithms and experiments
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_contact
+       utype: SimDM:/resource/Contact
+       description: connects a party to a resource
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_dataobject
+       utype: SimDM:/resource/experiment/DataObject
+       description: 
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_experiment
+       utype: SimDM:/resource/experiment/Experiment
+       description: "experiments, executions of protocols"
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_inputdataobject
+       utype: SimDM:/resource/experiment/InputDataObject
+       description: links from experiment to the actually used DataObjects
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_inputdataobjecttype
+       utype: SimDM:/resource/protocol/InputDataObjectType
+       description: 
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_inputdataset
+       utype: SimDM:/resource/experiment/InputDataset
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_inputparameter
+       utype: SimDM:/resource/protocol/InputParameter
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_outputdataobjecttype
+       utype: SimDM:/resource/protocol/OutputDataObjectType
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_outputdataset
+       utype: SimDM:/resource/experiment/OutputDataset
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_parametersetting
+       utype: SimDM:/resource/experiment/ParameterSetting
+       description: map for linking experiments with actual parameter values
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_party
+       utype: SimDM:/resource/Party
+       description: persons or organizations
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_project
+       utype: SimDM:/resource/Project
+       description: project with which a resource is associated
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_property
+       utype: SimDM:/object/Property
+       description: an object's properties; similar to FIELD in VOTable
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_propertyvalue
+       utype: SimDM:/resource/experiment/PropertyValue
+       description: map for linking experiments to property values
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_simdm_protocol
+       utype: SimDM:/resource/protocol/Protocol
+       description: Prototypes for experiments
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_activity
+       utype: voprov:activity
+       description: "execution of a task, a process with start and end time"
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_activitydescription
+       utype: voprov:activitydescription
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_activityflow
+       utype: voprov:activityflow
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_agent
+       utype: voprov:agent
+       description: person or organization responsible for something
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_entity
+       utype: voprov:entity
+       description: data entities
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_entitydescription
+       utype: voprov:entitydescription
+       description: "prototypes, descriptions for entities"
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_hadstep
+       utype: voprov:hadstep
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_parameter
+       utype: voprov:parameter
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_parameterdescription
+       utype: voprov:parameterdescription
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_used
+       utype: voprov:used
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_useddescription
+       utype: voprov:useddescription
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_wasassociatedwith
+       utype: voprov:wasassociatedwith
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_wasattributedto
+       utype: voprov:wasattributedto
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_wasderivedfrom
+       utype: voprov:wasderivedfrom
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_wasgeneratedby
+       utype: voprov:wasgeneratedby
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_vo_wasgeneratedbydescription
+       utype: voprov:wasgeneratedbydescription
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_w3c_activity
+       utype: prov:activity
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_w3c_agent
+       utype: prov:agent
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_w3c_entity
+       utype: prov:entity
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_w3c_used
+       utype: prov:used
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_w3c_wasassociatedwith
+       utype: prov:wasassociatedwith
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_w3c_wasattributedto
+       utype: prov:wasattributedto
+       description: TODO
+-   model: core.TAP_SCHEMA_tables
+    fields:
+       schema_name: db
+       table_name: prov_w3c_wasgeneratedby
+       utype: prov:wasgeneratedby
+       description: TODO
+
+# TAP_SCHEMA_columns
+
+#     core_tap_schema_columns
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: table_name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: column_name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: datatype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: arraysize
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: size
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: utype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: unit
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: ucd
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: indexed
+       datatype: BOOLEAN
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: principal
+       datatype: BOOLEAN
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: std
+       datatype: BOOLEAN
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_columns
+       column_name: column_index
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     core_tap_schema_key_columns
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_key_columns
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_key_columns
+       column_name: key_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_key_columns
+       column_name: from_column
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_key_columns
+       column_name: target_column
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     core_tap_schema_keys
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_keys
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_keys
+       column_name: key_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_keys
+       column_name: from_table
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_keys
+       column_name: target_table
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_keys
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_keys
+       column_name: utype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     core_tap_schema_schemas
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_schemas
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_schemas
+       column_name: schema_name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_schemas
+       column_name: utype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_schemas
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     core_tap_schema_tables
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_tables
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_tables
+       column_name: schema_name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_tables
+       column_name: table_name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_tables
+       column_name: table_type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_tables
+       column_name: utype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_tables
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: core_tap_schema_tables
+       column_name: table_index
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_algorithm
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_algorithm
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_algorithm
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_algorithm
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_algorithm
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_algorithm
+       column_name: protocol_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_appliedalgorithm
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_appliedalgorithm
+       column_name: algorithm_id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_appliedalgorithm
+       column_name: experiment_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_appliedalgorithm
+       column_name: id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_contact
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_contact
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_contact
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_contact
+       column_name: experiment_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_contact
+       column_name: party_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_contact
+       column_name: protocol_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_dataobject
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_dataobject
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_dataobject
+       column_name: outputDataset_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_experiment
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_experiment
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_experiment
+       column_name: executionTime
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_experiment
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_experiment
+       column_name: protocol_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_experiment
+       column_name: project_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_experiment
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_inputdataobject
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobject
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobject
+       column_name: inputDataset_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobject
+       column_name: dataObject_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_inputdataobjecttype
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobjecttype
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobjecttype
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobjecttype
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobjecttype
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobjecttype
+       column_name: definition_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataobjecttype
+       column_name: protocol_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_inputdataset
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataset
+       column_name: INTEGER
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataset
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataset
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataset
+       column_name: url
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataset
+       column_name: experiment_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataset
+       column_name: product_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputdataset
+       column_name: inputtype_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_inputparameter
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: datatype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: protocol_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: default
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: maxval
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: minval
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_inputparameter
+       column_name: unit
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_outputdataobjecttype
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataobjecttype
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataobjecttype
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataobjecttype
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataobjecttype
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataobjecttype
+       column_name: protocol_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_outputdataset
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataset
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataset
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataset
+       column_name: numberOfObjects
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataset
+       column_name: accessURL
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataset
+       column_name: experiment_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_outputdataset
+       column_name: objectType_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_parametersetting
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_parametersetting
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_parametersetting
+       column_name: value
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_parametersetting
+       column_name: experiment_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_parametersetting
+       column_name: inputParameter_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_parametersetting
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_party
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_party
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_party
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_party
+       column_name: affiliation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_project
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_project
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_project
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_project
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_project
+       column_name: referenceURL
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_property
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_property
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_property
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_property
+       column_name: datatype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_property
+       column_name: unit
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_property
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_property
+       column_name: dataObjectType_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_propertyvalue
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_propertyvalue
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_propertyvalue
+       column_name: value
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_propertyvalue
+       column_name: dataObject_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_propertyvalue
+       column_name: property_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_simdm_protocol
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_protocol
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_protocol
+       column_name: name
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_protocol
+       column_name: code
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_protocol
+       column_name: version
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_protocol
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_protocol
+       column_name: referenceURL
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_simdm_protocol
+       column_name: type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: SimDM:/resource/...
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_activity
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activity
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activity.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activity
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activity.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activity
+       column_name: startTime
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activity.startTime
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activity
+       column_name: endTime
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activity.endTime
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activity
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activity.annotation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activity
+       column_name: description_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activity.description
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activity
+       column_name: doculink
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activity.doculink
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_activitydescription
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activitydescription
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activitydescription.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activitydescription
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activitydescription.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activitydescription
+       column_name: subtype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activitydescription.subtype
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activitydescription
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activitydescription.annotation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activitydescription
+       column_name: doculink
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activitydescription.doculink
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activitydescription
+       column_name: type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activitydescription.type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_activityflow
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_activityflow
+       column_name: activity_ptr_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:activityflow.activity_ptr_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_agent
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_agent
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:agent.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_agent
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:agent.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_agent
+       column_name: type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:agent.type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_agent
+       column_name: affiliation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:agent.affiliation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_agent
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:agent.annotation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_agent
+       column_name: webpage
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:agent.webpage
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_entity
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: location
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.location
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: access
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.access
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: size
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.size
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: format
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.format
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.annotation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entity
+       column_name: description_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entity.description_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_entitydescription
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entitydescription
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entitydescription.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entitydescription
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entitydescription.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entitydescription
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entitydescription.annotation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entitydescription
+       column_name: dataproduct_type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entitydescription.dataproduct_type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entitydescription
+       column_name: dataproduct_subtype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entitydescription.dataproduct_subtype
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entitydescription
+       column_name: level
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entitydescription.level
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_entitydescription
+       column_name: doculink
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:entitydescription.doculink
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_hadstep
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_hadstep
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:hadstep.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_hadstep
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:hadstep.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_hadstep
+       column_name: activityflow_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:hadstep.activityflow_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_parameter
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameter
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameter.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameter
+       column_name: value
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameter.value
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameter
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameter.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameter
+       column_name: description_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameter.description_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameter
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameter.annotation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_parameterdescription
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: datatype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.datatype
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: unit
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.unit
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: ucd
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.ucd
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: utype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.utype
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: arraysize
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.arraysize
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: annotation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.annotation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: activitydescription_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.activitydescription_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: default
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.default
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: maxval
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.maxval
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_parameterdescription
+       column_name: minval
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:parameterdescription.minval
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_used
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_used
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:used.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_used
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:used.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_used
+       column_name: description_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:used.description_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_used
+       column_name: entity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:used.entity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_useddescription
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_useddescription
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:useddescription.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_useddescription
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:useddescription.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_useddescription
+       column_name: activitydescription_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:useddescription.activitydescription_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_useddescription
+       column_name: entitydescription_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:useddescription.entitydescription_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_wasassociatedwith
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasassociatedwith
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasassociatedwith.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasassociatedwith
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasassociatedwith.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasassociatedwith
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasassociatedwith.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasassociatedwith
+       column_name: agent_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasassociatedwith.agent_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_wasattributedto
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasattributedto
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasattributedto.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasattributedto
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasattributedto.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasattributedto
+       column_name: agent_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasattributedto.agent_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasattributedto
+       column_name: entity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasattributedto.entity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_wasderivedfrom
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasderivedfrom
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasderivedfrom.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasderivedfrom
+       column_name: entity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasderivedfrom.entity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasderivedfrom
+       column_name: progenitor_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasderivedfrom.progenitor_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_wasgeneratedby
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedby
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedby.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedby
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedby.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedby
+       column_name: description_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedby.description_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedby
+       column_name: entity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedby.entity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_vo_wasgeneratedbydescription
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedbydescription
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedbydescription.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedbydescription
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedbydescription.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedbydescription
+       column_name: activitydescription_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedbydescription.activitydescription_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_vo_wasgeneratedbydescription
+       column_name: entitydescription_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: voprov:wasgeneratedbydescription.entitydescription_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_w3c_activity
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: startTime
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.startTime
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: endTime
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.endTime
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: docuLink
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.docuLink
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.description
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: code
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.code
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: parameter
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.parameter
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: subtype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.subtype
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_activity
+       column_name: type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:activity.type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_w3c_agent
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_agent
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:agent.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_agent
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:agent.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_agent
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:agent.description
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_agent
+       column_name: affiliation
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:agent.affiliation
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_agent
+       column_name: type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:agent.type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_w3c_entity
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: label
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.label
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: location
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.location
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: access
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.access
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: size
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.size
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: format
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.format
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: dataproduct_subtype
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.dataproduct_subtype
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: description
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.description
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: dataproduct_type
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.dataproduct_type
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: docuLink
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.docuLink
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_entity
+       column_name: level
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:entity.level
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_w3c_used
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_used
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:used.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_used
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:used.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_used
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:used.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_used
+       column_name: entity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:used.entity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_w3c_wasassociatedwith
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasassociatedwith
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasassociatedwith.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasassociatedwith
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasassociatedwith.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasassociatedwith
+       column_name: agent_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasassociatedwith.agent_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasassociatedwith
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasassociatedwith.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_w3c_wasattributedto
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasattributedto
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasattributedto.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasattributedto
+       column_name: agent_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasattributedto.agent_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasattributedto
+       column_name: entity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasattributedto.entity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasattributedto
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasattributedto.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+#     prov_w3c_wasgeneratedby
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasgeneratedby
+       column_name: id
+       datatype: INTEGER
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasgeneratedby.id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasgeneratedby
+       column_name: role
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasgeneratedby.role
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasgeneratedby
+       column_name: activity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasgeneratedby.activity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+-   model: core.TAP_SCHEMA_columns
+    fields:
+       table_name: prov_w3c_wasgeneratedby
+       column_name: entity_id
+       datatype: VARCHAR
+       arraysize: 
+       size: 
+       description: TODO
+       utype: prov:wasgeneratedby.entity_id
+       unit: 
+       ucd: 
+       indexed: False
+       principal: True
+       std: True
+
+#     TAP_SCHEMA_tables
