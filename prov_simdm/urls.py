@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^inputparameters/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.InputParameterDetailView.as_view(), name='inputparameter_detail'),
     url(r'^parametersettings/$', views.ParameterSettingsView.as_view(), name='parametersettings'),
     url(r'^parametersettings/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ParameterSettingDetailView.as_view(), name='parametersetting_detail'),
-    url(r'^alorithms/$', views.AlgorithmsView.as_view(), name='algorithms'),
+    url(r'^algorithms/$', views.AlgorithmsView.as_view(), name='algorithms'),
     url(r'^algorithms/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.AlgorithmDetailView.as_view(), name='algorithm_detail'),
     url(r'^algoform/$', views.AlgorithmFormResultsView.as_view(), name='algo_form'),
     #url(r'^form/$', views.get_algorithmId, name='get_algorithmId'), # also works!
@@ -38,6 +38,10 @@ urlpatterns = [
     url(r'^simdal/projects/$', views.simdal_projects, name='simdal_projects'),
     url(r'^simdal/experiments/$', views.simdal_experiments, name='simdal_experiments'),
     url(r'^simdal/datasets/$', views.simdal_datasets, name='simdal_datasets'),
+
+    # vosi endpoints required by simdal: capabilities, availability
+    #url(r'^vosi/tables/$', views.simdal_vositables, name='simdal_vositables'),
+    #url(r'^vosi/tables/(?P<table_name>[0-9a-zA-Z.:_-]+)$', views.simdal_vositabledetails, name='simdal_vositabledetails'),
 
 ]
 
