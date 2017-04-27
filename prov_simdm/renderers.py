@@ -431,3 +431,80 @@ class VosiTableRenderer(BaseRenderer):
 
             return xml_string
 
+
+class VosiAvailabilityRenderer(BaseRenderer):
+        """
+        Takes table and column data and
+        returns an xmlstream for VOSI table/ endpoint
+        """
+
+        charset = 'utf-8'
+
+        # namespace declarations
+        ns_vosiavail = 'http://www.ivoa.net/xml/Availability/v1.0#availability'
+        version = '1.1'
+
+        comment = "<!--\n"\
+                + " !  Generated using Django with SimplerXMLGenerator\n"\
+                + " !  at "+str(timezone.now())+"\n"\
+                + " !-->\n"
+
+
+        def render(self, data, prettyprint=False):
+            """
+            parameters:
+              data = result from django query set, from TAP_SCHEMA_tables
+              prettyprint = flag for pretty printing the xml output (including whitespace and linebreaks)
+            """
+
+            stream = StringIO()
+            xml = SimplerXMLGenerator(stream, self.charset)
+
+            xml.startDocument()
+
+            # add a comment
+            xml._write(self.comment)
+
+            # add namespace definitions
+            nsattrs = {}
+            nsattrs['version'] = self.version
+            #nsattrs['encoding'] = charser
+            nsattrs['xmlns:vosi'] = self.ns_vosiavail
+            #nsattrs['xmlns:xsi'] = self.ns_xsi
+            #nsattrs['xmlns:vs'] = self.ns_vs
+
+            # add root node
+            xml.startElement('vosi:availability', nsattrs)
+
+            # add mandatory node:
+            xml.startElement('vosi:available', {})
+            xml.characters(smart_unicode(data['available']))
+            xml.endElement('vosi:available')
+
+            # remove available from data dict
+            data.pop('available', None)
+
+            # add possible optional nodes:
+            for key in data.keys():
+                xml.startElement('vosi'+key, {})
+                xml.characters(smart_unicode(data[key]))
+                xml.endElement('vosi'+key)
+
+            xml.endElement('vosi:availability')
+
+            xml.endDocument()
+
+            xml_string = stream.getvalue()
+
+
+            # make the xml pretty, i.e. use linebreaks and indentation
+            # the sax XMLGenerator behind SimpleXMLGenerator does not seem to support this,
+            # thus need a library that can do it.
+            # TODO: since we use lxml anyway, maybe build the whole xml-tree with lxml.etree!
+            # NOTE: This removes any possibly existing comments from the xml output!
+            if prettyprint is True:
+                parsed = etree.fromstring(xml_string)
+                pretty_xml = etree.tostring(parsed, pretty_print=True)
+                xml_string = pretty_xml
+
+            return xml_string

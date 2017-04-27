@@ -21,7 +21,7 @@ from core.models import TAP_SCHEMA_tables, TAP_SCHEMA_columns
 
 from .forms import AlgorithmForm, DatasetForm
 from .serializers import ProtocolSerializer
-from .renderers import VOTableRenderer, VosiTablesRenderer, VosiTableRenderer
+from .renderers import VOTableRenderer, VosiTablesRenderer, VosiTableRenderer, VosiAvailabilityRenderer
 
 
 class CustomDetailView(generic.DetailView):
@@ -549,3 +549,10 @@ def simdal_vositabledetails(request, table_name):
     response = HttpResponse(vositable, content_type="application/xml")
     return response
 
+def simdal_vosiavailability(request):
+    # should perform checks, if databases are still reachable etc.
+
+    data = {'available': 'true', 'note': 'service is ready for queries'}
+    vosiavailability = VosiAvailabilityRenderer().render(data)
+    response = HttpResponse(vosiavailability, content_type="application/xml")
+    return response
