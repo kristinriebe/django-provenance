@@ -17,9 +17,11 @@ import json
 
 
 from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project, OutputDataset, Party, Contact, InputDataset
+from core.models import TAP_SCHEMA_tables, TAP_SCHEMA_columns
+
 from .forms import AlgorithmForm, DatasetForm
 from .serializers import ProtocolSerializer
-from .renderers import VOTableRenderer
+from .renderers import VOTableRenderer, VosiTablesRenderer, VosiTableRenderer
 
 
 class CustomDetailView(generic.DetailView):
@@ -241,7 +243,6 @@ class DatasetFormResultsView(FormView):
                 print "id: ", o
                 parametervalue_lists[str(o.id)] = ParameterSetting.objects.filter(experiment_id=e.id)
                 #parametervalue_lists['yes'] = ParameterSetting.objects.filter(experiment_id=e.id)
-                
 
         return render_to_response('prov_simdm/dataset_formresults.html', context={'dataset_list': dataset_list, 'parametervalue_lists': parametervalue_lists})
 
@@ -387,11 +388,11 @@ def voprov_provn(request):
     provstr = "document\n"
     for e in experiments:
         provstr = provstr + "activity(" + e.id + ", "", " + str(e.executionTime) + ", [prov:label = '" + e.name + "', voprov:annotation = '" + str(e.description) + "', voprov:type = '" + str(e.protocol.type) + "']),\n"
-    
+
     for o in outputdatasets:
         # TODO: inputdatasets that are not refering to an outputdataset are still missing
         provstr = provstr + "entity(" + o.id + ", [prov:type = 'entity', prov:label = '" + o.name + "', voprov:accessLink = '" + str(o.accessURL) + "', voprov:dataproduct_type = '" + str(o.objectType.name) + "']),\n"
- 
+
     for ag in parties:
         agtype = 'Person' # or can it be something else as well?
         provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + agtype + "', voprov:name = '" + ag.name + "', voprov:affiliation = '" + ag.affiliation + "']),\n"
@@ -420,7 +421,7 @@ def voprov_provn(request):
     provstr += "endDocument"
 
     return HttpResponse(provstr, content_type='text/plain')
-    
+
 
 # SimDAL views
 # ============
@@ -516,7 +517,35 @@ def simdal_experiments(request):
 #        return datasets
 
 def simdal_datasets(request):
-    data = OutputDataset.objects.order_by('id').values()
+    data = TAP_Tables.objects.order_by('id').values()
     votable = VOTableRenderer().render(data, prettyprint=False)
     response = HttpResponse(votable, content_type="application/xml")
     return response
+
+
+def simdal_vositables(request):
+    # This uses the TAP_SCHEMA_tables for listing all tables.
+    data = TAP_SCHEMA_tables.objects.order_by('schema_name').order_by('table_name').values()
+
+    # first try: just render as a votable:
+    votable = VOTableRenderer().render(data, prettyprint=False)
+    response = HttpResponse(votable, content_type="application/xml")
+
+    # return XML using the VOSI standard defined at
+    # http://www.ivoa.net/documents/VOSI/20161214/PR-VOSI-1.1-20161214.pdf
+    vositables = VosiTablesRenderer().render(data)
+    response = HttpResponse(vositables, content_type="application/xml")
+
+    return response
+
+
+def simdal_vositabledetails(request, table_name):
+    table = TAP_SCHEMA_columns.objects.filter(table_name=table_name).order_by('sortid').order_by('column_name').values()
+    print 'table_name, table: ', table_name, table
+
+    data = table
+    print "data: ", data
+    vositable = VosiTableRenderer().render(data)
+    response = HttpResponse(vositable, content_type="application/xml")
+    return response
+

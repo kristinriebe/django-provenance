@@ -5,11 +5,17 @@ This web application uses the Django framework to define models and serve proven
 * `prov_w3c`: implements the W3C PROV-DM model
 * `prov_vo`: implements the IVOA ProvenanceDM model (under development)
 * `prov_simdm`: reuses classes from the IVOA Simulation Data Model to define provenance for simulation data
- 
+
 The different parts of the web application are under heavy development and serve to test different possible implementations.
 
 ## Installation
-Download everything and install the required python (2.7) packages, e.g. using `pip install`:
+Download everything and install the required python (2.7) packages, e.g. using `pip install`. There is also a requirements.txt which you use like this:
+
+```
+pip install requirements.txt
+```
+
+The following packages are needed:
 
 django  -- version 1.10
 django-braces -- for json views  
@@ -22,6 +28,7 @@ mod_wsgi -- wsgi-module for apache2, needed on the server on which the webapp sh
 BeautifulSoup -- xml parsing  
 logger -- write proper log and error messages
 pyyaml -- for loading data (fixtures) from yaml representation
+lxml  -- juse dused for pretty-printing of xml (Votable, VOSI tables renderer), VOSI tables etc.
 
 
 ## Testing
@@ -45,7 +52,7 @@ cat data/insert_data_vo.sql | sqlite3 db.sqlite3
 For the `prov_simdm` app, I wrote a data fixture. If necessary, first clean up all simdm-related data and then reingest using `manage.py loaddata`:
 
 ```bash
-cat data/delete_data_simdm.sql | sqlite3 db.sqlite3 
+cat data/delete_data_simdm.sql | sqlite3 db.sqlite3
 python manage.py loaddata prov_simdm/fixtures/simdm_data.yaml
 ```
 

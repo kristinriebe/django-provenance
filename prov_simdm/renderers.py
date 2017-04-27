@@ -11,7 +11,7 @@ import lxml.etree as etree  # for pretty printing xml
 
 class VOTableRenderer(BaseRenderer):
         """
-        Takes a list of (ordered) Python dictionaries and 
+        Takes a list of (ordered) Python dictionaries and
         returns a VOTable stream
         """
 
@@ -34,7 +34,7 @@ class VOTableRenderer(BaseRenderer):
                 + " !-->\n"
 
         # mapping from python data types to VOTable datatypes
-        # NOTE: float in Python is implemented as double in C 
+        # NOTE: float in Python is implemented as double in C
         # (see https://docs.python.org/2/library/stdtypes.html),
         # thus map all float values to doubles
         datatypes = {
@@ -60,7 +60,7 @@ class VOTableRenderer(BaseRenderer):
               votable_meta = dictionary of attributes and/or descriptions etc., also may include
                             field definitions;
                             attributes have to be provided as extra dictionary, e.g. for the fields:
-                            e.g. votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] = 
+                            e.g. votable_meta['VOTABLE']['RESOURCE']['TABLE']['FIELDS'] =
                                     [ {'FIELD': {'attrs': {'name': 'ra', 'ID': 'ra', 'datatype': 'float'}, 'DESCRIPTION': 'This is the right ascension'}},
                                       {'FIELD': {'attrs': {'name': 'de', 'ID': 'de', 'datatype': 'float'}}
                                     ]
@@ -86,7 +86,7 @@ class VOTableRenderer(BaseRenderer):
                 attrs['version'] = self.version
             if 'xmlns' not in attrs:
                 attrs['xmlns'] = self.xmlns
-            if 'xmlns' not in attrs:
+            if 'xmlns:xsi' not in attrs:
                 attrs['xmlns:xsi'] = self.xmlns_xsi
             votable_meta['VOTABLE']['attrs'] = attrs
 
@@ -162,7 +162,7 @@ class VOTableRenderer(BaseRenderer):
                             self.add_node(xml, value)
                             xml.endElement(key.upper())
             elif hasattr(data, '__iter__'):
-                # This is a list. Lists in VOTables have no wrapper 
+                # This is a list. Lists in VOTables have no wrapper
                 # around them (except for groups, maybe), so add list items directly
                 for d in data:
                     self.add_node(xml, d)
@@ -213,11 +213,11 @@ class VOTableRenderer(BaseRenderer):
             if fieldsdef is not None:
                 fieldnames = [f['FIELD']['attrs']['name'] for f in fieldsdef]
 
-            newfieldsdef = [] 
+            newfieldsdef = []
             for key, value in datarow.items():
                 # create dict of FIELD attributes based on available information
                 # Note: ID *must* be unique, name should be unique in FIELD attributes of VOTable
-                
+
                 # first check, if field information is already provided,
                 # if not, fill at least name, ID and datatype attributes
                 field = {}
@@ -243,10 +243,191 @@ class VOTableRenderer(BaseRenderer):
                     fieldattrs['arraysize'] = '*'
 
                 # more possible attributes: unit, ucd, width, precision
-                # need to be provided by fields-dictionary or won't be used at all                
+                # need to be provided by fields-dictionary or won't be used at all
 
                 field['attrs'] = fieldattrs
 
                 newfieldsdef.append({'FIELD': field})
 
             return newfieldsdef
+
+
+class VosiTablesRenderer(BaseRenderer):
+        """
+        Takes ... and
+        returns an xmlstream for VOSI tables/ endpoint
+        """
+
+        charset = 'utf-8'
+
+        # namespace declarations
+        ns_vosi = 'http://www.ivoa.net/xml/VOSITables/v1.0'
+        ns_vs = 'http://www.ivoa.net/xml/VODataService/v1.1'
+        ns_xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        version = '1.1'
+
+        comment = "<!--\n"\
+                + " !  Generated using Django with SimplerXMLGenerator\n"\
+                + " !  at "+str(timezone.now())+"\n"\
+                + " !-->\n"
+
+
+        def render(self, data, detaillevel='max', prettyprint=False):
+            """
+            parameters:
+              data = result from django query set, from TAP_SCHEMA_tables
+              detaillevel = max or min, level of detail as specified in VOSI 1.1 -- ignored for now
+              prettyprint = flag for pretty printing the xml output (including whitespace and linebreaks)
+            """
+
+            stream = StringIO()
+            xml = SimplerXMLGenerator(stream, self.charset)
+
+            xml.startDocument()
+
+            # add a comment
+            xml._write(self.comment)
+
+            # add namespace definitions
+            nsattrs = {}
+            nsattrs['version'] = self.version
+            nsattrs['xmlns:vosi'] = self.ns_vosi
+            nsattrs['xmlns:xsi'] = self.ns_xsi
+            nsattrs['xmlns:vs'] = self.ns_vs
+
+            # add root node
+            xml.startElement('vosi:tableset', nsattrs)
+
+            # add schema nodes, tables and columns etc.
+            schema_name_prev = ''
+            for row in data:
+                schema_name = row['schema_name']
+                table_name = row['table_name']
+                if schema_name.lower() != schema_name_prev.lower():
+                    if schema_name_prev != '':
+                        xml.endElement('schema')
+                    schema_name_prev = schema_name
+                    xml.startElement('schema', {})
+                    xml.startElement('name', {})
+                    xml.characters(smart_unicode(schema_name))
+                    xml.endElement('name')
+
+                xml.startElement('table', {})
+                xml.startElement('name', {})
+                xml.characters(smart_unicode(table_name))
+                xml.endElement('name')
+                xml.endElement('table')
+
+            xml.endElement('schema')
+
+            xml.endElement('vosi:tableset')
+
+            xml.endDocument()
+
+
+            xml_string = stream.getvalue()
+
+            # make the xml pretty, i.e. use linebreaks and indentation
+            # the sax XMLGenerator behind SimpleXMLGenerator does not seem to support this,
+            # thus need a library that can do it.
+            # TODO: since we use lxml anyway, maybe build the whole xml-tree with lxml.etree!
+            # NOTE: This removes any possibly existing comments from the xml output!
+            if prettyprint is True:
+                parsed = etree.fromstring(xml_string)
+                pretty_xml = etree.tostring(parsed, pretty_print=True)
+                xml_string = pretty_xml
+
+            return xml_string
+
+
+class VosiTableRenderer(BaseRenderer):
+        """
+        Takes table and column data and
+        returns an xmlstream for VOSI table/ endpoint
+        """
+
+        charset = 'utf-8'
+
+        # namespace declarations
+        ns_vosi = 'http://www.ivoa.net/xml/VOSITables/v1.0'
+        ns_vs = 'http://www.ivoa.net/xml/VODataService/v1.1'
+        ns_xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        version = '1.1'
+
+        comment = "<!--\n"\
+                + " !  Generated using Django with SimplerXMLGenerator\n"\
+                + " !  at "+str(timezone.now())+"\n"\
+                + " !-->\n"
+
+
+        def render(self, data, prettyprint=False):
+            """
+            parameters:
+              data = result from django query set, from TAP_SCHEMA_tables
+              prettyprint = flag for pretty printing the xml output (including whitespace and linebreaks)
+            """
+
+            stream = StringIO()
+            xml = SimplerXMLGenerator(stream, self.charset)
+
+            xml.startDocument()
+
+            # add a comment
+            xml._write(self.comment)
+
+            # add namespace definitions
+            nsattrs = {}
+            nsattrs['version'] = self.version
+            #nsattrs['encoding'] = "UTF-8"
+            nsattrs['xmlns:vosi'] = self.ns_vosi
+            #nsattrs['xmlns:xsi'] = self.ns_xsi
+            #nsattrs['xmlns:vs'] = self.ns_vs
+
+            # add root node
+            xml.startElement('vosi:table', nsattrs)
+
+            # add schema nodes, tables and columns etc.
+            table_name = data[0]['table_name']
+            xml.startElement('table', {})
+            xml.startElement('name', {})
+            xml.characters(smart_unicode(table_name))
+            xml.endElement('name')
+            for row in data:
+                col_name = row['column_name']
+                xml.startElement('column', {})
+
+                xml.startElement('name', {})
+                xml.characters(smart_unicode(col_name))
+                xml.endElement('name')
+
+                xml.startElement('description', {})
+                xml.characters(smart_unicode(row['description']))
+                xml.endElement('description')
+
+                xml.startElement('datatype', {})
+                xml.characters(smart_unicode(row['datatype']))
+                xml.endElement('datatype')
+
+                xml.endElement('column')
+
+            xml.endElement('table')
+
+            xml.endElement('vosi:table')
+
+            xml.endDocument()
+
+            xml_string = stream.getvalue()
+
+
+            # make the xml pretty, i.e. use linebreaks and indentation
+            # the sax XMLGenerator behind SimpleXMLGenerator does not seem to support this,
+            # thus need a library that can do it.
+            # TODO: since we use lxml anyway, maybe build the whole xml-tree with lxml.etree!
+            # NOTE: This removes any possibly existing comments from the xml output!
+            if prettyprint is True:
+                parsed = etree.fromstring(xml_string)
+                pretty_xml = etree.tostring(parsed, pretty_print=True)
+                xml_string = pretty_xml
+
+            return xml_string
+

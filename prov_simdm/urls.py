@@ -40,8 +40,8 @@ urlpatterns = [
     url(r'^simdal/datasets/$', views.simdal_datasets, name='simdal_datasets'),
 
     # vosi endpoints required by simdal: capabilities, availability
-    #url(r'^vosi/tables/$', views.simdal_vositables, name='simdal_vositables'),
-    #url(r'^vosi/tables/(?P<table_name>[0-9a-zA-Z.:_-]+)$', views.simdal_vositabledetails, name='simdal_vositabledetails'),
+    url(r'^vosi/tables/$', views.simdal_vositables, name='simdal_vositables'),
+    url(r'^vosi/tables/(?P<table_name>[0-9a-zA-Z.:_-]+)$', views.simdal_vositabledetails, name='simdal_vositabledetails'),
 
 ]
 

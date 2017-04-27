@@ -24,7 +24,7 @@ class TAP_SCHEMA_tables(models.Model):
     utype = models.CharField(max_length=256, blank=True, null=True)
     description = models.CharField(max_length=1024, blank=True, null=True)
     table_index = models.IntegerField(null=True)  # used for sorting tables, 0 = first table, 1 = second table etc.
-    
+
     def __str__(self):
         return self.table_name
 
