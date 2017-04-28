@@ -1,0 +1,82 @@
+#   VOResource_Capability
+-   model: core.VOResource_Capability
+    fields:
+        id: 1
+        type:
+        standardID:
+        description: 'search form for datasets based on SimDM properties'
+-   model: core.VOResource_Capability
+    fields:
+        id: 2
+        type:
+        standardID: 'ivo://ivoa.net/std/VOSI#capabilities'
+        description: 'VOSI capabilities'
+-   model: core.VOResource_Capability
+    fields:
+        id: 3
+        type:
+        standardID: 'ivo://ivoa.net/std/VOSI#availability'
+        description: 'VOSI availability'
+-   model: core.VOResource_Capability
+    fields:
+        id: 4
+        type:
+        standardID: 'ivo://ivoa.net/std/VOSI#tables'
+        description: 'VOSI tables'
+
+#   VOResource_Interface
+-   model: core.VOResource_Interface
+    fields:
+        id: 1
+        type: "vr:WebBrowser"
+        capability: 1
+        version:
+        role:
+-   model: core.VOResource_Interface
+    fields:
+        id: 2
+        type: "vs:ParamHTTP"
+        capability: 2
+        version:
+        role: 'std'
+-   model: core.VOResource_Interface
+    fields:
+        id: 3
+        type: "vs:ParamHTTP"
+        capability: 3
+        version:
+        role: 'std'
+-   model: core.VOResource_Interface
+    fields:
+        id: 4
+        type: "vs:ParamHTTP"
+        capability: 4
+        version:
+        role: 'std'
+
+#   VOResource_AccessURL
+-   model: core.VOResource_AccessURL
+    fields:
+        interface: 1
+        url: "http://127.0.0.1:8000/simdm/datasetform/"
+        use: "full"
+-   model: core.VOResource_AccessURL
+    fields:
+        interface: 1
+        url: "http://escience.aip.de/provenance/simdm/datasetform/"
+        use: "full"
+-   model: core.VOResource_AccessURL
+    fields:
+        interface: 2
+        url: "http://127.0.0.1:8000/simdm/vosi/capabilities/"
+        use: "full"
+-   model: core.VOResource_AccessURL
+    fields:
+        interface: 3
+        url: "http://127.0.0.1:8000/simdm/vosi/availability/"
+        use: "full"
+-   model: core.VOResource_AccessURL
+    fields:
+        interface: 4
+        url: "http://127.0.0.1:8000/simdm/vosi/tables/"
+        use: "full"

@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^vosi/tables/$', views.simdal_vositables, name='simdal_vositables'),
     url(r'^vosi/tables/(?P<table_name>[0-9a-zA-Z.:_-]+)$', views.simdal_vositabledetails, name='simdal_vositabledetails'),
     url(r'^vosi/availability/$', views.simdal_vosiavailability, name='simdal_vosiavailability'),
+    url(r'^vosi/capabilities/$', views.simdal_vosicapability, name='simdal_vosicapability'),
 
 ]
 

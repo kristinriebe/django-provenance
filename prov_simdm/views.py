@@ -17,11 +17,11 @@ import json
 
 
 from .models import Experiment, Protocol, InputParameter, ParameterSetting, Algorithm, AppliedAlgorithm, Project, OutputDataset, Party, Contact, InputDataset
-from core.models import TAP_SCHEMA_tables, TAP_SCHEMA_columns
+from core.models import TAP_SCHEMA_tables, TAP_SCHEMA_columns, VOResource_Capability, VOResource_Interface, VOResource_AccessURL
 
 from .forms import AlgorithmForm, DatasetForm
 from .serializers import ProtocolSerializer
-from .renderers import VOTableRenderer, VosiTablesRenderer, VosiTableRenderer, VosiAvailabilityRenderer
+from .renderers import VOTableRenderer, VosiTablesRenderer, VosiTableRenderer, VosiAvailabilityRenderer, VosiCapabilityRenderer
 
 
 class CustomDetailView(generic.DetailView):
@@ -517,7 +517,7 @@ def simdal_experiments(request):
 #        return datasets
 
 def simdal_datasets(request):
-    data = TAP_Tables.objects.order_by('id').values()
+    data = TAP_SCHEMA_Tables.objects.order_by('id').values()
     votable = VOTableRenderer().render(data, prettyprint=False)
     response = HttpResponse(votable, content_type="application/xml")
     return response
@@ -556,3 +556,37 @@ def simdal_vosiavailability(request):
     vosiavailability = VosiAvailabilityRenderer().render(data)
     response = HttpResponse(vosiavailability, content_type="application/xml")
     return response
+
+def simdal_vosicapability(request):
+
+    capabilities = VOResource_Capability.objects.order_by('id')
+#    interfaces = VOResource_Interface.objects.order_by('id')
+#    accessurls = VOResource_AccessURL.objects.order_by('id')
+
+    # now join them together
+#    for capability in capabilities:
+#
+#        interfaces = VOResource_Interface.objects.filter('capability='+capability.id)
+#        for interface in interfaces:
+#            accessurls = VOResource_AccessURL.objects.filter('interface='+interface.id)
+
+    #data = {'available': 'true', 'note': 'service is ready for queries'}
+    #data = capabilities
+    vosicap = VosiCapabilityRenderer().render(capabilities)
+    # response = HttpResponse(vosicap, content_type="text/xml")
+    response = HttpResponse(vosicap, content_type="application/xml")
+    return response
+
+# def get_capabilities(qs):
+#     capability = []
+#     interfaces = VOResource_Interface.objects.filter(capability=qs)
+
+#     capability += interfaces
+#     if interfaces:
+#         interim_cap_qs = get_capabilities(interfaces)
+#         for qs in interim_cap_qs:
+#             capability.append(qs)
+#     else:
+#         capability = [qs]
+
+#     return capability
