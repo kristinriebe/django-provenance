@@ -523,7 +523,7 @@ def simdal_datasets(request):
     return response
 
 
-def simdal_vositables(request):
+def vosi_tables(request):
     # This uses the TAP_SCHEMA_tables for listing all tables.
     data = TAP_SCHEMA_tables.objects.order_by('schema_name').order_by('table_name').values()
 
@@ -539,7 +539,7 @@ def simdal_vositables(request):
     return response
 
 
-def simdal_vositabledetails(request, table_name):
+def vosi_tabledetails(request, table_name):
     table = TAP_SCHEMA_columns.objects.filter(table_name=table_name).order_by('sortid').order_by('column_name').values()
     print 'table_name, table: ', table_name, table
 
@@ -549,44 +549,27 @@ def simdal_vositabledetails(request, table_name):
     response = HttpResponse(vositable, content_type="application/xml")
     return response
 
-def simdal_vosiavailability(request):
-    # should perform checks, if databases are still reachable etc.
+
+def vosi_availability(request):
+    # should perform checks here, if databases are still reachable etc.
+    # should write to db the status and note, uTDate etc. via admin interface as well
 
     data = {'available': 'true', 'note': 'service is ready for queries'}
     vosiavailability = VosiAvailabilityRenderer().render(data)
     response = HttpResponse(vosiavailability, content_type="application/xml")
     return response
 
-def simdal_vosicapability(request):
+
+def vosi_capabilities(request):
 
     capabilities = VOResource_Capability.objects.order_by('id')
 #    interfaces = VOResource_Interface.objects.order_by('id')
 #    accessurls = VOResource_AccessURL.objects.order_by('id')
 
-    # now join them together
-#    for capability in capabilities:
-#
-#        interfaces = VOResource_Interface.objects.filter('capability='+capability.id)
-#        for interface in interfaces:
-#            accessurls = VOResource_AccessURL.objects.filter('interface='+interface.id)
+    # now join them together -> do it in renderer (no efficient, but ok for now)
 
-    #data = {'available': 'true', 'note': 'service is ready for queries'}
-    #data = capabilities
     vosicap = VosiCapabilityRenderer().render(capabilities)
     # response = HttpResponse(vosicap, content_type="text/xml")
     response = HttpResponse(vosicap, content_type="application/xml")
     return response
 
-# def get_capabilities(qs):
-#     capability = []
-#     interfaces = VOResource_Interface.objects.filter(capability=qs)
-
-#     capability += interfaces
-#     if interfaces:
-#         interim_cap_qs = get_capabilities(interfaces)
-#         for qs in interim_cap_qs:
-#             capability.append(qs)
-#     else:
-#         capability = [qs]
-
-#     return capability

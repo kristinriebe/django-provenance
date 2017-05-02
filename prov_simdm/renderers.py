@@ -559,9 +559,9 @@ class VosiCapabilityRenderer(BaseRenderer):
 
             # Add all the capabilities, including those for VOSI endpoint,
             # extract them from the database using the provided queryset.
-            # The following lookup is not efficient, since there is a database call for each object,
-            # it would be more efficient to get a list of all capabilities, interfaces and accessurls
-            # and then match them here.
+            # The following lookup is not efficient, since there is a database
+            # call for each object, it would be more efficient to get a list of
+            # all capabilities, interfaces and accessurls and then match them here.
             for capability in capabilities:
                 attrs = {}
                 if capability.standardID:
