@@ -8,6 +8,9 @@ This web application uses the Django framework to define models and serve proven
 
 The different parts of the web application are under heavy development and serve to test different possible implementations.
 
+## Disclaimer
+This webapp is under development. There can be major changes at any time and it's likely that some things are broken.
+
 ## Installation
 Download everything and install the required python (2.7) packages, e.g. using `pip install`. There is also a requirements.txt which you use like this:
 
@@ -17,18 +20,18 @@ pip install requirements.txt
 
 The following packages are needed:
 
-django  -- version 1.10
+django  -- version 1.11  
 django-braces -- for json views  
 djangorestframework -- rest  
 django-extensions -- e.g. for exporting model graphs  
 django-test-without-migrations -- for enabling tests of unmanaged models  
 pygments  
 markdown  
-mod_wsgi -- wsgi-module for apache2, needed on the server on which the webapp shall be deployed 
+mod_wsgi -- wsgi-module for apache2, needed on the server on which the webapp shall be deployed  
 BeautifulSoup -- xml parsing  
-logger -- write proper log and error messages
-pyyaml -- for loading data (fixtures) from yaml representation
-lxml  -- juse dused for pretty-printing of xml (Votable, VOSI tables renderer), VOSI tables etc.
+logger -- write proper log and error messages  
+pyyaml -- for loading data (fixtures) from yaml representation  
+lxml  -- used for pretty-printing of xml (Votable, VOSI tables renderer), VOSI tables etc.  
 
 
 ## Testing
@@ -39,6 +42,7 @@ python manage.py test
 ```
 
 This executes all tests in the subdirectories as well. Currently, there are only a few tests available, but this will hopefully improve in the future.
+
 
 ## Loading data
 There are different possibilities to load data into a Django web application.
@@ -69,56 +73,75 @@ The webapp should be visible in the browser and it should even work offline, sin
 
 
 ## Deploying the webapp on a server
-* Copy everything to your destination, e.g. /srv/
-    - `sudo cp -r provenance-cosmosim /srv/`
-    - Make sure that the webserver-user has read (maybe also write) access to this directory. On Ubuntu you can achieve this using:
-        + `sudo chown -R www-data:www-data /srv/provenance-cosmosim`
-        + on Debian, the user is called `apache2`.
-
-* Add a virtual host (or an alias) to your server configuration.
-    - e.g. for an apache server on Ubuntu, you can use something similar to this:
+* Create the directory on a server
 
     ```
-    <VirtualHost *:8111>
-       DocumentRoot "/srv/provenance-cosmosim/"
-       ServerName Django.local
+    cd /srv/
+    mkdir provenance-cosmosim
+    cd provenance-cosmosim
+    ```
 
-       # This should be omitted in the production environment
-       SetEnv APPLICATION_ENV development
+* Clone the git repository:
 
-       <Directory "/srv/provenance-cosmosim/provenance">
-           Options Indexes MultiViews FollowSymLinks
-           AllowOverride All
-           Require all granted
-       </Directory>
+    ```
+    git clone https://github.com/kristinriebe/provenance-cosmosim.git
+    ```
+* Create a virtual environment and install the requirements:
 
-        Alias /static "/srv/provenance-cosmosim/static/"
-        <Directory "/srv/provenance-cosmosim/static/">
+    ```
+virtualenv -p /usr/bin/python2.7 env
+source env/bin/activate
+
+cd provenance-cosmosim
+pip install -r requirements.txt
+    ```
+
+* Collect static files:
+    - `cd provenance-cosmosim`
+    - `python manage.py collectstatic`
+    - You may be asked, if you want to overwrite existing files - check the given paths and type 'yes' to confirm.
+    - Adjust file permissions, if needed (see next step)
+
+* Make sure that the webserver-user has read (maybe also write) access to this directory. On Debian systems you can achieve this using:
+    - `sudo chown -R apache:apache /srv/provenance-cosmosim`
+    - on Ubuntu, the user is called `www-data`.
+  - you may need to repeat this each time you do `collectstatic`
+
+* Add a virtual host or an alias to your server configuration. Here's an example for a configuration on Debian using an alias (provenance-cosmosim), which you need to add to the config file at `/etc/httpd/conf.d/vhosts.conf`:
+
+    ```
+    <VirtualHost *:80>
+    [...]
+
+        # provenance test webapp
+        Alias "/provenance-cosmosim/static" "/srv/provenance-cosmosim/provenance-cosmosim/static/"
+        <Directory "/srv/provenance-cosmosim/provenance-cosmosim/static/">
             Require all granted
         </Directory>
 
-        WSGIScriptAlias / /srv/provenance-cosmosim/provenance/wsgi.py
-        <Directory "/srv/provenance-cosmosim/provenance">
+        WSGIDaemonProcess provenance-cosmosim-app python-home=/srv/provenance-cosmosim/env
+        WSGIProcessGroup provenance-cosmosim-app
+        WSGIScriptAlias /provenance-cosmosim /srv/provenance-cosmosim/provenance-cosmosim/provenance/wsgi.py process-group=provenance-cosmosim-app
+        <Directory "/srv/provenance-cosmosim/provenance-cosmosim/provenance">
             <Files wsgi.py>
-            Require all granted
+                Require all granted
             </Files>
         </Directory>
 
     </VirtualHost>
     ```
+    This uses a separate process group for the wsgi demon, so that multiple django instances can be installed on the same server.
 
-    - in Ubuntu, the virtual host configuration files lie at: `/etc/apache2/sites-available`; and still need to be enabled using 
-        `sudo a2ensite <name of vhost>`
-    - If you use a new port, do not forget to add `Listen 8111` (replace with your own port no.) to your webserver configuration (e.g. ports.conf)
+* If you use a new port instead of an alias, do not forget to add `Listen 8111` (replace with your own port no.) to your webserver configuration (e.g. ports.conf)
 
-* Reload the webserver, e.g. on Ubuntu: `service apache2 reload`
+* Reload the webserver, e.g. on Debian: `service httpd reload`
 
-* Collect static files:
-    - `cd provenance`
-    - `python manage.py collectstatic`
-    - You may be asked, if you want to overwrite existing files - check the given paths and type 'yes' to confirm.
+
 
 * Enter your hostname to ALLOWED_HOSTS in `provenance/settings.py`,if it's not yet there already. E.g. for the localhost:
     - `ALLOWED_HOSTS = [u'127.0.0.1', u'localhost']`
 
-* Now open your web browser at the provided port (e.g. http://localhost:8111/) and try the web application!
+* If using an alias (WSGIScriptAlias), do not forget to add it to the STATIC_URL in settings.py:
+  `STATIC_URL = '/provenance-cosmosim/static/'`
+
+* Now open your web browser at the server specific address (e.g. http://localhost:8111/ or http://localhost/provenance-cosmosim/) and try the web application!
