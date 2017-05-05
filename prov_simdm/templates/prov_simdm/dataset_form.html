@@ -109,8 +109,12 @@
 
         // also initially set the protocols and parameters
         var selectedvalue = $('#id_protocol_type input:checked').val();
-        update_protocols('/simdm/datasetform_protocols?protocol_type=' + selectedvalue, '#id_protocol');
-        update_parameters('/simdm/datasetform_parameters?protocol=' + $('#id_protocol').val(), $('#id_protocol').val(), '#parameters');
+        //var url = "{% url 'prov_simdm:datasetform_protocols' %}";
+        //window.console.log("url protocols "+url);
+
+        // selectedvalue
+        update_protocols("{% url 'prov_simdm:datasetform_protocols' %}?protocol_type="+selectedvalue, '#id_protocol');
+        update_parameters("{% url 'prov_simdm:datasetform_parameters' %}?protocol="+$('#id_protocol').val(), $('#id_protocol').val(), '#parameters');
 
         // update all parameter styles (based on checked or not)
         $('#parameters').find("input[fieldtype='paramlabel']").each(
@@ -127,14 +131,14 @@
         $('#id_protocol_type').change(function(){
             var selectedvalue = $('#id_protocol_type input:checked').val();
             window.console.log('protocol_type changed to ' + selectedvalue);
-            update_protocols('/simdm/datasetform_protocols?protocol_type=' + selectedvalue, '#id_protocol');
+            update_protocols("{% url 'prov_simdm:datasetform_protocols' %}?protocol_type="+selectedvalue, '#id_protocol');
         });
 
         /* if the field with id=id_protocol is changing, then call update_parameters-function
          * for updating the visible/hidden params */
         $('#id_protocol').change(function(){
             window.console.log('protocol changed to ' + $(this).val());
-            update_parameters('/simdm/datasetform_parameters?protocol=' + $(this).val(), $(this).val(), '#parameters');
+            update_parameters("{% url 'prov_simdm:datasetform_parameters' %}?protocol=" + $(this).val(), $(this).val(), '#parameters');
         });
 
         // TODO: loop below is inefficient, (because it always checks all parameters), come up with a better way
