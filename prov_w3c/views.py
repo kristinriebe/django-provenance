@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views import generic
 import json
 from django.http import JsonResponse
@@ -145,7 +145,7 @@ def provjson(request):
         a_dict["prov:startTime"] = a.startTime
         a_dict["prov:endTime"] = a.endTime
         a_dict["prov:label"] = a.label
-        a_dict["prov:description"] = str(a.description) 
+        a_dict["prov:description"] = str(a.description)
         a_dict["voprov:type"] = str(a.type)
         a_dict["voprov:subtype"] = str(a.subtype)
         a_dict["voprov:code"] = str(a.code)
@@ -156,7 +156,7 @@ def provjson(request):
     for e in entity_list:
         e_dict = {}
         e_dict["prov:label"] = e.label
-        e_dict["prov:description"] = str(e.description) 
+        e_dict["prov:description"] = str(e.description)
         e_dict["voprov:type"] = str(e.type)
         e_dict["voprov:location"] = str(e.location)
         e_dict["voprov:access"] = str(e.access)
@@ -167,7 +167,7 @@ def provjson(request):
     for ag in agent_list:
         ag_dict = {}
         ag_dict["prov:label"] = ag.label
-        #ag_dict["prov:description"] = str(ag.description) 
+        #ag_dict["prov:description"] = str(ag.description)
         ag_dict["voprov:type"] = str(ag.type)
         ag_dict["voprov:affiliation"] = ag.affiliation
         agent_dict[ag.id] = ag_dict
@@ -181,7 +181,7 @@ def provjson(request):
         u_dict["voprov:role"] = u.role
         used_dict[u.id] = u_dict
     prov_dict["used"] = used_dict
-  
+
     wasGeneratedBy_dict = {}
     for wg in wasGeneratedBy_list:
         wg_dict = {}
@@ -303,12 +303,13 @@ def get_entityId(request):
             try:
                 #detail = form.cleaned_data['detail_flag']
                 #print "detail: ", detail
-                
+
                 # get the entity from entity table:
-                print "entity_id: ", form.cleaned_data['entity_id']
+                #print "entity_id: ", form.cleaned_data['entity_id']
                 entity = Entity.objects.get(id=form.cleaned_data['entity_id'])
 
-                return HttpResponseRedirect('/w3c/' + str(entity.id) + '/detail')
+                url = reverse('prov_w3c:provdetail', kwargs={'entity_id': str(entity.id)})
+                return HttpResponseRedirect(url)
 
             except ValueError:
                 form = EntityForm(request.POST)
@@ -364,7 +365,7 @@ def provdetailjson(request, entity_id):
 def find_entity_detail(entity, prov):
     """Find an entity (backwards), detail view"""
 
-    if "prov:collection" not in entity.type.split(';'):   
+    if "prov:collection" not in entity.type.split(';'):
         # track the provenance information backwards
         queryset = WasGeneratedBy.objects.filter(entity=entity.id)
         print "queryset: ", queryset
@@ -389,13 +390,13 @@ def find_entity_detail(entity, prov):
                 queryset = WasAssociatedWith.objects.filter(activity=wg.activity.id)
                 for wa in queryset:
                     agent = Agent.objects.filter(id=wa.agent.id)[0]
-                    print "agent: ", agent
-                    
+                    #print "agent: ", agent
+
                     # add agent to nodes
                     prov['nodes_dict'].append({'name': agent.label, 'type': 'agent'})
                     prov['map_nodes_ids'][agent.id] = prov['count_nodes']
                     prov['count_nodes'] = prov['count_nodes'] + 1
-                    
+
                     # add wasAssociatedWith-link
                     prov['links_dict'].append({"source": prov['map_nodes_ids'][wg.activity.id], "target": prov['map_nodes_ids'][agent.id], "value": 0.2, "type": "wasAssociatedWith"})
                     prov['count_link'] = prov['count_link'] + 1

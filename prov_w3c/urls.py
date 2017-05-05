@@ -30,7 +30,7 @@ urlpatterns = [
     # provenance graph for given entity using form
     url(r'^form/$', views.get_entityId, name='get_entityId'),
     url(r'^(?P<entity_id>[0-9a-zA-Z.:_-]+)/detail/$', views.provdetail, name='provdetail'),
-    url(r'^(?P<entity_id>[0-9a-zA-Z.:_-]+)/detail/graphjson$', views.provdetailjson, name='provdetail'),
+    url(r'^(?P<entity_id>[0-9a-zA-Z.:_-]+)/detail/graphjson$', views.provdetailjson, name='provdetailgraphjson'),
 
     # serialisations
     url(r'^provn/$', views.provn, name='provn'),
