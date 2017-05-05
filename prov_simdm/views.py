@@ -207,7 +207,7 @@ class DatasetFormResultsView(FormView):
                     value_sin = form.cleaned_data['paramvalue_sin_'+p.id]
 
                 parametervalues[p.id] = [value_min, value_max, value_sin]
-                print 'cleaned val: ', p.id, value_min, value_max, value_sin
+                #print 'cleaned val: ', p.id, value_min, value_max, value_sin
 
         if protocol != 'any':
             experiment_list = experiment_list.filter(protocol=protocol)
@@ -232,7 +232,7 @@ class DatasetFormResultsView(FormView):
                 else:
                     experiment_list = experiment_list.filter(parametersetting__inputParameter_id=p, parametersetting__value=sinval)
 
-                print experiment_list.query
+                #print experiment_list.query
 
         dataset_list = []
         parametervalue_lists = {}
@@ -240,7 +240,7 @@ class DatasetFormResultsView(FormView):
             olist = OutputDataset.objects.filter(experiment_id=e.id)
             for o in olist:
                 dataset_list.append(o)
-                print "id: ", o
+                #print "id: ", o
                 parametervalue_lists[str(o.id)] = ParameterSetting.objects.filter(experiment_id=e.id)
                 #parametervalue_lists['yes'] = ParameterSetting.objects.filter(experiment_id=e.id)
 
@@ -541,10 +541,10 @@ def vosi_tables(request):
 
 def vosi_tabledetails(request, table_name):
     table = TAP_SCHEMA_columns.objects.filter(table_name=table_name).order_by('sortid').order_by('column_name').values()
-    print 'table_name, table: ', table_name, table
+    #print 'table_name, table: ', table_name, table
 
     data = table
-    print "data: ", data
+    #print "data: ", data
     vositable = VosiTableRenderer().render(data)
     response = HttpResponse(vositable, content_type="application/xml")
     return response
