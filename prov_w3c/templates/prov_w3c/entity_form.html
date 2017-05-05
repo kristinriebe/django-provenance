@@ -8,11 +8,11 @@
 
 <div class="row">
   <div class="col-md-6">
-Put an entity id in the field below and submit for getting detailed 
-provenance information for this entity. 
+Put an entity id in the field below and submit for getting detailed
+provenance information for this entity.
   </div>
 </div>
-<form action="/w3c/form/" method="post">
+<form action="{% url 'prov_w3c:get_entityId' %}" method="post">
     {% csrf_token %}
 
     {% for field in form.visible_fields %}
