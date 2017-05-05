@@ -69,6 +69,9 @@ For the `prov_simdm` and `core` app, I wrote a data fixture. If necessary, first
 ```bash
 cat data/delete_data_simdm.sql | sqlite3 db.sqlite3
 python manage.py loaddata prov_simdm/fixtures/simdm_data.yaml
+
+cat data/delete_data_vo.sql | sqlite3 db.sqlite3
+python manage.py loaddata prov_vo/fixtures/vo_data.yaml
 ```
 
 ## Starting the webapp locally

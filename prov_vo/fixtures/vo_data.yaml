@@ -43,7 +43,7 @@
         annotation: The MDPL2 simulation
         startTime: 2014-01-01
         endTime: 2014-01-01
-        doculink: "Klypin, Yepes Gottl\xF6ber, Prada (2016) MNRAS 457, 4340"
+        doculink: "Klypin, Yepes, Gottlöber, Prada (2016) MNRAS 457, 4340"
 -   model: prov_vo.activity
     pk: mdr1:act_fof
     fields:
@@ -95,6 +95,7 @@
         endTime: 2008-11-29
         description: 'cs:actdesc_gadgetsimu'
         label: CLUES WM3 LG Gas simulation
+        doculink: ''
 
 
 # ActivityFlow
@@ -110,9 +111,9 @@
     fields:
         label: Cosmological simulation
         type: 'cs:simulation'
-        subtype: null
+        subtype: '-'
         annotation: A cosmological simulation
-        doculink: ''
+        doculink: '-'
 -   model: prov_vo.activitydescription
     pk: cs:actdesc_fof
     fields:
@@ -153,6 +154,7 @@
         #code: 'http://wwwmpa.mpa-garching.mpg.de/galform/gadget/#download'
         #version: '2'
         type: 'cs:simulation'
+        subtype: ''
         annotation: 'Gadget code for cosmological simulations of structure formation'
         doculink: 'http://wwwmpa.mpa-garching.mpg.de/galform/gadget/'
 
@@ -542,7 +544,7 @@
 -   model: prov_vo.agent
     pk: cs:Stefan_Gottloeber
     fields:
-        label: "Stefan Gottl\xF6ber"
+        label: "Stefan Gottlöber"
         type: 'prov:Person'
         affiliation: 'AIP, Potsdam, Germany'
 

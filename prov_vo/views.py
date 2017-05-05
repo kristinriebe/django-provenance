@@ -14,12 +14,16 @@ from .models import Activity, ActivityDescription, Entity, EntityDescription, Us
 from .models import Parameter, ParameterDescription, ActivityFlow, HadStep, WasDerivedFrom
 
 from .forms import DatasetForm
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 # use a custom details-class that does everything the way I want it;
 # uses one template for all and sets the necessary context-variables
 class CustomDetailView(generic.DetailView):
     model = Entity  # shall be overwritten from inherited classes!
-    
+
     template_name = 'core/details.html'  # this is now general enough to be used with every detail class
 
     def get_context_data(self, **kwargs):
@@ -252,7 +256,7 @@ class DatasetFormResultsView(FormView):
                     activity_list = activity_list.filter(parameter__description_id=p, parameter__value__float__range=(minval,maxval))
                 else:
                     activity_list = activity_list.filter(parameter__description_id=p, parameter__value=sinval)
-                print activity_list.query                
+                #print activity_list.query
 
         dataset_list = []
         agent_list = {}
@@ -264,7 +268,7 @@ class DatasetFormResultsView(FormView):
                 dataset_list.append(e)
                 # print "id: ", e
                 parametervalue_lists[str(e.id)] = Parameter.objects.filter(activity_id=a.id)
-        
+
         # TODO: create a custom list of datasets, with agents, activities and -descriptions already included as
         # direct attributes. (Avoid many reverse lookups in the template!)
         return render_to_response('prov_vo/dataset_formresults.html', context={'dataset_list': dataset_list, 'parametervalue_lists': parametervalue_lists})
@@ -275,7 +279,7 @@ def get_activitydescriptions(request):  # url: datasetform_activitydescriptions
     # will be used by javascript to fill the parameters automatically into the dataset search form
 
     activitydescription_type = request.GET.get('activitydescription_type')
-    print 'actdesctype: ', activitydescription_type
+    #print 'actdesctype: ', activitydescription_type
     actdesc_list = []
     if activitydescription_type:
         if activitydescription_type == 'any':
@@ -292,12 +296,12 @@ def get_activitydescriptions(request):  # url: datasetform_activitydescriptions
 def get_parameters(request):  # url: datasetform_parameters
     # Get all available parameters for a given protocol_id,
     # will be used by javascript to fill the parameters automatically into the dataset search form
-    
+
     activitydescription_id = request.GET.get('activitydescription')
-    print 'id: ', activitydescription_id
+    #print 'id: ', activitydescription_id
     a  = ParameterDescription.objects.filter(activitydescription=activitydescription_id)
-    print a.query
-    print a
+    #print a.query
+    #print a
     #print "parent: ", protocol
     parameter_list = []
     if activitydescription_id:
@@ -341,29 +345,29 @@ def provn(request):
     for a in activity_list:
         af = ActivityFlow.objects.filter(id=a.id)
         if (af):
-            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:doculink = '" + a.doculink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.doculink + "',  voprov:activityflow = '1'" + a.description.doculink + "']),\n" #  voprov:viewLevel = '" + a.viewLevel + "']),\n"
+            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [voprov:label = '" + str(a.label) + "', voprov:annotation = '" + str(a.annotation) + "', voprov:doculink = '" + str(a.doculink) + "', voprov:type = '" + str(a.description.type) + "', voprov:subtype = '" + str(a.description.subtype) + "',  voprov:desc_doculink = '" + str(a.description.doculink) + "',  voprov:activityflow = '1']),\n" #  voprov:viewLevel = '" + a.viewLevel + "']),\n"
         else:
-            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [prov:label = '" + a.label + "', voprov:annotation = '" + a.annotation + "', voprov:doculink = '" + a.doculink + "', voprov:type = '" + a.description.type + "', voprov:subtype = '" + a.description.subtype + "',  voprov:description_docu = '" + a.description.doculink + "']),\n"
+            provstr = provstr + "activity(" + a.id + ", " + str(a.startTime) + ", " + str(a.endTime) + ", [voprov:label = '" + str(a.label) + "', voprov:annotation = '" + str(a.annotation) + "', voprov:doculink = '" + str(a.doculink) + "', voprov:type = '" + str(a.description.type) + "', voprov:subtype = '" + str(a.description.subtype) + "',  voprov:desc_doculink = '" + str(a.description.doculink) + "']),\n"
     for e in entity_list:
-        provstr = provstr + "entity(" + e.id + ", [prov:type = '" + e.type + "', prov:label = '" + e.label + "', voprov:annotation = '" + e.annotation + "', voprov:dataproduct_type = '" + e.description.dataproduct_type + "', voprov:dataproduct_subtype = '" + e.description.dataproduct_subtype + "']),\n"
- 
+        provstr = provstr + "entity(" + e.id + ", [voprov:type = '" + str(e.type) + "', voprov:label = '" + str(e.label) + "', voprov:annotation = '" + str(e.annotation) + "', voprov:desc_dataproduct_type = '" + str(e.description.dataproduct_type) + "', voprov:desc_dataproduct_subtype = '" + str(e.description.dataproduct_subtype) + "']),\n"
+
     for ag in agent_list:
-        provstr = provstr + "agent(" + ag.id + ", [prov:type = '" + ag.type + "', voprov:name = '" + ag.label + "', voprov:affiliation = '" + ag.affiliation + "']),\n"
+        provstr = provstr + "agent(" + ag.id + ", [voprov:type = '" + str(ag.type) + "', voprov:name = '" + str(ag.label) + "', voprov:affiliation = '" + str(ag.affiliation) + "']),\n"
 
     for u in used_list:
-        provstr = provstr + "used(" + u.activity.id + ", " + u.entity.id + ", [prov:role = '" + u.description.role + "']),\n"
+        provstr = provstr + "used(" + u.activity.id + ", " + u.entity.id + ", [voprov:role = '" + str(u.description.role) + "']),\n"
 
     for wg in wasGeneratedBy_list:
-        provstr = provstr + "wasGeneratedBy(" + wg.entity.id + ", " + wg.activity.id + ", [prov:role = '" + wg.description.role + "']),\n"
+        provstr = provstr + "wasGeneratedBy(" + wg.entity.id + ", " + wg.activity.id + ", [voprov:role = '" + str(wg.description.role) + "']),\n"
 
     for wa in wasAssociatedWith_list:
-        provstr = provstr + "wasAssociatedWith(" + wa.activity.id + ", " + wa.agent.id + ", [prov:role = '" + wa.role + "']),\n"
+        provstr = provstr + "wasAssociatedWith(" + wa.activity.id + ", " + wa.agent.id + ", [voprov:role = '" + str(wa.role) + "']),\n"
 
     for wa in wasAttributedTo_list:
-        provstr = provstr + "wasAttributedTo(" + wa.entity.id + ", " + wa.agent.id + ", [prov:role = '" + wa.role + "']),\n"
+        provstr = provstr + "wasAttributedTo(" + wa.entity.id + ", " + wa.agent.id + ", [voprov:role = '" + str(wa.role) + "']),\n"
 
     for p in parameter_list:
-        provstr = provstr + "entity(" + str(p.id) + ", [prov:type = 'parameter', prov:label = '" + p.description.label + "', prov:value = '" + str(p.value) + "', voprov:datatype = '" + str(p.description.datatype) + "', voprov:unit = '" + str(p.description.unit) + "', voprov:ucd = '" + str(p.description.ucd) + "', voprov:utype = '" + str(p.description.utype) + "', voprov:arraysize = '" + str(p.description.arraysize) + "', voprov:annotation = '" + str(p.description.annotation) + "']),\n"
+        provstr = provstr + "entity(" + str(p.id)+ ", [voprov:type = 'parameter', voprov:label = '" + str(p.description.label) + "', voprov:value = '" + str(p.value) + "', voprov:datatype = '" + str(p.description.datatype) + "', voprov:unit = '" + str(p.description.unit) + "', voprov:ucd = '" + str(p.description.ucd) + "', voprov:utype = '" + str(p.description.utype) + "', voprov:arraysize = '" + str(p.description.arraysize) + "', voprov:annotation = '" + str(p.description.annotation) + "']),\n"
 
     provstr += "endDocument"
 
