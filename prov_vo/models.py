@@ -62,7 +62,7 @@ class Activity(models.Model):
             'prov:label': self.label,
             'prov:startTime': str(self.startTime),
             'prov:endTime': str(self.endTime),
-            'vprov:annotation': self.annotation,
+            'voprov:annotation': self.annotation,
             'voprov:doculink': self.doculink,
             'voprov:type': self.description.type,
             'voprov:subtype': self.description.subtype,
