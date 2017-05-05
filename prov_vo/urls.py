@@ -7,14 +7,14 @@ urlpatterns = [
     # index view
     url(r'^$', views.IndexView.as_view(), name='index'), # for class-based view
     #url(r'^$', views.index, name='index') # for simple index-view
-    
+
     # activities
     url(r'^activities/$', views.ActivitiesView.as_view(), name='activities'),
     url(r'^activities/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ActivityDetailView.as_view(), name='activity_detail'),
     url(r'^activities/(?P<pk>[0-9a-zA-Z.:_-]+)/more$', views.ActivityDetailMoreView.as_view(), name='activity_detailmore'),
     url(r'^activitydescriptions/$', views.ActivityDescriptionsView.as_view(), name='activitydescriptions'),
     url(r'^activitydescriptions/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.ActivityDescriptionDetailView.as_view(), name='activitydescription_detail'),
-    
+
     # entities
     url(r'^entities/$', views.EntitiesView.as_view(), name='entities'),
     url(r'^entities/(?P<pk>[0-9a-zA-Z.:_-]+)/$', views.EntityDetailView.as_view(), name='entity_detail'),
@@ -46,6 +46,6 @@ urlpatterns = [
 
     # serialisations
     url(r'^provn/$', views.provn, name='provn'),
-    url(r'^json/$', views.json_view, name='json_view')
+    url(r'^json/$', views.json_view, name='json')
 
 ]

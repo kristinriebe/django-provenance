@@ -164,7 +164,7 @@
     Search for datasets using the specified properties.
   </div>
 </div>
-<form action="/simdm/datasetform/" method="post">
+<form action="{% url 'prov_simdm:dataset_form' %}" method="post">
     {% csrf_token %}
 
   <fieldset id="main">

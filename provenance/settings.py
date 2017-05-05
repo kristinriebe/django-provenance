@@ -26,7 +26,7 @@ SECRET_KEY = 'f&jgof7m4jt-k$*=kzmlahb(w@+9d(7!245ivo5h3o=8loqf!)'
 DEBUG = True
 
 # Set allowed hosts, important when deploying on another host!
-ALLOWED_HOSTS = [u'127.0.0.1', u'localhost', u'escience.vm']
+ALLOWED_HOSTS = [u'127.0.0.1', u'localhost', u'escience.vm', u'django.vm',]
 
 
 # Application definition
@@ -168,5 +168,5 @@ USE_TZ = False #True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_ROOT= os.path.join(BASE_DIR,'static/')
-#STATIC_URL = '/provenance/static/'
+#STATIC_URL = '/provenance-cosmosim/static/'
 STATIC_URL = '/static/'

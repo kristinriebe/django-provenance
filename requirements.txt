@@ -1,12 +1,11 @@
 django>=1.10
 django-braces
-djangorestframework 
-django-extensions  
+djangorestframework
+django-extensions
 django-test-without-migrations
-pygments  
+pygments
 markdown
-mod_wsgi 
-BeautifulSoup  
+BeautifulSoup
 logger
 pyyaml
 lxml

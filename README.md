@@ -12,10 +12,19 @@ The different parts of the web application are under heavy development and serve
 This webapp is under development. There can be major changes at any time and it's likely that some things are broken.
 
 ## Installation
-Download everything and install the required python (2.7) packages, e.g. using `pip install`. There is also a requirements.txt which you use like this:
+Clone the git repository:
+```
+git clone https://github.com/kristinriebe/provenance-cosmosim.git
+```
+
+Create a virtual environment and install the required python (2.7) packages:
 
 ```
-pip install requirements.txt
+virtualenv -p /usr/bin/python2.7 env
+source env/bin/activate
+
+cd provenance-cosmosim
+pip install -r requirements.txt
 ```
 
 The following packages are needed:
@@ -27,11 +36,13 @@ django-extensions -- e.g. for exporting model graphs
 django-test-without-migrations -- for enabling tests of unmanaged models  
 pygments  
 markdown  
-mod_wsgi -- wsgi-module for apache2, needed on the server on which the webapp shall be deployed  
+shall be deployed  
 BeautifulSoup -- xml parsing  
 logger -- write proper log and error messages  
 pyyaml -- for loading data (fixtures) from yaml representation  
 lxml  -- used for pretty-printing of xml (Votable, VOSI tables renderer), VOSI tables etc.  
+
+Additionally, you will need `mod_wsgi` when deploying the webapp on an apache server (see below).
 
 
 ## Testing
@@ -53,7 +64,7 @@ cat data/insert_data_w3c.sql | sqlite3 db.sqlite3
 cat data/insert_data_vo.sql | sqlite3 db.sqlite3
 ```
 
-For the `prov_simdm` app, I wrote a data fixture. If necessary, first clean up all simdm-related data and then reingest using `manage.py loaddata`:
+For the `prov_simdm` and `core` app, I wrote a data fixture. If necessary, first clean up all simdm-related data and then reingest using `manage.py loaddata`:
 
 ```bash
 cat data/delete_data_simdm.sql | sqlite3 db.sqlite3
@@ -72,7 +83,7 @@ and point a web browser to localhost:8000. Note that you can also provide a diff
 The webapp should be visible in the browser and it should even work offline, since all libraries are stored in the static directories, e.g. provenance/core/static.
 
 
-## Deploying the webapp on a server
+## Deploying the webapp on an apache server with `mod_wsgi`.
 * Create the directory on a server
 
     ```
@@ -81,19 +92,29 @@ The webapp should be visible in the browser and it should even work offline, sin
     cd provenance-cosmosim
     ```
 
-* Clone the git repository:
+* Clone the git repository to this directory:
 
     ```
     git clone https://github.com/kristinriebe/provenance-cosmosim.git
     ```
+
+* If `mod_wsgi` is not yet installed, install it with 
+    ```
+    sudo apt-get install libapache2-mod-wsgi
+    ```
+    and enable the module with:
+    ```
+    sudo a2enmod wsgi
+    ```
+
 * Create a virtual environment and install the requirements:
 
     ```
-virtualenv -p /usr/bin/python2.7 env
-source env/bin/activate
+    virtualenv -p /usr/bin/python2.7 env
+    source env/bin/activate
 
-cd provenance-cosmosim
-pip install -r requirements.txt
+    cd provenance-cosmosim
+    pip install -r requirements.txt
     ```
 
 * Collect static files:
@@ -134,14 +155,12 @@ pip install -r requirements.txt
 
 * If you use a new port instead of an alias, do not forget to add `Listen 8111` (replace with your own port no.) to your webserver configuration (e.g. ports.conf)
 
-* Reload the webserver, e.g. on Debian: `service httpd reload`
-
-
-
 * Enter your hostname to ALLOWED_HOSTS in `provenance/settings.py`,if it's not yet there already. E.g. for the localhost:
     - `ALLOWED_HOSTS = [u'127.0.0.1', u'localhost']`
 
 * If using an alias (WSGIScriptAlias), do not forget to add it to the STATIC_URL in settings.py:
   `STATIC_URL = '/provenance-cosmosim/static/'`
+
+* Reload the webserver, e.g. on Debian: `service httpd reload`
 
 * Now open your web browser at the server specific address (e.g. http://localhost:8111/ or http://localhost/provenance-cosmosim/) and try the web application!
