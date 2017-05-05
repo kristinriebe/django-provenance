@@ -11,7 +11,7 @@
     Search for experiments using the algorithm specified in the search field.
   </div>
 </div>
-<form action="/simdm/form/" method="post">
+<form action="{% url 'prov_simdm:algo_form' %}" method="post">
     {% csrf_token %}
 
     {% for field in form.visible_fields %}

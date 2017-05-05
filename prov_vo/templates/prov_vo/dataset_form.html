@@ -111,8 +111,8 @@
 
         // also initially set the protocols and parameters
         var selectedvalue = $('#id_activitydescription_type input:checked').val();
-        update_activitydescriptions('/vo/datasetform_activitydescriptions?activitydescription_type=' + selectedvalue, '#id_activitydescription');
-        update_parameters('/vo/datasetform_parameters?activitydescription=' + $('#id_activitydescription').val(), $('#id_activitydescription').val(), '#parameters');
+        update_activitydescriptions("{% url 'prov_vo:datasetform_activitydescriptions' %}?activitydescription_type=" + selectedvalue, '#id_activitydescription');
+        update_parameters("{% url 'prov_vo:datasetform_parameters' %}?activitydescription=" + $('#id_activitydescription').val(), $('#id_activitydescription').val(), '#parameters');
 
         // update all parameter styles (based on checked or not)
         $('#parameters').find("input[fieldtype='paramlabel']").each(
@@ -129,14 +129,14 @@
         $('#id_activitydescription_type').change(function(){
             var selectedvalue = $('#id_activitydescription_type input:checked').val();
             window.console.log('activitydescription_type changed to ' + selectedvalue);
-            update_activitydescriptions('/vo/datasetform_activitydescriptions?activitydescription_type=' + selectedvalue, '#id_activitydescription');
+            update_activitydescriptions("{% url 'prov_vo:datasetform_activitydescriptions' %}?activitydescription_type=" + selectedvalue, '#id_activitydescription');
         });
 
         /* if the field with id=id_activitydescription is changing, then call update_parameters-function
          * for updating the visible/hidden params */
         $('#id_activitydescription').change(function(){
             window.console.log('activitydescription changed to ' + $(this).val());
-            update_parameters('/vo/datasetform_parameters?activitydescription=' + $(this).val(), $(this).val(), '#parameters');
+            update_parameters("{% url 'prov_vo:datasetform_parameters' %}?activitydescription=" + $(this).val(), $(this).val(), '#parameters');
         });
 
         // TODO: loop below is inefficient, (because it always checks all parameters), come up with a better way
@@ -166,7 +166,7 @@
     Search for datasets using the specified properties.
   </div>
 </div>
-<form action="/vo/datasetform/" method="post">
+<form action="{% url 'prov_vo:dataset_form' %}" method="post">
     {% csrf_token %}
 
   <fieldset id="main">
