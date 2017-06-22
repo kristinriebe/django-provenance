@@ -12,25 +12,49 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import logger
+import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
+# Set defaults (just for having something to start with):
+s = {}
+s['debug'] = True
+s['key'] = 'f&jgof7m4jt-k$*=kzmlahb(w@+9d(7!245ivo5h3o=8loqf!)'
+s['allowed_hosts'] = ['127.0.0.1', 'localhost']
+s['static_url'] = '/static/'
+
+
+# Read values from a secret file, for use in production server environment
+# and overwrite the previously set values
+import yaml
+try:
+    with open(os.path.join(BASE_DIR,'custom_settings.yaml'), 'r') as f:
+        customsettings = yaml.load(f)
+except IOError as e:
+    print "I/O error({0}): {1}".format(e.errno, e.strerror)
+    raise
+except yaml.YAMLError as e:
+    print "Error reading YAML file: ", e
+    raise
+except:
+    print "Unexpected error: ", sys.exc_info()[0]
+    raise
+
+# Overwrite with values read from file, if values exist:
+for key in customsettings:
+    s[key] = customsettings[key]
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f&jgof7m4jt-k$*=kzmlahb(w@+9d(7!245ivo5h3o=8loqf!)'
+SECRET_KEY = s['key']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = s['debug']
 
 # Set allowed hosts, important when deploying on another host!
-ALLOWED_HOSTS = [u'127.0.0.1', u'localhost', u'escience.vm', u'django.vm',]
+ALLOWED_HOSTS = s['allowed_hosts']
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'prov_vo.apps.ProvVoConfig',
@@ -167,6 +191,5 @@ USE_TZ = False #True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT= os.path.join(BASE_DIR,'static/')
-#STATIC_URL = '/provenance-cosmosim/static/'
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static/')
+STATIC_URL = s['static_url']

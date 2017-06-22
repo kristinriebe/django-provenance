@@ -1,15 +1,19 @@
 # Provenance web application
 
-This web application uses the Django framework to define models and serve provenance data, using metadata from CosmoSim as an example. Different apps are used for different models:
+This web application uses the Django framework to define models and serve provenance data, using metadata from [CosmoSim](https://www.cosmosim.org/) as an example. Different apps are used for different models:
 
 * `prov_w3c`: implements the W3C PROV-DM model
 * `prov_vo`: implements the IVOA ProvenanceDM model (under development)
 * `prov_simdm`: reuses classes from the IVOA Simulation Data Model to define provenance for simulation data
 
-The different parts of the web application are under heavy development and serve to test different possible implementations.
+A (more or less) working example is available here (but may be outdated or broken any time):
 
-## Disclaimer
-This webapp is under development. There can be major changes at any time and it's likely that some things are broken.
+https://escience.aip.de/provenance-cosmosim/
+
+
+## ATTENTION
+The different parts of the web application are under heavy development and serve to test different possible implementations.There can be major changes at any time and it's likely that some things are broken.
+
 
 ## Installation
 Clone the git repository:
@@ -36,7 +40,6 @@ django-extensions -- e.g. for exporting model graphs
 django-test-without-migrations -- for enabling tests of unmanaged models  
 pygments  
 markdown  
-shall be deployed  
 BeautifulSoup -- xml parsing  
 logger -- write proper log and error messages  
 pyyaml -- for loading data (fixtures) from yaml representation  
@@ -101,7 +104,7 @@ The webapp should be visible in the browser and it should even work offline, sin
     git clone https://github.com/kristinriebe/provenance-cosmosim.git
     ```
 
-* If `mod_wsgi` is not yet installed, install it with 
+* If `mod_wsgi` is not yet installed, install it with:
     ```
     sudo apt-get install libapache2-mod-wsgi
     ```
